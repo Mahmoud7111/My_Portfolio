@@ -1,0 +1,64 @@
+@use 'mixins' as *;
+
+// ============================================================
+// CUSTOM CURSOR — coral block (leads) + cyan glow dot (lags)
+// Disabled automatically on touch devices via _globals.scss
+// ============================================================
+
+html {
+  cursor: none;
+
+  @media (pointer: coarse) {
+    cursor: auto;
+  }
+}
+
+a,
+button,
+[role='button'] {
+  cursor: none;
+
+  @media (pointer: coarse) {
+    cursor: pointer;
+  }
+}
+
+.custom-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 9px;
+  height: 18px;
+  background: var(--coral);
+  box-shadow: 0 0 10px var(--coral-glow);
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+  animation: cursor-blink var(--cursor-blink-speed) steps(1) infinite;
+
+  @include reduced-motion {
+    animation: none;
+  }
+}
+
+.cursor-trail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--cyan-glow) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+  transition: transform 120ms ease-out;
+}
+
+// When hovering an interactive element, cursor grows slightly
+.custom-cursor.is-hovering {
+  width: 14px;
+  height: 24px;
+}

@@ -1,0 +1,616 @@
+@use 'mixins' as *;
+
+// ============================================================
+// TERMINAL — 3-row header + powerline footer + body
+// ============================================================
+
+// ── Window shell — Framer Motion controls ALL geometry ──────────
+// (position:fixed, top, left, width, height, borderRadius,
+//  opacity, y, scale are all set via inline motion.div animate prop)
+// CSS only provides the visual appearance + flex column layout.
+.terminal-window {
+  // Framer Motion sets position:fixed via style prop
+  display: flex;
+  flex-direction: column;
+
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow:
+    0 30px 80px -20px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 0 0 1px rgba(77, 208, 206, 0.03);
+
+  // No CSS transition or state classes — Framer Motion owns all animation
+}
+
+// ══ Shared row base ══════════════════════════════════════════
+.trow {
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  border-bottom: 1px solid var(--border);
+  @include mono(12px);
+  flex-shrink: 0;
+  user-select: none;
+}
+
+// ══ ROW 1 — tmux title bar ═══════════════════════════════════
+.trow--tmux {
+  height: 36px;
+  background: var(--surface-4);
+  gap: 10px;
+  position: relative;
+}
+
+// Traffic lights
+.traffic-lights {
+  display: flex;
+  gap: 7px;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.traffic-light {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.3);
+  transition:
+    filter var(--transition-fast),
+    transform var(--transition-fast);
+
+  &:hover  { filter: brightness(1.35); transform: scale(1.15); }
+  &:active { transform: scale(0.85); }
+
+  &.close    { background: #ff5f57; }
+  &.minimize { background: var(--gold); }
+  &.maximize { background: #28c840; }
+}
+
+// tmux session label — centered absolutely like the real tmux
+.tmux-session {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 0;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.tmux-dim  { color: var(--text-dim); }
+.tmux-name { color: var(--text-heading); font-weight: 600; }
+
+// Right-side fake chrome
+.tmux-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.tmux-load { color: var(--text-dim); }
+.tmux-load-val { color: #4ec94e; }
+
+.tmux-net { color: var(--text-dim); font-size: 11px; }
+
+.tmux-rec {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-dim);
+}
+
+.tmux-rec-dot {
+  color: var(--coral);
+  font-size: 8px;
+  animation: rec-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes rec-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.2; }
+}
+
+.tbar-lang-btn {
+  @include mono(10px, 600);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 2px 7px;
+  transition: var(--transition-fast);
+  cursor: pointer;
+
+  &:hover {
+    color: var(--text-heading);
+    border-color: var(--cyan-edge);
+  }
+}
+
+// ══ ROW 2 — shell prompt ═════════════════════════════════════
+.trow--prompt {
+  height: 34px;
+  background: var(--surface-3);
+  gap: 0;
+  overflow: hidden;
+}
+
+.sh-time    { color: var(--text-dim);    margin-right: 6px; }
+.sh-user    { color: #4ec94e;            font-weight: 600; }
+.sh-dim     { color: var(--text-dim); }
+.sh-host    { color: var(--cyan); }
+.sh-path    { color: var(--cyan);        font-weight: 600; }
+.sh-git     { color: var(--text-dim);    margin-left: 4px; }
+.sh-branch  { color: var(--coral); }
+.sh-chevron { color: #4ec94e;            font-weight: 700; }
+.sh-cmd     { color: var(--text-body);   margin-left: 4px; }
+
+// Block cursor — blinking █
+.sh-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 15px;
+  background: var(--text-body);
+  margin-left: 4px;
+  vertical-align: middle;
+  animation: cursor-blink var(--cursor-blink-speed) steps(1) infinite;
+
+  @include reduced-motion { animation: none; opacity: 1; }
+}
+
+// ══ ROW 3 — tmux windows tab bar ═════════════════════════════
+.trow--tabs {
+  height: 30px;
+  background: var(--surface-2);
+  gap: 0;
+  padding: 0 8px;
+  overflow-x: auto;
+  @include hide-scrollbar();
+}
+
+.tmux-windows-label {
+  color: var(--text-dim);
+  margin-right: 8px;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+// Each tab like "[2:projects*]" or "[3:about-]"
+.tmux-tab {
+  display: inline-flex;
+  align-items: center;
+  @include mono(11px);
+  color: var(--text-dim);
+  padding: 0 8px;
+  height: 100%;
+  white-space: nowrap;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  transition: color var(--transition-fast), background var(--transition-fast);
+
+  &:hover {
+    color: var(--text-muted);
+    background: rgba(255,255,255,0.03);
+  }
+
+  // Active tab: cyan highlight
+  &.active {
+    color: #0f0f17;
+    background: var(--cyan);
+    font-weight: 600;
+  }
+}
+
+.tmux-tab-new {
+  @include mono(11px);
+  color: var(--text-dim);
+  padding: 0 8px;
+  cursor: default;
+}
+
+// ══ Body ═════════════════════════════════════════════════════
+.terminal-body {
+  position: relative;
+  flex: 1;              // fills all space between header rows and footer
+  min-height: 0;        // required for flex children to shrink below content size
+  padding: 24px 32px;
+  @include mono(14px);
+  color: var(--text-body);
+  line-height: 1.7;
+  overflow-y: auto;
+  @include dot-grid(0.035);
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+  &::-webkit-scrollbar        { width: 6px; }
+  &::-webkit-scrollbar-track  { background: transparent; }
+  &::-webkit-scrollbar-thumb  {
+    background: var(--border);
+    border-radius: 3px;
+    &:hover { background: var(--rule-faint); }
+  }
+
+  @include mobile {
+    padding: 20px 16px;
+  }
+}
+
+// ── Prompt + cursor ──────────────────────────────────────────
+.terminal-prompt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+
+  input {
+    border: none;
+    outline: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+}
+
+.prompt-symbol {
+  color: var(--coral);
+  @include glow-text();
+  font-weight: 600;
+}
+
+.terminal-cursor {
+  display: inline-block;
+  width: 9px;
+  height: 18px;
+  background: var(--coral);
+  box-shadow: 0 0 8px var(--coral-glow);
+  animation: cursor-blink var(--cursor-blink-speed) steps(1) infinite;
+
+  @include reduced-motion { animation: none; opacity: 1; }
+}
+
+@keyframes cursor-blink {
+  0%, 50%      { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+// ── Misc helpers used inside tab content ─────────────────────
+.cmd-name { color: var(--cyan); }
+.cmd-desc  { color: var(--text-muted); }
+
+.cmd-line {
+  cursor: pointer;
+  transition: color var(--transition-fast);
+  &:hover .cmd-name { text-shadow: 0 0 8px var(--cyan-glow); }
+}
+
+.pill-neutral-inline { @include pill-neutral(); }
+.pill-coral-inline   { @include pill-coral(); }
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  @include mono(12px);
+  color: var(--text-body);
+  border: 1px solid #2c2c3a;
+  border-radius: var(--radius-md);
+  padding: 6px 12px;
+  transition: var(--transition-fast);
+
+  &:hover {
+    border-color: var(--cyan-edge);
+    color: var(--text-heading);
+  }
+}
+
+// ══ Powerline footer ═════════════════════════════════════════
+//  █ NORMAL █▶ main±0 █▶ ~/path  ^C exit…  utf-8│lf ◀█ ●100% ◀█ HH:MM █
+// Chevron trick: clip-path on ::after / ::before
+
+$pl-h: 26px;
+$ch-w: 10px;
+
+.powerline {
+  height: $pl-h;
+  background: var(--surface-5);
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  flex-shrink: 0;
+  @include mono(11px, 600);
+  user-select: none;
+}
+
+// Spacer holding the keybind hints
+.powerline-spacer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-5);
+  overflow: hidden;
+}
+
+.pl-hints {
+  color: var(--text-dim);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+
+  @include mobile { display: none; }
+}
+
+.pl-hint-key {
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+// Base segment
+.pl-seg {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 11px;
+  position: relative;
+  white-space: nowrap;
+  font-size: 11px;
+
+  // ── Right-flowing: chevron after ──
+  &--right {
+    margin-right: $ch-w;
+    &::after {
+      content: '';
+      position: absolute;
+      right: -$ch-w;
+      top: 0;
+      width: $ch-w;
+      height: $pl-h;
+      clip-path: polygon(0 0, 100% 50%, 0 100%);
+      z-index: 1;
+    }
+  }
+
+  // ── Left-flowing: chevron before ──
+  &--left {
+    margin-left: $ch-w;
+    &::before {
+      content: '';
+      position: absolute;
+      left: -$ch-w;
+      top: 0;
+      width: $ch-w;
+      height: $pl-h;
+      clip-path: polygon(100% 0, 0 50%, 100% 100%);
+      z-index: 1;
+    }
+  }
+}
+
+// ── Colour variants ──────────────────────────────────────────
+// Each variant must set: background + matching pseudo-element bg + text color
+
+.pl-seg--coral {
+  background: var(--coral);
+  color: #1a0a0b;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  &::after  { background: var(--coral); }
+}
+
+// surface3 = dark, cyan text (matches image 1: "main ±0")
+.pl-seg--surface3 {
+  background: var(--surface-3);
+  color: var(--cyan);
+  &::after  { background: var(--surface-3); }
+  &::before { background: var(--surface-3); }
+}
+
+// surface2 = slightly lighter dark, cyan text (matches image 1: "~/projects")
+.pl-seg--surface2 {
+  background: var(--surface-2);
+  color: var(--cyan);
+  &::after  { background: var(--surface-2); }
+  &::before { background: var(--surface-2); }
+}
+
+// right-side surface2 — muted text for utf-8/lf
+.pl-seg--surface2.pl-seg--left {
+  color: var(--text-muted);
+}
+
+// right-side surface3 — muted text for ●100%
+.pl-seg--surface3.pl-seg--left {
+  color: var(--text-muted);
+}
+
+.pl-seg--cyan {
+  background: var(--cyan);
+  color: #0c0c10;
+  font-weight: 700;
+  &::before { background: var(--cyan); }
+}
+
+// ══ Minimized dock pill — visual styles only (animation via Framer Motion) ═
+.terminal-dock {
+  // position:fixed + left:50% are set via Framer Motion style prop in JSX
+  // x:'-50%' centering and y/opacity entrance are handled by Framer Motion
+  @include mono(12px);
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  z-index: 1000;
+  white-space: nowrap;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  // No CSS transition — Framer Motion AnimatePresence handles mount/unmount
+
+  &:hover { border-color: var(--cyan-edge); color: var(--text-heading); }
+}
+
+.dock-dot {
+  color: var(--coral);
+  animation: dock-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes dock-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+// ══ Terminal Closed Screen — THEME COLORS ═════════════════════
+// Uses site variables (cyan/coral/surface) instead of hard-coded green
+
+.tc-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  overflow: hidden;
+  font-family: var(--font-mono);
+
+  // Subtle scanline overlay using theme accent color
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 2px,
+      rgba(77, 208, 206, 0.012) 2px,  // --cyan at very low opacity
+      rgba(77, 208, 206, 0.012) 4px
+    );
+    z-index: 1;
+  }
+}
+
+.tc-scanlines { display: none; } // replaced by ::before above
+
+.tc-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  max-width: 680px;
+  padding: 40px 24px;
+  width: 100%;
+}
+
+// Title typewriter — uses --cyan to match the site
+.tc-title {
+  font-family: var(--font-mono);
+  font-size: clamp(22px, 4vw, 36px);
+  font-weight: 400;
+  color: var(--cyan);
+  text-shadow:
+    0 0 20px var(--cyan-glow),
+    0 0 50px rgba(77, 208, 206, 0.2);
+  letter-spacing: 2px;
+  margin-bottom: 32px;
+  min-height: 1.4em;
+}
+
+.tc-cursor-blink {
+  display: inline-block;
+  color: var(--coral); // contrast with cyan title
+  animation: tc-blink 530ms steps(1) infinite;
+}
+
+@keyframes tc-blink {
+  0%, 50%      { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+.tc-body {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  &.tc-body--visible { opacity: 1; transform: translateY(0); }
+}
+
+.tc-line {
+  font-size: clamp(12px, 1.6vw, 15px);
+  color: var(--text-body);
+  line-height: 1.8;
+  margin: 0;
+  &.tc-line--dim { color: var(--text-muted); margin-top: 4px; margin-bottom: 28px; }
+}
+
+// Joke card styled like a terminal output box
+.tc-joke-block {
+  border: 1px solid var(--cyan-edge);
+  border-radius: var(--radius-md);
+  padding: 20px 28px;
+  margin: 8px auto 24px;
+  max-width: 560px;
+  background: var(--surface);
+  box-shadow: 0 0 24px rgba(77, 208, 206, 0.06);
+}
+
+.tc-joke-label {
+  font-size: 13px;
+  color: var(--cyan);
+  font-style: italic;
+  margin-bottom: 12px;
+}
+
+.tc-joke-text {
+  font-size: clamp(13px, 1.8vw, 16px);
+  color: var(--text-body);
+  line-height: 1.7;
+}
+
+.tc-achievement {
+  font-size: 12px;
+  color: var(--text-dim);
+  font-style: italic;
+  letter-spacing: 0.5px;
+  margin: 0 0 32px;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+
+// Return button — coral accent (distinguishes from cyan title)
+.tc-return-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  color: #0c0c10;
+  background: var(--coral);
+  border: none;
+  border-radius: 999px;
+  padding: 12px 28px;
+  cursor: pointer;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 0 20px var(--coral-glow);
+  transition:
+    background var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+
+  &:hover {
+    background: #f07880;
+    box-shadow: 0 0 32px var(--coral-glow), 0 0 60px rgba(224, 108, 117, 0.2);
+    transform: translateY(-2px);
+  }
+
+  &:active { transform: translateY(0); }
+}

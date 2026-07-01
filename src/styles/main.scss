@@ -1,0 +1,20 @@
+// ============================================================
+// MAIN — single entry point, imported once in main.jsx
+// Import order matters: variables → mixins → reset → globals → pages
+// ============================================================
+
+@use 'variables';
+@use 'mixins';
+@use 'reset';
+@use 'globals';
+
+// Page-specific partials
+@use 'pages/home';
+@use 'pages/projects';
+@use 'pages/about';
+@use 'pages/contact';
+@use 'pages/achievements';
+
+// Component partials
+@use 'terminal';
+@use 'cursor';

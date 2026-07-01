@@ -1,0 +1,48 @@
+@use '../mixins' as *;
+
+// ============================================================
+// ACHIEVEMENTS PAGE
+// ============================================================
+
+.achievements-page {
+  @include section();
+
+  .achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 32px;
+
+    @include mobile {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .achievement-card {
+    @include card-surface();
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0.4;
+
+    &.unlocked {
+      opacity: 1;
+      border-color: var(--cyan-edge);
+    }
+  }
+
+  .achievement-icon {
+    color: var(--gold);
+  }
+
+  .achievement-name {
+    @include mono(13px, 600);
+    color: var(--text-heading);
+  }
+
+  .achievement-desc {
+    @include mono(11px);
+    color: var(--text-muted);
+  }
+}

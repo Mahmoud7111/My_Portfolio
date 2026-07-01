@@ -1,0 +1,62 @@
+// ============================================================
+// DESIGN TOKENS — Terminal Portfolio
+// Source of truth for every color, font, and spacing value.
+// Do NOT hardcode hex values anywhere else in the codebase.
+// ============================================================
+
+:root {
+  // ─── Surfaces (layered by darkness) ────────────────
+  --bg: #0c0c10;
+  --bg-grad-a: #141420;
+  --bg-grad-b: #1c1428;
+  --surface: #1a1a22;
+  --surface-2: #15151c;
+  --surface-3: #13131a;
+  --surface-4: #10101a;
+  --surface-5: #0f0f17;
+
+  // ─── Borders & dividers ─────────────────────────────
+  --border: #262630;
+  --border-dim: #1f1f2a;
+  --rule-faint: #4a4a5a;
+
+  // ─── Accents ─────────────────────────────────────────
+  --coral: #e06c75;
+  --coral-tint: rgba(224, 108, 117, 0.08);
+  --coral-edge: rgba(224, 108, 117, 0.25);
+  --coral-glow: rgba(224, 108, 117, 0.55);
+
+  --cyan: #4dd0ce;
+  --cyan-tint: rgba(77, 208, 206, 0.06);
+  --cyan-edge: rgba(77, 208, 206, 0.3);
+  --cyan-glow: rgba(77, 208, 206, 0.32);
+
+  --gold: #febc2e; // ONLY for macOS minimize dot + ASCII trophy. Never for content.
+
+  // ─── Text ────────────────────────────────────────────
+  --text-heading: #e8e8f0;
+  --text-body: #c0c0d0;
+  --text-muted: #888899;
+  --text-dim: #4a4a5a;
+
+  // ─── Typography ──────────────────────────────────────
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-sans: 'Inter', system-ui, sans-serif;
+
+  // ─── Radii ───────────────────────────────────────────
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+
+  // ─── Layout ──────────────────────────────────────────
+  --container-max: 1152px;
+  --container-narrow: 768px;
+  --terminal-max: 1100px;
+
+  // ─── Motion timing ───────────────────────────────────
+  --cursor-blink-speed: 530ms;
+  --transition-fast: 150ms ease;
+  --transition-base: 200ms ease;
+  --transition-slow: 300ms ease;
+}

@@ -1,0 +1,60 @@
+@use '../mixins' as *;
+
+// ============================================================
+// ABOUT PAGE
+// ============================================================
+
+.about-page {
+  @include section();
+
+  .about-bio {
+    @include sans(15px);
+    line-height: 1.75;
+    max-width: 640px;
+  }
+
+  // Timeline
+  .timeline {
+    position: relative;
+    margin-top: 48px;
+    padding-left: 28px;
+    border-left: 1px solid var(--border);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-bottom: 32px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: -34px;
+      top: 4px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--cyan);
+      box-shadow: 0 0 12px var(--cyan-glow);
+    }
+  }
+
+  .timeline-year {
+    @include mono(11px);
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .timeline-role {
+    @include sans(16px, 600);
+    color: var(--text-heading);
+
+    .timeline-at {
+      color: var(--coral);
+    }
+    .timeline-org {
+      color: var(--cyan);
+    }
+  }
+}

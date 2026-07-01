@@ -1,0 +1,86 @@
+{
+  "nav": {
+    "terminal": "terminal",
+    "projects": "projects",
+    "about": "about",
+    "contact": "contact",
+    "achievements": "achievements",
+    "github": "GitHub"
+  },
+  "terminal": {
+    "title": "portfolio@mahmoud:~",
+    "welcome": [
+      "Welcome to my interactive portfolio terminal!",
+      "You can learn everything you want about me by interacting with this terminal via typing commands,",
+      "by using natural language in chat mode,",
+      "Or by simply selecting a tab from the menu above.",
+      "",
+      "Type 'help' to see available commands.",
+      "Type 'chat' to open my AI chatbot for natural language questions."
+    ],
+    "helpHeader": "Available commands  (You can type them in the terminal or click on the command to input it):",
+    "helpFooter": "Type any command to see more information.",
+    "notFound": "bash: command not found: {{cmd}}",
+    "notFoundHint": "Type 'help' to see available commands."
+  },
+  "commands": {
+    "about": "View my background and Bio",
+    "chat": "Start a conversation with Gallillio, my personal AI that knows everything about me",
+    "clear": "Clear the terminal",
+    "contact": "Get my contact information",
+    "courses": "View my taken courses",
+    "education": "View my educational background",
+    "experience": "View my work experience",
+    "freelance": "View my freelance projects",
+    "help": "Show available commands",
+    "languages": "View my language proficiencies",
+    "links": "View my professional links",
+    "my-achievements": "View my achievements and publications",
+    "projects": "View my projects gallery",
+    "skills": "View my technical skills",
+    "timeline": "View my career timeline",
+    "your-achievements": "View your unlocked achievements"
+  },
+  "chat": {
+    "enter": [
+      "[chat mode activated]",
+      "You are now talking to my AI assistant.",
+      "Ask me anything about my skills, experience, or projects.",
+      "Type 'exit' to return to command mode."
+    ],
+    "placeholder": "Ask me anything...",
+    "exit": "[chat mode deactivated. back to command mode.]"
+  },
+  "projects": {
+    "heading": "PROJECTS",
+    "filterAll": "--all",
+    "viewLive": "live",
+    "viewCode": "code"
+  },
+  "about": {
+    "heading": "ABOUT ME",
+    "timelineHeading": "$ git log --experience"
+  },
+  "contact": {
+    "heading": "CONTACT",
+    "fieldName": "--name",
+    "fieldEmail": "--email",
+    "fieldMessage": "--message",
+    "submit": "$ send --message",
+    "success": "message queued",
+    "error": "failed to send. try again."
+  },
+  "achievements": {
+    "heading": "ACHIEVED",
+    "yourAchievements": "Your Achievements"
+  },
+  "footer": {
+    "madeBy": "made by {{name}}",
+    "copyright": "© {{year}}"
+  },
+  "notFoundPage": {
+    "code": "bash: command not found",
+    "hint": "the page you're looking for doesn't exist.",
+    "back": "$ cd ~"
+  }
+}

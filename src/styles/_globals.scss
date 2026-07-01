@@ -1,0 +1,81 @@
+@use 'mixins' as *;
+
+// ============================================================
+// GLOBALS — page-level rules, selection, focus
+// ============================================================
+
+::selection {
+  background: var(--coral-edge);
+  color: var(--text-heading);
+}
+
+// Focus ring — accessibility, never remove without replacing
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+// Heading defaults (overridden inline per the style guide where needed)
+h1,
+h2,
+h3,
+h4 {
+  color: var(--text-heading);
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+p {
+  color: var(--text-body);
+}
+
+// ASCII banners wider than ~50ch hide on mobile to prevent overflow
+.ascii-hide-mobile {
+  @include mobile {
+    display: none;
+  }
+}
+
+// ─── btn-outline (used in tab content pages) ─────────────────
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  @include mono(12px);
+  color: var(--text-body);
+  border: 1px solid #2c2c3a;
+  border-radius: var(--radius-md);
+  padding: 6px 12px;
+  transition: var(--transition-fast);
+
+  &:hover {
+    border-color: var(--cyan-edge);
+    color: var(--text-heading);
+  }
+}
+
+// Page background texture — the only allowed page-level texture
+.page-shell {
+  position: relative;
+  min-height: 100vh;
+  background: var(--bg);
+
+  &::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(circle at 4% 0%, var(--coral-tint) 0%, transparent 35%),
+      radial-gradient(circle at 85% 100%, var(--cyan-tint) 0%, transparent 35%);
+  }
+}
+
+// Touch device fallback — disables custom cursor effects
+@media (pointer: coarse) {
+  .custom-cursor,
+  .cursor-trail {
+    display: none !important;
+  }
+}

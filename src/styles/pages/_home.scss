@@ -1,0 +1,46 @@
+@use '../mixins' as *;
+
+// ============================================================
+// HOME PAGE
+// ============================================================
+
+.home-page {
+  .section {
+    @include section();
+  }
+
+  .section--tight {
+    @include section(64px);
+  }
+
+  .section--hero {
+    @include section(112px);
+  }
+
+  .section-opener {
+    @include mono(18px);
+    margin-bottom: 16px;
+
+    .prompt-symbol {
+      margin-right: 6px;
+    }
+  }
+
+  .about-split {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 48px;
+    align-items: center;
+
+    @include mobile {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // CTA band — the only place the purple-leaning gradient is allowed
+  .cta-band {
+    background: linear-gradient(135deg, var(--bg-grad-a), var(--bg-grad-b));
+    text-align: center;
+    @include section(112px);
+  }
+}
