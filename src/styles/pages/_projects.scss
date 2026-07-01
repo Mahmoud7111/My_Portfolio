@@ -41,6 +41,7 @@
 
     &:hover {
       color: var(--cyan);
+      text-shadow: 0 0 12px var(--cyan-glow);
     }
   }
 
@@ -53,10 +54,11 @@
     color: var(--text-body);
     transition: var(--transition-fast);
 
-    &.active {
+    &:hover, &.active {
       background: var(--cyan);
       color: var(--bg);
       border-color: var(--cyan);
+      box-shadow: 0 0 15px var(--cyan-glow);
     }
   }
 }

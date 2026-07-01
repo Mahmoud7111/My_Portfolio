@@ -13,7 +13,7 @@ export default function ProjectsContent() {
   const filtered = filter === 'all' ? projects : projects.filter((p) => p.category === filter)
 
   return (
-    <div className="tab-content-inner">
+    <div className="projects-page tab-content-inner">
       <AsciiArt art={ART.PROJECTS} color="var(--coral)" glow="var(--coral-glow)" />
 
       <div className="filter-row">

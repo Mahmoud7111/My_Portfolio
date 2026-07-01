@@ -388,14 +388,27 @@
   overflow-y: auto;
   @include dot-grid(0.035);
 
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
-  &::-webkit-scrollbar        { width: 6px; }
-  &::-webkit-scrollbar-track  { background: transparent; }
-  &::-webkit-scrollbar-thumb  {
-    background: var(--border);
-    border-radius: 3px;
-    &:hover { background: var(--rule-faint); }
+  // Retro terminal blocky scrollbar styling
+  scrollbar-width: auto;
+  scrollbar-color: var(--cyan) var(--surface-1);
+  
+  &::-webkit-scrollbar { 
+    width: 14px; 
+    display: block;
+  }
+  &::-webkit-scrollbar-track { 
+    background: var(--surface-1);
+    border-left: 1px solid var(--border);
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--cyan-tint);
+    border: 1px solid var(--cyan);
+    border-radius: 0; // Sharp edges for terminal look
+    
+    &:hover { 
+      background: var(--cyan); 
+      box-shadow: 0 0 10px var(--cyan-glow);
+    }
   }
 
   @include mobile {

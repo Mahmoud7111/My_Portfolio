@@ -1,6 +1,6 @@
 import { Suspense, useRef, useMemo } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { useGLTF, OrbitControls, Center, Environment, Float, Grid, Sparkles } from '@react-three/drei'
+import { useGLTF, OrbitControls, Center, Environment, Float, Grid, Sparkles, Html, useProgress } from '@react-three/drei'
 
 import pcModelUrl from '../../assets/pc.glb?url'
 
@@ -33,11 +33,24 @@ function Model() {
 }
 
 function Fallback() {
+  const { progress } = useProgress()
+  const bars = Math.floor(progress / 5) // 20 bars total
+  const barString = '█'.repeat(bars) + '░'.repeat(20 - bars)
+
   return (
-    <mesh>
-      <boxGeometry args={[1,0.6,0.4]} />
-      <meshStandardMaterial color="#262630" wireframe />
-    </mesh>
+    <Html center>
+      <div style={{ 
+        color: 'var(--cyan)', 
+        fontFamily: 'var(--font-mono)', 
+        fontSize: '13px', 
+        whiteSpace: 'pre', 
+        textAlign: 'center',
+        textShadow: '0 0 10px var(--cyan-glow)'
+      }}>
+        <div style={{ marginBottom: 8 }}>[ LOADING 3D ASSETS ]</div>
+        <div>{barString} {progress.toFixed(0)}%</div>
+      </div>
+    </Html>
   )
 }
 
