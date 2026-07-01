@@ -262,7 +262,6 @@ export default function TerminalWindow() {
           </span>
           <span className="sh-chevron"> &gt;</span>
           <span className="sh-cmd"> ls</span>
-          <span className="sh-cursor" aria-hidden="true" />
         </div>
 
         {/* ══ ROW 3 — tmux windows tab bar ════════════════════ */}
