@@ -5,7 +5,7 @@ export default function AsciiArt({
   art,
   color = 'var(--cyan)',
   glow,
-  fontSize = '11px',
+  fontSize = 'clamp(9px, 1.8vw, 18px)',
   className = '',
   hideOnMobile = true,
 }) {

@@ -1,21 +1,533 @@
 @use '../mixins' as *;
 
 // ============================================================
-// HOME CONTENT PANELS
-// These styles are used by HomeContent.jsx which renders
-// inside the terminal body — no .home-page wrapper needed.
+// HOME CONTENT — styles for HomeContent.jsx
+// These are global (not scoped) because the component renders
+// inside .terminal-body, not a .home-page wrapper.
 // ============================================================
 
-.section-opener {
-  @include mono(18px);
-  margin-bottom: 16px;
+// ── Root wrapper ─────────────────────────────────────────────
+.hc-root {
+  padding-bottom: 16px;
+}
 
-  .prompt-symbol {
-    margin-right: 6px;
+// ── Intro text ───────────────────────────────────────────────
+.hc-intro {
+  @include sans(14px);
+  color: var(--text-body);
+  margin-bottom: 4px;
+}
+
+.hc-hint {
+  @include mono(12px);
+  color: var(--text-muted);
+}
+
+.hc-key {
+  color: var(--cyan);
+}
+
+// ── Section comment separator ─────────────────────────────────
+// Style: "// section: name" in dimmed italic, with horizontal rule
+.hc-section-comment {
+  @include mono(12px);
+  color: var(--text-dim);
+  font-style: italic;
+  padding: 20px 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-dim);
   }
 }
 
-// ── Shared project grid (also used in HomeContent) ───────────
+// ── Panel shell ───────────────────────────────────────────────
+.hc-panel {
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.hc-panel__chrome {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 34px;
+  padding: 0 12px;
+  background: var(--surface-4);
+  border-bottom: 1px solid var(--border);
+  @include mono(12px);
+  gap: 8px;
+}
+
+.hc-panel__chrome-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.hc-panel__bar {
+  color: var(--coral);
+  font-size: 16px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.hc-panel__filename {
+  color: var(--text-body);
+  font-weight: 500;
+}
+
+.hc-panel__sep {
+  color: var(--text-dim);
+}
+
+.hc-panel__subtitle {
+  color: var(--text-muted);
+}
+
+.hc-panel__controls {
+  color: var(--text-dim);
+  letter-spacing: 3px;
+  flex-shrink: 0;
+  white-space: nowrap;
+
+  &--right {
+    letter-spacing: 0;
+    font-style: italic;
+    font-size: 11px;
+  }
+}
+
+.hc-panel__body {
+  background: var(--surface);
+  padding: 20px 24px;
+
+  &--no-pad-v {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
+// ── Command line ──────────────────────────────────────────────
+.hc-cmd-line {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  @include mono(13px);
+  margin-bottom: 8px;
+}
+
+.hc-prompt {
+  color: var(--coral);
+  flex-shrink: 0;
+}
+
+.hc-cmd {
+  color: var(--text-body);
+}
+
+.hc-var {
+  color: var(--cyan);
+}
+
+// ── About split ───────────────────────────────────────────────
+.hc-about-split {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 40px;
+  align-items: start;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.hc-bio {
+  @include sans(14px);
+  line-height: 1.75;
+  color: var(--text-body);
+  margin: 0 0 12px;
+}
+
+.hc-tagline {
+  @include sans(13px);
+  color: var(--text-muted);
+  margin: 0;
+}
+
+// Identity box
+.hc-identity {
+  @include mono(12px);
+  min-width: 200px;
+  color: var(--text-dim);
+  flex-shrink: 0;
+
+  @include mobile {
+    display: none;
+  }
+}
+
+.hc-identity__header {
+  color: var(--text-dim);
+  margin-bottom: 8px;
+}
+
+.hc-identity__row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.hc-identity__key {
+  min-width: 44px;
+  color: var(--text-muted);
+}
+
+.hc-identity__val {
+  color: var(--text-body);
+
+  &--status {
+    color: var(--cyan);
+  }
+}
+
+// ── Stat cards grid ───────────────────────────────────────────
+.hc-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+
+  @include mobile {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.hc-stat-card {
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+
+  &:hover {
+    border-color: var(--cyan-edge);
+    box-shadow: inset 0 0 20px var(--cyan-tint);
+  }
+}
+
+.hc-stat-card__header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.hc-stat-card__num {
+  @include mono(11px);
+  color: var(--text-dim);
+}
+
+.hc-stat-card__flag {
+  @include mono(11px);
+  color: var(--coral);
+  flex: 1;
+}
+
+.hc-stat-card__dot {
+  font-size: 8px;
+  color: var(--coral);
+}
+
+.hc-stat-card__value {
+  @include mono(32px, 700);
+  color: var(--cyan);
+  line-height: 1;
+  margin-bottom: 6px;
+  text-shadow: 0 0 20px var(--cyan-glow);
+}
+
+.hc-stat-card__label {
+  @include sans(13px, 600);
+  color: var(--text-heading);
+  margin-bottom: 4px;
+}
+
+.hc-stat-card__note {
+  @include sans(12px);
+  color: var(--text-muted);
+  line-height: 1.4;
+}
+
+// ── Tech feed marquee ─────────────────────────────────────────
+.hc-feed-marquee {
+  overflow: hidden;
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 48px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  &::before {
+    left: 0;
+    background: linear-gradient(to right, var(--surface), transparent);
+  }
+
+  &::after {
+    right: 0;
+    background: linear-gradient(to left, var(--surface), transparent);
+  }
+}
+
+.hc-feed-marquee__track {
+  display: flex;
+  gap: 8px;
+  width: max-content;
+  animation: hc-marquee 28s linear infinite;
+
+  &--rev {
+    animation: hc-marquee-rev 32s linear infinite;
+  }
+
+  @include reduced-motion {
+    animation: none;
+  }
+}
+
+.hc-feed-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  @include mono(12px);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 5px 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  background: var(--surface-3);
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+
+  &:hover {
+    border-color: var(--coral-edge);
+    color: var(--text-body);
+  }
+
+  &::after {
+    content: '◆';
+    color: var(--coral);
+    font-size: 7px;
+    margin-left: 4px;
+    vertical-align: middle;
+  }
+}
+
+.hc-feed-pill__dollar {
+  color: var(--coral);
+  margin-right: 1px;
+}
+
+@keyframes hc-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+@keyframes hc-marquee-rev {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+// ── Projects ASCII heading ────────────────────────────────────
+.hc-projects-ascii {
+  font-family: var(--font-mono);
+  font-size: clamp(7px, 1.4vw, 14px);
+  line-height: 1.2;
+  color: var(--coral);
+  text-shadow: 0 0 12px var(--coral-glow);
+  white-space: pre;
+  overflow-x: auto;
+  margin: 0 0 20px;
+}
+
+// ── Project card grid ─────────────────────────────────────────
+.hc-project-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+
+  @media (max-width: 900px) and (min-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.hc-project-card {
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+
+  &:hover {
+    border-color: var(--border);
+    box-shadow: inset 0 0 20px rgba(255,255,255,0.02), 0 0 0 1px var(--border);
+  }
+}
+
+.hc-project-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.hc-project-card__name {
+  @include mono(13px, 500);
+  color: var(--cyan);
+}
+
+.hc-project-card__icons {
+  display: flex;
+  gap: 10px;
+  @include mono(14px);
+  color: var(--text-dim);
+
+  span {
+    cursor: pointer;
+    transition: color var(--transition-fast);
+
+    &:hover {
+      color: var(--text-muted);
+    }
+  }
+}
+
+.hc-project-card__desc {
+  @include sans(12px);
+  color: var(--text-muted);
+  line-height: 1.55;
+  margin: 0 0 12px;
+}
+
+.hc-project-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.hc-tag {
+  @include mono(11px);
+  color: var(--coral);
+  background: var(--coral-tint);
+  border: 1px solid var(--coral-edge);
+  border-radius: var(--radius-sm);
+  padding: 2px 8px;
+}
+
+// ── CTA panel ─────────────────────────────────────────────────
+.hc-cta-body {
+  padding: 24px !important;
+}
+
+.hc-cta-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 20px 0 12px;
+}
+
+.hc-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  @include mono(12px);
+  color: var(--cyan);
+  border: 1px solid var(--cyan-edge);
+  border-radius: 999px;
+  padding: 4px 14px;
+  margin-bottom: 20px;
+  background: var(--cyan-tint);
+}
+
+.hc-status-pill__dot {
+  font-size: 8px;
+  color: #4ade80;  // green dot — availability indicator
+  animation: hc-dot-pulse 2s ease-in-out infinite;
+}
+
+@keyframes hc-dot-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.4; }
+}
+
+.hc-rocket {
+  font-family: var(--font-mono);
+  font-size: clamp(10px, 2vw, 16px);
+  line-height: 1.35;
+  color: var(--coral);
+  text-shadow: 0 0 10px var(--coral-glow);
+  white-space: pre;
+  margin: 0 0 20px;
+}
+
+.hc-cta-heading {
+  font-family: var(--font-sans);
+  font-size: clamp(26px, 3.5vw, 42px);
+  font-weight: 700;
+  color: var(--text-heading);
+  letter-spacing: -0.5px;
+  margin: 0 0 10px;
+}
+
+.hc-cta-email {
+  @include mono(13px);
+  color: var(--text-dim);
+  margin: 0 0 24px;
+}
+
+.hc-cta-icons {
+  display: flex;
+  gap: 10px;
+}
+
+.hc-icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-3);
+  color: var(--text-muted);
+  transition: border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+
+  &:hover {
+    border-color: var(--text-dim);
+    color: var(--text-heading);
+    box-shadow: 0 0 12px rgba(255,255,255,0.04);
+  }
+}
+
+// ── Legacy classes kept for other pages/tabs ──────────────────
+// (projects-grid, project-card, etc used in ProjectsContent)
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -33,298 +545,11 @@
   padding: 20px;
 }
 
-// ── About Panel ──────────────────────────────────────────────
-.about-panel__chrome {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 36px;
-  padding: 0 14px;
-  background: var(--surface-4);
-  border: 1px solid var(--border);
-  border-bottom: none;
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  @include mono(12px);
-}
-
-.about-panel__title {
-  color: var(--text-muted);
-}
-
-.about-panel__controls {
-  color: var(--text-dim);
-  letter-spacing: 3px;
-}
-
-.about-panel__body {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 48px;
-  padding: 32px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-top: none;
-  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-
-  @include mobile {
-    grid-template-columns: 1fr;
-    padding: 24px;
-  }
-}
-
-.about-panel__commands {
-  @include mono(13px);
-  margin-bottom: 20px;
-}
-
-.about-panel__cmd {
-  display: block;
-  color: var(--text-body);
+.section-opener {
+  @include mono(18px);
+  margin-bottom: 16px;
 
   .prompt-symbol {
     margin-right: 6px;
   }
-}
-
-.about-panel__var {
-  color: var(--cyan);
-}
-
-.about-panel__bio {
-  @include sans(15px);
-  line-height: 1.7;
-  color: var(--text-body);
-  max-width: 640px;
-  margin: 0 0 12px;
-}
-
-.about-panel__tagline {
-  @include sans(14px);
-  color: var(--text-muted);
-  margin: 0;
-}
-
-// Identity box — desktop only
-.about-panel__right {
-  display: none;
-
-  @include tablet {
-    display: block;
-  }
-}
-
-.about-panel__identity {
-  min-width: 220px;
-  padding: 16px 20px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-}
-
-.about-panel__identity-header {
-  @include mono(12px);
-  color: var(--text-dim);
-  margin-bottom: 12px;
-}
-
-.about-panel__identity-body {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.about-panel__identity-row {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  @include mono(12px);
-}
-
-.about-panel__identity-key {
-  min-width: 40px;
-  color: var(--text-muted);
-}
-
-.about-panel__identity-val {
-  color: var(--text-body);
-}
-
-.about-panel__identity-val--status {
-  color: var(--cyan);
-}
-
-// ── Stats Panel ──────────────────────────────────────────────
-.stats-panel__chrome {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 36px;
-  padding: 0 14px;
-  background: var(--surface-4);
-  border: 1px solid var(--border);
-  border-bottom: none;
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  @include mono(12px);
-}
-
-.stats-panel__title {
-  color: var(--text-muted);
-}
-
-.stats-panel__controls {
-  color: var(--text-dim);
-  letter-spacing: 3px;
-}
-
-.stats-panel__body {
-  padding: 0;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-top: none;
-  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-  overflow: hidden;
-}
-
-.stats-panel__header-row {
-  display: grid;
-  grid-template-columns: 1fr 80px 1fr;
-  gap: 16px;
-  padding: 12px 24px;
-  border-bottom: 1px solid var(--border);
-  background: var(--surface-3);
-  @include mono(11px);
-  color: var(--text-dim);
-  text-transform: uppercase;
-  letter-spacing: 0.8px;
-
-  @include mobile {
-    grid-template-columns: 1fr 60px 1.5fr;
-    padding: 10px 16px;
-    font-size: 10px;
-  }
-}
-
-.stats-panel__row {
-  display: grid;
-  grid-template-columns: 1fr 80px 1fr;
-  gap: 16px;
-  padding: 14px 24px;
-  border-bottom: 1px solid var(--border-dim);
-  @include mono(13px);
-  transition: background var(--transition-fast);
-
-  &:last-child {
-    border-bottom: none;
-  }
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.02);
-  }
-
-  @include mobile {
-    grid-template-columns: 1fr 60px 1.5fr;
-    padding: 12px 16px;
-    font-size: 12px;
-  }
-}
-
-.stats-panel__col-metric { color: var(--text-muted); }
-.stats-panel__col-value  { color: var(--cyan); font-weight: 600; text-align: left; }
-.stats-panel__col-note   { color: var(--text-dim); }
-.stats-panel__metric     { color: var(--text-body); }
-.stats-panel__value      { color: var(--cyan); font-weight: 600; }
-.stats-panel__note       { color: var(--text-dim); }
-
-// ── Tech Marquee ─────────────────────────────────────────────
-.tech-marquee-section {
-  padding: 0;
-  overflow: hidden;
-}
-
-.tech-marquee__header {
-  display: flex;
-  align-items: center;
-  height: 36px;
-  padding: 0 14px;
-  background: var(--surface-4);
-  border: 1px solid var(--border);
-  border-bottom: none;
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-  @include mono(12px);
-}
-
-.tech-marquee__label {
-  color: var(--text-muted);
-}
-
-.tech-marquee {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-top: none;
-  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-  padding: 16px 0;
-  overflow: hidden;
-  position: relative;
-
-  // Fade edges
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 60px;
-    pointer-events: none;
-    z-index: 2;
-  }
-
-  &::before {
-    left: 0;
-    background: linear-gradient(to right, var(--surface), transparent);
-  }
-
-  &::after {
-    right: 0;
-    background: linear-gradient(to left, var(--surface), transparent);
-  }
-}
-
-.tech-marquee__track {
-  display: flex;
-  gap: 32px;
-  width: max-content;
-  animation: marquee-scroll 25s linear infinite;
-
-  @include reduced-motion {
-    animation: none;
-  }
-}
-
-.tech-marquee__item {
-  @include mono(13px);
-  color: var(--text-muted);
-  white-space: nowrap;
-  flex-shrink: 0;
-  padding: 8px 0;
-
-  &::before {
-    content: '◆';
-    color: var(--coral);
-    margin-right: 8px;
-    font-size: 8px;
-    vertical-align: middle;
-  }
-}
-
-@keyframes marquee-scroll {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
-// ── CTA band ─────────────────────────────────────────────────
-.cta-band {
-  background: linear-gradient(135deg, var(--bg-grad-a), var(--bg-grad-b));
-  text-align: center;
-  padding: 48px 24px;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border);
 }

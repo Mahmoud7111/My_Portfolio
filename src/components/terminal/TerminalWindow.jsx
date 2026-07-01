@@ -132,12 +132,13 @@ export default function TerminalWindow() {
   // ── Close mobile menu on route change ────────────────────────
   useEffect(() => { setMenuOpen(false) }, [location.pathname])
 
-  // ── Auto-scroll terminal output ──────────────────────────────
+  // ── Auto-scroll to keep prompt in view after command output ──
   useEffect(() => {
-    if (bodyRef.current && location.pathname === '/') {
-      bodyRef.current.scrollTop = bodyRef.current.scrollHeight
+    if (location.pathname === '/' && inputRef.current) {
+      inputRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     }
   }, [history, location.pathname])
+
 
   // ── Submit ───────────────────────────────────────────────────
   const handleSubmit = async (e) => {
@@ -340,11 +341,20 @@ export default function TerminalWindow() {
                 art={ART.HERO}
                 color="var(--cyan)"
                 glow="var(--cyan-glow)"
-                fontSize="clamp(8.5px, 1.05vw, 11px)"
+                fontSize="clamp(9px, 1.8vw, 18px)"
                 hideOnMobile={false}
               />
-              <HomeContent />
-              <div style={{ marginTop: 16 }}>
+              <div style={{ marginTop: 16, marginBottom: 16 }}>
+                <p className="hc-intro">Welcome to my interactive portfolio terminal!</p>
+                <p className="hc-intro">
+                  Interact via commands, chat mode, or select a tab above.
+                </p>
+                <p className="hc-hint">
+                  Type <span className="hc-key">&apos;help&apos;</span> for commands &nbsp;·&nbsp;{' '}
+                  <span className="hc-key">&apos;chat&apos;</span> to open the AI assistant
+                </p>
+              </div>
+              <div>
                 {history.map((entry, i) => (
                   <HistoryLine key={i} entry={entry} onCommandClick={runFromClick} />
                 ))}
@@ -355,7 +365,7 @@ export default function TerminalWindow() {
               <form
                 onSubmit={handleSubmit}
                 className="terminal-prompt"
-                style={{ marginTop: 8 }}
+                style={{ marginTop: 8, marginBottom: 32 }}
               >
                 <span className="prompt-symbol">$</span>
                 <input
@@ -376,8 +386,10 @@ export default function TerminalWindow() {
                   }}
                 />
               </form>
+              <HomeContent />
             </>
           )}
+
           {location.pathname === '/projects'     && <ProjectsContent />}
           {location.pathname === '/about'        && <AboutContent />}
           {location.pathname === '/contact'      && <ContactContent />}
