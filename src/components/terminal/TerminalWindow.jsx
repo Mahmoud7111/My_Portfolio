@@ -331,9 +331,6 @@ export default function TerminalWindow() {
         <div
           className="terminal-body"
           ref={bodyRef}
-          onClick={() => {
-            if (location.pathname === '/') inputRef.current?.focus()
-          }}
         >
           {location.pathname === '/' && (
             <>

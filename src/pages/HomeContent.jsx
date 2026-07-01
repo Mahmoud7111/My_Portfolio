@@ -1,6 +1,7 @@
 import { me } from '../data/me'
 import { projects } from '../data/projects'
 import { ART } from '../components/ascii/art'
+import PCModel from '../components/3d/PCModel'
 
 const allSkills = Object.values(me.skills).flat()
 
@@ -51,56 +52,68 @@ export default function HomeContent() {
       {/* ══════════════════════════════════════════════════════ */}
       {/* ABOUT                                                  */}
       {/* ══════════════════════════════════════════════════════ */}
-      <SectionComment label="intro" />
+      <SectionComment label="about" />
 
 
-      <div className="hc-panel" style={{ marginBottom: 40 }}>
+      <div className="hc-panel" style={{ marginBottom: 40, marginTop: 12 }}>
         {/* Chrome bar */}
         <div className="hc-panel__chrome">
           <div className="hc-panel__chrome-left">
             <span className="hc-panel__bar">▍</span>
-            <span className="hc-panel__filename">intro.txt</span>
+            <span className="hc-panel__filename">about.md</span>
             <span className="hc-panel__sep">—</span>
-            <span className="hc-panel__subtitle">tl;dr</span>
+            <span className="hc-panel__subtitle">bio + setup</span>
           </div>
           <span className="hc-panel__controls">⌃ ⌄ ×</span>
         </div>
 
         {/* Body */}
         <div className="hc-panel__body">
-          <div className="hc-cmd-line">
-            <span className="hc-prompt">$</span>
-            <span className="hc-cmd">cat intro.txt</span>
-          </div>
-          <div className="hc-cmd-line" style={{ marginBottom: 20 }}>
-            <span className="hc-prompt">$</span>
-            <span className="hc-cmd">
-              echo &quot;<span className="hc-var">$ABOUT_ME</span>&quot;
-            </span>
-          </div>
+          {/* ASCII Art */}
+          <pre className="hc-about-ascii" aria-hidden="true" style={{
+            fontFamily: 'var(--font-mono)',
+            fontSize: 'clamp(6px, 1.2vw, 12px)',
+            lineHeight: 1.2,
+            color: 'var(--cyan)',
+            textShadow: '0 0 12px var(--cyan-glow)',
+            whiteSpace: 'pre',
+            overflowX: 'auto',
+            margin: '0 0 24px'
+          }}>
+            {ART.ABOUT_ME}
+          </pre>
 
-          <div className="hc-about-split">
-            <div className="hc-about-text">
-              <p className="hc-bio">{me.bio}</p>
-              <p className="hc-tagline">
-                Software engineer &amp; AI student — building things at the
-                intersection of code, design, and intelligence.
+          <div className="hc-about-3d-split">
+            <div className="hc-about-left">
+              <div className="hc-cmd-line" style={{ marginBottom: 12 }}>
+                <span className="hc-prompt">$</span>
+                <span className="hc-cmd">whoami</span>
+              </div>
+              
+              <h1 style={{ fontSize: 'clamp(24px, 3vw, 36px)', margin: '0 0 4px', color: 'var(--text-heading)', fontWeight: 700 }}>
+                {me.name}
+              </h1>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--cyan)', margin: '0 0 24px' }}>
+                software & ai engineer · building intelligent systems
               </p>
+              
+              <p style={{ margin: '0 0 24px', fontSize: 'clamp(14px, 1.5vw, 16px)', lineHeight: 1.8, color: 'var(--text-body)', maxWidth: 520 }}>
+                I design and ship production AI systems — from retrieval pipelines and agent runtimes to the developer tools that make them feel natural to use. I care deeply about taste in interfaces, latency budgets you can feel, and code that reads like prose.
+              </p>
+              
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-muted)' }}>
+                <span>~/{me.location.toLowerCase()}</span>
+                <span>·</span>
+                <span>5y experience</span>
+                <span>·</span>
+                <span style={{ color: 'var(--cyan)' }}>open to work</span>
+              </div>
             </div>
-            <div className="hc-identity">
-              <div className="hc-identity__header">┌─ identity ─</div>
-              {[
-                { k: 'name',   v: me.name,     cls: '' },
-                { k: 'role',   v: me.title,    cls: '' },
-                { k: 'loc',    v: me.location, cls: '' },
-                { k: 'status', v: me.status,   cls: 'hc-identity__val--status' },
-                { k: 'pgp',    v: '0x5F3E…A2B1', cls: '' },
-              ].map(({ k, v, cls }) => (
-                <div key={k} className="hc-identity__row">
-                  <span className="hc-identity__key">{k}</span>
-                  <span className={`hc-identity__val ${cls}`}>{v}</span>
-                </div>
-              ))}
+            <div 
+              className="hc-model-canvas" 
+              style={{ minHeight: 300 }}
+            >
+              <PCModel />
             </div>
           </div>
         </div>
@@ -256,7 +269,7 @@ export default function HomeContent() {
           <span className="hc-panel__controls">⌃ ⌄ ×</span>
         </div>
         <div className="hc-panel__body hc-cta-body">
-          <div className="hc-cmd-line" style={{ marginBottom: 32 }}>
+          <div className="hc-cmd-line" style={{ marginBottom: 12 }}>
             <span className="hc-prompt">$</span>
             <span className="hc-cmd">echo --build-something</span>
           </div>

@@ -57,7 +57,7 @@ export default function ContactContent() {
           <label>
             <span className="flag">--</span>message
           </label>
-          <textarea name="message" rows={5} value={form.message} onChange={handleChange} required />
+          <textarea name="message" rows={3} value={form.message} onChange={handleChange} required />
         </div>
 
         <button type="submit" className="btn-submit" disabled={status === 'sending'}>

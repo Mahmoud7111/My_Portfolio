@@ -5,7 +5,7 @@
 // ============================================================
 
 export const me = {
-  name: 'Mahmoud',
+  name: 'Mahmoud Sayed',
   handle: 'mahmoud',
   title: 'Software & AI Engineer',
   location: 'City, Country',

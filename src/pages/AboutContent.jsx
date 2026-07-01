@@ -13,7 +13,7 @@ export default function AboutContent() {
 
   return (
     <div className="tab-content-inner">
-      <AsciiArt art={ART.ABOUT} color="var(--cyan)" glow="var(--cyan-glow)" />
+      <AsciiArt art={ART.ABOUT_ME} color="var(--cyan)" glow="var(--cyan-glow)" />
 
       <h1 style={{ fontSize: 36, marginTop: 24 }}>{me.name}</h1>
       <p className="about-bio" style={{ marginTop: 12 }}>
