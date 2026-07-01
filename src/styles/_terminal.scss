@@ -17,11 +17,33 @@
   overflow: hidden;
   background: var(--surface);
   box-shadow:
+    // ── Themed border glow ──────────────────────────
+    0 0 0 1px rgba(77, 208, 206, 0.08),
+    0 0 24px rgba(224, 108, 117, 0.12),
+    0 0 48px rgba(77, 208, 206, 0.08),
+    0 0 80px rgba(224, 108, 117, 0.05),
+    // ── Deep shadow ─────────────────────────────────
     0 30px 80px -20px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.03),
-    0 0 0 1px rgba(77, 208, 206, 0.03);
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
 
   // No CSS transition or state classes — Framer Motion owns all animation
+
+  // ── Glow on hover/keyboard-focus ─────────────────────────────
+  box-shadow:
+    0 30px 80px -20px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 0 0 1px rgba(77, 208, 206, 0.05);
+  transition: box-shadow 350ms ease;
+
+  &:hover,
+  &:focus-within {
+    box-shadow:
+      0 30px 80px -20px rgba(0, 0, 0, 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05),
+      0 0 0 1px rgba(77, 208, 206, 0.30),
+      0 0 40px -8px rgba(77, 208, 206, 0.18),
+      0 0 80px -20px rgba(77, 208, 206, 0.10);
+  }
 }
 
 // ══ Shared row base ══════════════════════════════════════════
@@ -41,6 +63,11 @@
   background: var(--surface-4);
   gap: 10px;
   position: relative;
+
+  @include mobile {
+    gap: 6px;
+    padding: 0 10px;
+  }
 }
 
 // Traffic lights
@@ -80,6 +107,18 @@
   gap: 0;
   white-space: nowrap;
   pointer-events: none;
+
+  @include mobile {
+    // On mobile the absolute centre clashes with short viewport width.
+    // Switch to a plain flow element so it doesn't overlap traffic lights.
+    position: static;
+    transform: none;
+    font-size: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: calc(100vw - 160px); // leave room for 3 dots + right chrome
+  }
 }
 
 .tmux-dim  { color: var(--text-dim); }
@@ -92,18 +131,23 @@
   align-items: center;
   gap: 14px;
   flex-shrink: 0;
+
+  @include mobile {
+    gap: 6px;
+  }
 }
 
-.tmux-load { color: var(--text-dim); }
+.tmux-load { color: var(--text-dim); @include mobile { display: none; } }
 .tmux-load-val { color: #4ec94e; }
 
-.tmux-net { color: var(--text-dim); font-size: 11px; }
+.tmux-net { color: var(--text-dim); font-size: 11px; @include mobile { display: none; } }
 
 .tmux-rec {
   display: flex;
   align-items: center;
   gap: 4px;
   color: var(--text-dim);
+  @include mobile { display: none; }
 }
 
 .tmux-rec-dot {
@@ -169,8 +213,10 @@
   background: var(--surface-2);
   gap: 0;
   padding: 0 8px;
-  overflow-x: auto;
-  @include hide-scrollbar();
+  // overflow:visible so the absolute dropdown can escape the row bounds.
+  // Horizontal scroll is handled on desktop via the inner tabs themselves.
+  overflow: visible;
+  position: relative; // needed for dropdown z-index stacking
 }
 
 .tmux-windows-label {
@@ -178,6 +224,8 @@
   margin-right: 8px;
   font-size: 11px;
   flex-shrink: 0;
+
+  @include mobile { display: none; }
 }
 
 // Each tab like "[2:projects*]" or "[3:about-]"
@@ -205,6 +253,8 @@
     background: var(--cyan);
     font-weight: 600;
   }
+
+  @include mobile { display: none; }
 }
 
 .tmux-tab-new {
@@ -212,6 +262,118 @@
   color: var(--text-dim);
   padding: 0 8px;
   cursor: default;
+}
+
+// ══ Mobile hamburger menu ════════════════════════════════════
+// Replaces the horizontal tab bar on small screens
+// Shown as a labeled pill — much clearer than three bars
+
+.tmux-hamburger {
+  display: none; // desktop: hidden
+  margin-left: auto;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 5px;
+  background: rgba(77, 208, 206, 0.08);
+  border: 1px solid var(--cyan-edge);
+  border-radius: var(--radius-sm);
+  padding: 3px 10px;
+  cursor: pointer;
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition:
+    background var(--transition-fast),
+    border-color var(--transition-fast);
+
+  &:hover, &[aria-expanded="true"] {
+    background: rgba(77, 208, 206, 0.15);
+    border-color: var(--cyan);
+  }
+
+  @include mobile { display: flex; }
+}
+
+// The ☰ glyph inside the button
+.tmux-hamburger-icon {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.tmux-mobile-label {
+  display: none;
+  @include mono(11px);
+  color: var(--text-muted);
+  margin-right: auto;
+  flex-shrink: 0;
+  padding-left: 4px;
+
+  @include mobile { display: block; }
+}
+
+.tmux-mobile-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  z-index: 101;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-top: none;
+  overflow: hidden;
+  transform-origin: top center;
+}
+
+.tmux-mobile-tab {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  color: var(--text-dim);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-align: left;
+  transition:
+    color var(--transition-fast),
+    background var(--transition-fast);
+
+  &:hover {
+    color: var(--text-heading);
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &.active {
+    color: var(--cyan);
+    background: rgba(77, 208, 206, 0.06);
+    font-weight: 600;
+  }
+
+  .tab-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--cyan);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+  }
+
+  &.active .tab-indicator {
+    opacity: 1;
+  }
 }
 
 // ══ Body ═════════════════════════════════════════════════════
@@ -363,33 +525,33 @@ $ch-w: 10px;
   white-space: nowrap;
   font-size: 11px;
 
-  // ── Right-flowing: chevron after ──
+  // ── Right-flowing: arrow overlaps the NEXT segment's left edge ──
   &--right {
-    margin-right: $ch-w;
+    // No margin — the ::after arrow must sit on top of the next segment
     &::after {
       content: '';
       position: absolute;
-      right: -$ch-w;
+      right: -$ch-w;   // extends beyond segment boundary into next segment
       top: 0;
       width: $ch-w;
       height: $pl-h;
       clip-path: polygon(0 0, 100% 50%, 0 100%);
-      z-index: 1;
+      z-index: 2;       // above the adjacent segment body
     }
   }
 
-  // ── Left-flowing: chevron before ──
+  // ── Left-flowing: arrow overlaps the PREV segment's right edge ──
   &--left {
-    margin-left: $ch-w;
+    // No margin — the ::before arrow must sit on top of the previous segment
     &::before {
       content: '';
       position: absolute;
-      left: -$ch-w;
+      left: -$ch-w;    // extends beyond segment boundary into previous segment
       top: 0;
       width: $ch-w;
       height: $pl-h;
       clip-path: polygon(100% 0, 0 50%, 100% 100%);
-      z-index: 1;
+      z-index: 2;       // above the adjacent segment body
     }
   }
 }

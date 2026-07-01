@@ -108,6 +108,7 @@ export default function TerminalWindow() {
 
   const [windowState, setWindowState] = useState('normal')
   const [clock,       setClock]       = useState({ long: '', short: '' })
+  const [menuOpen,    setMenuOpen]    = useState(false)
   const bodyRef = useRef(null)
 
   const { history, input, setInput, submit, chatMode, runFromClick, inputRef, pushLine } =
@@ -127,6 +128,9 @@ export default function TerminalWindow() {
     const id = setInterval(tick, 1000)
     return () => clearInterval(id)
   }, [])
+
+  // ── Close mobile menu on route change ────────────────────────
+  useEffect(() => { setMenuOpen(false) }, [location.pathname])
 
   // ── Auto-scroll terminal output ──────────────────────────────
   useEffect(() => {
@@ -262,7 +266,7 @@ export default function TerminalWindow() {
         </div>
 
         {/* ══ ROW 3 — tmux windows tab bar ════════════════════ */}
-        <div className="trow trow--tabs">
+        <div className="trow trow--tabs" style={{ position: 'relative' }}>
           <span className="tmux-windows-label">windows:</span>
           {TABS.map((tab, i) => {
             const isActive = location.pathname === tab.path
@@ -277,6 +281,50 @@ export default function TerminalWindow() {
             )
           })}
           <span className="tmux-tab-new">[+:new]</span>
+
+          {/* ── Mobile current tab label ── */}
+          <span className="tmux-mobile-label">
+            {TABS.find(t => t.path === location.pathname)?.label}
+          </span>
+
+          {/* ── Mobile menu button — labeled pill ── */}
+          <button
+            className="tmux-hamburger"
+            aria-label="Open navigation menu"
+            onClick={() => setMenuOpen(o => !o)}
+            aria-expanded={menuOpen}
+          >
+            <span className="tmux-hamburger-icon" aria-hidden="true">☰</span>
+            <span>MENU</span>
+          </button>
+
+          {/* ── Mobile dropdown ── */}
+          <AnimatePresence>
+            {menuOpen && (
+              <motion.div
+                key="mobile-menu"
+                className="tmux-mobile-dropdown"
+                initial={{ scaleY: 0, opacity: 0 }}
+                animate={{ scaleY: 1, opacity: 1 }}
+                exit={{ scaleY: 0, opacity: 0 }}
+                transition={{ duration: 0.2, ease: 'easeOut' }}
+              >
+                {TABS.map(tab => {
+                  const isActive = location.pathname === tab.path
+                  return (
+                    <button
+                      key={tab.id}
+                      className={`tmux-mobile-tab ${isActive ? 'active' : ''}`}
+                      onClick={() => { navigate(tab.path); setMenuOpen(false) }}
+                    >
+                      <span className="tab-indicator" aria-hidden="true" />
+                      {tab.label}
+                    </button>
+                  )
+                })}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* ══ Body ════════════════════════════════════════════ */}
@@ -293,7 +341,8 @@ export default function TerminalWindow() {
                 art={ART.HERO}
                 color="var(--cyan)"
                 glow="var(--cyan-glow)"
-                fontSize="clamp(5px, 1.05vw, 11px)"
+                fontSize="clamp(8.5px, 1.05vw, 11px)"
+                hideOnMobile={false}
               />
               <HomeContent />
               <div style={{ marginTop: 16 }}>
@@ -347,9 +396,9 @@ export default function TerminalWindow() {
 function PowerlineFooter({ currentPath, shortTime }) {
   return (
     <div className="powerline " aria-hidden="true">
-      <Seg variant="coral"    dir="right">NORMAL</Seg>
-      <Seg variant="surface3" dir="right">main ±0</Seg>
-      <Seg variant="surface2" dir="right">{currentPath}</Seg>
+      <Seg variant="coral"    dir="right" z={3}>NORMAL</Seg>
+      <Seg variant="surface3" dir="right" z={2}>main ±0</Seg>
+      <Seg variant="surface2" dir="right" z={1}>{currentPath}</Seg>
 
       <div className="powerline-spacer">
         <span className="pl-hints">
@@ -360,16 +409,19 @@ function PowerlineFooter({ currentPath, shortTime }) {
         </span>
       </div>
 
-      <Seg variant="surface2" dir="left">utf-8 │ lf</Seg>
-      <Seg variant="surface3" dir="left">● 100%</Seg>
-      <Seg variant="cyan"     dir="left">{shortTime}</Seg>
+      <Seg variant="surface2" dir="left" z={1}>utf-8 │ lf</Seg>
+      <Seg variant="surface3" dir="left" z={2}>● 100%</Seg>
+      <Seg variant="cyan"     dir="left" z={3}>{shortTime}</Seg>
     </div>
   )
 }
 
-function Seg({ children, variant, dir }) {
+function Seg({ children, variant, dir, z = 1 }) {
   return (
-    <span className={`pl-seg pl-seg--${variant} pl-seg--${dir}`}>
+    <span
+      className={`pl-seg pl-seg--${variant} pl-seg--${dir}`}
+      style={{ zIndex: z }}
+    >
       {children}
     </span>
   )

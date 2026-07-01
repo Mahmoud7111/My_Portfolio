@@ -1,7 +1,7 @@
 # Terminal Portfolio
 
-A macOS-terminal-styled personal portfolio. React 18 + Vite, SCSS, react-router, framer-motion,
-Groq AI chatbot, EmailJS contact form, full English/Arabic i18n.
+A terminal-styled personal portfolio. React 18 + Vite, SCSS, react-router, framer-motion,
+Groq AI chatbot, EmailJS contact form.
 
 ## Setup
 
@@ -26,7 +26,6 @@ Everything personal lives in `src/data/`:
 - `unlockables.js` — visitor achievement definitions (edit names/descriptions if you want)
 - `commands.js` — terminal command registry (add new commands here)
 
-Translations live in `src/locales/en/translation.json` and `src/locales/ar/translation.json` — keep both in sync when you add new copy.
 
 ASCII art lives in `src/components/ascii/art.js` — swap in your own banners any time.
 
@@ -36,7 +35,6 @@ ASCII art lives in `src/components/ascii/art.js` — swap in your own banners an
 - Custom cursor: coral block + lagging cyan glow dot (disabled on touch)
 - Sticky header: hides on scroll down, shows on scroll up / at top
 - Pages: Home, Projects (filterable), About (timeline), Contact (EmailJS form), Achievements (visitor gamification via localStorage), 404
-- Full i18n scaffolding (EN default, AR with RTL — terminal/code elements stay LTR via `.ltr-island`)
 
 ## Still to do
 
@@ -47,7 +45,4 @@ ASCII art lives in `src/components/ascii/art.js` — swap in your own banners an
 
 ## Deploy
 
-```bash
-npm run build
-```
 Push to GitHub → import in Vercel → add the three env vars in Project Settings → Environment Variables → done.

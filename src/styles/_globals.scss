@@ -29,12 +29,8 @@ p {
   color: var(--text-body);
 }
 
-// ASCII banners wider than ~50ch hide on mobile to prevent overflow
-.ascii-hide-mobile {
-  @include mobile {
-    display: none;
-  }
-}
+// Hero ASCII art is shown on all screen sizes; component-level opt-out available
+// via AsciiArt's hideOnMobile prop.
 
 // ─── btn-outline (used in tab content pages) ─────────────────
 .btn-outline {
