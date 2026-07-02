@@ -1,11 +1,9 @@
-import { useTranslation } from 'react-i18next'
 import { useEffect, useState } from 'react'
 import TerminalWindow from '../components/terminal/TerminalWindow'
 import { projects } from '../data/projects'
 import { me } from '../data/me'
 
 export default function Home() {
-  const { t } = useTranslation()
   const allSkills = Object.values(me.skills).flat()
 
   const stats = [

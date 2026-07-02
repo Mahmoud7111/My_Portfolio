@@ -47,10 +47,10 @@ export default function TerminalClosedScreen({ onReturn }) {
 
         <div className={`tc-body ${showContent ? 'tc-body--visible' : ''}`}>
           <p className="tc-line">
-            You tried to close the terminal, but I couldn&apos;t let you go that easily!
+            Access Denied: You cannot exit the portfolio that easily!
           </p>
           <p className="tc-line tc-line--dim">
-            Instead of saying goodbye, let&apos;s hang out in this meta-space...
+            Just kidding. Let&apos;s just sit back and chill in this quiet corner of the web...
           </p>
 
           <div className="tc-joke-block">

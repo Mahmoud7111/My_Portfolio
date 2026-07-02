@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useTranslation } from 'react-i18next'
 import { useNavigate, useLocation } from 'react-router-dom'
 import AsciiArt from '../ascii/AsciiArt'
 import { ART } from '../ascii/art'
@@ -101,7 +100,6 @@ function buildTarget(state, vp) {
 }
 
 export default function TerminalWindow() {
-  const { t }  = useTranslation()
   const navigate      = useNavigate()
   const location      = useLocation()
   const vp            = useViewport()
@@ -342,9 +340,13 @@ export default function TerminalWindow() {
                 hideOnMobile={false}
               />
               <div style={{ marginTop: 16, marginBottom: 16 }}>
-                <p className="hc-intro">Welcome to my interactive portfolio terminal!</p>
-                <p className="hc-intro">
-                  Interact via commands, chat mode, or select a tab above.
+                <p className="hc-intro">Welcome to my interactive portfolio terminal.</p>
+                <p className="hc-intro" style={{ lineHeight: 1.6 }}>
+                  Explore my work and learn more about me by entering <span style={{ color: 'var(--cyan)' }}>terminal commands</span>,
+                  <br />
+                  chatting in <span style={{ color: 'var(--coral)' }}>plain English</span>,
+                  <br />
+                  or selecting a section from the <span style={{ color: 'var(--gold)' }}>navigation menu</span> above.
                 </p>
                 <p className="hc-hint">
                   Type <span className="hc-key">&apos;help&apos;</span> for commands &nbsp;·&nbsp;{' '}
@@ -372,7 +374,7 @@ export default function TerminalWindow() {
                   autoFocus
                   spellCheck={false}
                   autoComplete="off"
-                  placeholder={chatMode ? t('chat.placeholder') : ''}
+                  placeholder={chatMode ? 'Ask me anything...' : ''}
                   style={{
                     flex: 1,
                     background: 'transparent',

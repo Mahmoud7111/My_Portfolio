@@ -1,17 +1,14 @@
 import { Link } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
 
 export default function NotFound() {
-  const { t } = useTranslation()
-
   return (
     <div className="container" style={{ padding: '120px 24px', textAlign: 'center' }}>
       <p style={{ color: 'var(--coral)', fontFamily: 'var(--font-mono)', fontSize: 18 }}>
-        {t('notFoundPage.code')}
+        bash: command not found
       </p>
-      <p style={{ color: 'var(--text-muted)', marginTop: 8 }}>{t('notFoundPage.hint')}</p>
+      <p style={{ color: 'var(--text-muted)', marginTop: 8 }}>the page you're looking for doesn't exist.</p>
       <Link to="/" style={{ color: 'var(--cyan)', display: 'inline-block', marginTop: 24 }}>
-        {t('notFoundPage.back')}
+        $ cd ~
       </Link>
     </div>
   )

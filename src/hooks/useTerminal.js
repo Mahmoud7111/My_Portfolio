@@ -1,5 +1,4 @@
 import { useState, useCallback, useRef } from 'react'
-import { useTranslation } from 'react-i18next'
 import { getCommand } from '../data/commands'
 import { useAchievements } from './useAchievements'
 
@@ -11,12 +10,9 @@ import { useAchievements } from './useAchievements'
  * Rendering of 'output' entries is delegated to <CommandOutput /> by id.
  */
 export function useTerminal() {
-  const { t } = useTranslation()
   const { unlock } = useAchievements()
 
-  const [history, setHistory] = useState(() => [
-    { type: 'system', value: t('terminal.welcome') },
-  ])
+  const [history, setHistory] = useState([])
   const [input, setInput] = useState('')
   const [chatMode, setChatMode] = useState(false)
   const [commandsRun, setCommandsRun] = useState(new Set())
@@ -40,7 +36,7 @@ export function useTerminal() {
       if (!cmd) {
         pushLine({
           type: 'system',
-          value: [t('terminal.notFound', { cmd: trimmed }), t('terminal.notFoundHint')],
+          value: [`bash: command not found: ${trimmed}`, "Type 'help' to see available commands."],
         })
         return
       }
@@ -59,7 +55,15 @@ export function useTerminal() {
           return
         case 'chat':
           setChatMode(true)
-          pushLine({ type: 'system', value: t('chat.enter') })
+          pushLine({
+            type: 'system',
+            value: [
+              "[chat mode activated]",
+              "You are now talking to my AI assistant.",
+              "Ask me anything about my skills, experience, or projects.",
+              "Type 'exit' to return to command mode."
+            ]
+          })
           return
         case 'help':
           pushLine({ type: 'output', commandId: 'help' })
@@ -68,13 +72,13 @@ export function useTerminal() {
           pushLine({ type: 'output', commandId: cmd.id })
       }
     },
-    [pushLine, clear, t, unlock],
+    [pushLine, clear, unlock],
   )
 
   const exitChat = useCallback(() => {
     setChatMode(false)
-    pushLine({ type: 'system', value: t('chat.exit') })
-  }, [pushLine, t])
+    pushLine({ type: 'system', value: "[chat mode deactivated. back to command mode.]" })
+  }, [pushLine])
 
   const submit = useCallback(() => {
     if (chatMode) {

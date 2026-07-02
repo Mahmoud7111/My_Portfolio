@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next'
 import { Mail } from 'lucide-react'
 import { GithubIcon, LinkedinIcon } from '../ui/BrandIcons'
 import { me } from '../../data/me'
@@ -6,13 +5,12 @@ import { me } from '../../data/me'
 const ICONS = { Github: GithubIcon, Linkedin: LinkedinIcon, Mail }
 
 export default function Footer() {
-  const { t } = useTranslation()
   const year = new Date().getFullYear()
 
   return (
     <footer className="site-footer">
       <div className="site-footer-inner">
-        <span>{t('footer.madeBy', { name: me.name })}</span>
+        <span>made by {me.name}</span>
         <div className="site-footer-links">
           {me.links.map((l) => {
             const Icon = ICONS[l.icon]
@@ -23,7 +21,7 @@ export default function Footer() {
             )
           })}
         </div>
-        <span>{t('footer.copyright', { year })}</span>
+        <span>© {year}</span>
       </div>
     </footer>
   )

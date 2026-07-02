@@ -1,11 +1,8 @@
-import { useTranslation } from 'react-i18next'
 import AsciiArt from '../components/ascii/AsciiArt'
 import { ART } from '../components/ascii/art'
 import { me } from '../data/me'
 
 export default function AboutContent() {
-  const { t } = useTranslation()
-
   const timelineItems = [
     ...me.experience.map((e) => ({ year: e.period, role: e.role, org: e.org })),
     ...me.education.map((e) => ({ year: e.year, role: e.degree, org: e.institution })),
@@ -21,7 +18,7 @@ export default function AboutContent() {
       </p>
 
       <p style={{ marginTop: 32, color: 'var(--cyan)', fontFamily: 'var(--font-mono)' }}>
-        {t('about.timelineHeading')}
+        $ git log --experience
       </p>
 
       <div className="timeline">

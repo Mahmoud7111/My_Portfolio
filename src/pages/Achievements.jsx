@@ -1,11 +1,9 @@
-import { useTranslation } from 'react-i18next'
 import AsciiArt from '../components/ascii/AsciiArt'
 import { ART } from '../components/ascii/art'
 import { me } from '../data/me'
 import { useAchievements } from '../hooks/useAchievements'
 
 export default function Achievements() {
-  const { t } = useTranslation()
   const { all, isUnlocked, progress } = useAchievements()
 
   return (
@@ -25,7 +23,7 @@ export default function Achievements() {
         ))}
       </div>
 
-      <h2 style={{ marginTop: 40 }}>{t('achievements.yourAchievements')}</h2>
+      <h2 style={{ marginTop: 40 }}>Your Achievements</h2>
       <p style={{ color: 'var(--text-muted)', marginTop: 8 }}>// {progress} unlocked</p>
 
       <div className="achievements-grid">

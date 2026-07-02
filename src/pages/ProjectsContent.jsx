@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { ExternalLink } from 'lucide-react'
 import { GithubIcon } from '../components/ui/BrandIcons'
 import AsciiArt from '../components/ascii/AsciiArt'
@@ -7,7 +6,6 @@ import { ART } from '../components/ascii/art'
 import { projects, categories } from '../data/projects'
 
 export default function ProjectsContent() {
-  const { t } = useTranslation()
   const [filter, setFilter] = useState('all')
 
   const filtered = filter === 'all' ? projects : projects.filter((p) => p.category === filter)
@@ -43,12 +41,12 @@ export default function ProjectsContent() {
             <div style={{ display: 'flex', gap: 14, marginTop: 14 }}>
               {p.github && (
                 <a href={p.github} target="_blank" rel="noreferrer" className="project-link">
-                  <GithubIcon size={13} /> {t('projects.viewCode')}
+                  <GithubIcon size={13} /> code
                 </a>
               )}
               {p.live && (
                 <a href={p.live} target="_blank" rel="noreferrer" className="project-link">
-                  <ExternalLink size={13} /> {t('projects.viewLive')}
+                  <ExternalLink size={13} /> live
                 </a>
               )}
             </div>

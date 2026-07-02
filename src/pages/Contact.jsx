@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import emailjs from '@emailjs/browser'
 import AsciiArt from '../components/ascii/AsciiArt'
 import { ART } from '../components/ascii/art'
@@ -10,7 +9,6 @@ const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
 const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
 
 export default function Contact() {
-  const { t } = useTranslation()
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [status, setStatus] = useState(null) // null | 'sending' | 'sent' | 'error'
 
@@ -61,14 +59,14 @@ export default function Contact() {
         </div>
 
         <button type="submit" className="btn-submit" disabled={status === 'sending'}>
-          {t('contact.submit')}
+          $ send --message
         </button>
 
         {status === 'sent' && (
-          <p style={{ color: 'var(--cyan)', marginTop: 10 }}>✓ {t('contact.success')}</p>
+          <p style={{ color: 'var(--cyan)', marginTop: 10 }}>✓ message queued</p>
         )}
         {status === 'error' && (
-          <p style={{ color: 'var(--coral)', marginTop: 10 }}>{t('contact.error')}</p>
+          <p style={{ color: 'var(--coral)', marginTop: 10 }}>failed to send. try again.</p>
         )}
       </form>
 
