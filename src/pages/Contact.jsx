@@ -183,7 +183,7 @@ export default function Contact() {
         <div className="contact-download">
           <a href={me.resume} download className="contact-download__btn">
             <Download size={15} />
-            download resume.pdf
+            $ download resume.pdf
           </a>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { ExternalLink, Star } from 'lucide-react'
+import { ExternalLink, Star, Download } from 'lucide-react'
 import { GithubIcon } from '../components/ui/BrandIcons'
 import { me } from '../data/me'
 import { PROJECTS } from '../data/projects'
@@ -119,6 +119,11 @@ export default function HomeContent() {
               <PCModel />
             </div>
           </div>
+
+          <a href={me.resumeUrl} download className="ab-download-btn" style={{ marginTop: 20 }}>
+            <Download size={14} />
+            <span>$ download resume.pdf</span>
+          </a>
         </div>
       </div>
 
