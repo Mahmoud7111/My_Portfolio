@@ -24,7 +24,7 @@ export const PROJECTS = [
     github: '',
     live: '',
     image:
-      'https://images.unsplash.com/photo-1558346490-66cb1858d9ac?w=800&q=80',
+      '',
     updated: '2d ago',
   },
   {
@@ -50,7 +50,7 @@ export const PROJECTS = [
     github: '',
     live: '',
     image:
-      'https://images.unsplash.com/photo-1620712943543-bcc4688df365?w=800&q=80',
+      '',
     updated: '3d ago',
   },
   {
@@ -75,7 +75,7 @@ export const PROJECTS = [
     github: '',
     live: '',
     image:
-      'https://images.unsplash.com/photo-1542831371-29b0f74c9713?w=800&q=80',
+      '',
     updated: '1mo ago',
   },
   {

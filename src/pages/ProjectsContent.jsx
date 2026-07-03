@@ -30,34 +30,30 @@ export default function ProjectsContent() {
   })
 
   return (
-    <div className="projects-page tab-content-inner">
+    <div className="projects-page">
       <AsciiArt art={ART.PROJECTS} color="var(--coral)" glow="var(--coral-glow)" />
 
       {/* ── Shell opener ───────────────────────── */}
-      <div style={{ marginTop: 24, marginBottom: 20 }}>
-        <span style={mono(13, 'var(--coral)')}>$ </span>
-        <span style={mono(13, 'var(--text-muted)')}>find </span>
-        <span style={mono(13, 'var(--cyan)')}>
-          ./projects -type d -name &quot;*&quot;
-        </span>
-        <span style={{ ...mono(13, 'var(--text-dim)'), marginLeft: 10 }}>
-          // {PROJECTS.length} repositories
-        </span>
+      <div className="projects-opener">
+        <span className="projects-opener__prompt">$ </span>
+        <span className="projects-opener__cmd">find </span>
+        <span className="projects-opener__arg">./projects -type d -name &quot;*&quot;</span>
+        <span className="projects-opener__comment">// {PROJECTS.length} repositories</span>
       </div>
 
       {/* ── ASCII folder + scanning log ────────── */}
-      <div style={{ display: 'flex', gap: 32, flexWrap: 'wrap', marginBottom: 16 }}>
-        <pre style={asciiStyle()}>
+      <div className="projects-header">
+        <pre className="projects-folder">
 {`┌──────┐
 │      └────────────────┐
 │   ./projects          │
 │                       │
-│    ▸ neural-router/   │
-│    ▸ vector-cache/    │
-│    ▸ ...              │
+│   ▸ neural-router/    │
+│   ▸ vector-cache/     │
+│   ▸ ...               │
 └───────────────────────┘`}
         </pre>
-        <pre style={scanStyle()}>
+        <pre className="projects-scan">
 {`> scanning tree ...
 > indexed ${PROJECTS.length} repos in 0.04s
 > filter by tag or grep below`}
@@ -65,37 +61,35 @@ export default function ProjectsContent() {
       </div>
 
       {/* ── ASCII rule ─────────────────────────── */}
-      <div style={{ borderTop: '1px solid #262630', marginBottom: 16 }} />
+      <div className="projects-rule" />
 
       {/* ── Filter chips + grep ────────────────── */}
-      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center', marginBottom: 20 }}>
-        {ALL_TAGS.map((tag) => {
-          const isActive = activeFilter === tag
-          return (
+      <div className="projects-toolbar">
+        <div className="projects-chips">
+          {ALL_TAGS.map((tag) => (
             <button
               key={tag}
+              className={`projects-chip${activeFilter === tag ? ' projects-chip--active' : ''}`}
               onClick={() => setActiveFilter(tag)}
-              style={chipStyle(isActive)}
             >
               --{tag}
             </button>
-          )
-        })}
-        <div style={{ flex: 1, minWidth: 12 }} />
-        <div style={searchBoxStyle()}>
-          <Search size={14} style={{ color: 'var(--text-dim)', flexShrink: 0, ...mono(12) }} />
+          ))}
+        </div>
+        <div className="projects-search">
+          <Search size={14} className="projects-search__icon" />
           <input
             type="text"
+            className="projects-search__input"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="grep ..."
-            style={searchInputStyle()}
           />
         </div>
       </div>
 
       {/* ── Cards ──────────────────────────────── */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div className="projects-cards">
         {filtered.map((p, i) => (
           <ProjectCard key={p.name} project={p} index={String(i + 1).padStart(2, '0')} />
         ))}
@@ -103,9 +97,9 @@ export default function ProjectsContent() {
 
       {/* ── Empty state ────────────────────────── */}
       {filtered.length === 0 && (
-        <div style={{ marginTop: 24, marginBottom: 24 }}>
-          <span style={mono(13, 'var(--coral)')}>$ </span>
-          <span style={mono(13, 'var(--text-muted)')}>no matches. try another query.</span>
+        <div className="projects-empty">
+          <span className="projects-empty__prompt">$ </span>
+          <span className="projects-empty__text">no matches. try another query.</span>
         </div>
       )}
     </div>
@@ -119,14 +113,12 @@ function ProjectCard({ project, index }) {
   return (
     <article className="project-row-card">
       <div className="project-row-card__inner">
-        {/* ── Gutter ── */}
         <div className="project-row-card__gutter">
           <span className="gutter-bracket">[</span>
           <span className="gutter-index">{index}</span>
           <span className="gutter-bracket">]</span>
         </div>
 
-        {/* ── Image ── */}
         <div className="project-row-card__image">
           <div className="project-row-card__image-wrap">
             {project.image ? (
@@ -143,9 +135,7 @@ function ProjectCard({ project, index }) {
           </div>
         </div>
 
-        {/* ── Content ── */}
         <div className="project-row-card__content">
-          {/* Path line */}
           <div className="project-path">
             <span className="project-path-prefix">~/projects/</span>
             <span className="project-path-name">{project.name}</span>
@@ -153,18 +143,16 @@ function ProjectCard({ project, index }) {
               {'{'}{project.branch}{'} '}
               <span className="project-path-dot" />
               {project.updated && (
-                <span style={{ marginLeft: 8 }}>· {project.updated}</span>
+                <span className="project-path-date">· {project.updated}</span>
               )}
             </span>
           </div>
 
-          {/* Description */}
           <p className="project-desc">
             <span className="project-desc-prefix">&gt;</span>
             {project.desc}
           </p>
 
-          {/* Tags */}
           <div className="project-tag-pills">
             {project.tags.map((tag) => (
               <span key={tag} className="project-tag-pill">
@@ -173,7 +161,6 @@ function ProjectCard({ project, index }) {
             ))}
           </div>
 
-          {/* Meta + actions */}
           <div className="project-meta-actions">
             <div className="project-meta-left">
               {project.stars !== undefined && (
@@ -221,73 +208,4 @@ function ProjectCard({ project, index }) {
       </div>
     </article>
   )
-}
-
-/* ── Inline style helpers ───────────────────────────── */
-
-function mono(size, color) {
-  return { fontFamily: 'var(--font-mono)', fontSize: size, color, lineHeight: 1.5 }
-}
-
-function asciiStyle() {
-  return {
-    color: '#888899',
-    fontFamily: 'var(--font-mono)',
-    fontSize: 12,
-    lineHeight: 1.6,
-    margin: 0,
-  }
-}
-
-function scanStyle() {
-  return {
-    color: 'var(--text-dim)',
-    fontFamily: 'var(--font-mono)',
-    fontSize: 12,
-    lineHeight: 1.6,
-    margin: 0,
-    flex: 1,
-  }
-}
-
-function chipStyle(isActive) {
-  return {
-    background: isActive ? 'var(--cyan)' : '#1a1a22',
-    color: isActive ? '#0c0c10' : 'var(--text-body)',
-    border: `1px solid ${isActive ? 'var(--cyan)' : '#262630'}`,
-    borderRadius: 'var(--radius-md)',
-    padding: '5px 12px',
-    fontFamily: 'var(--font-mono)',
-    fontSize: 12,
-    cursor: 'pointer',
-    transition: 'all 150ms ease',
-    lineHeight: 1.5,
-  }
-}
-
-function searchBoxStyle() {
-  return {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 6,
-    background: '#1a1a22',
-    border: '1px solid #262630',
-    borderRadius: 'var(--radius-md)',
-    padding: '5px 12px',
-    minWidth: 220,
-  }
-}
-
-function searchInputStyle() {
-  return {
-    background: 'transparent',
-    border: 'none',
-    outline: 'none',
-    color: 'var(--text-body)',
-    fontFamily: 'var(--font-mono)',
-    fontSize: 12,
-    width: '100%',
-    padding: 0,
-    lineHeight: 1.5,
-  }
 }

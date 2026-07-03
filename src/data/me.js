@@ -16,6 +16,8 @@ export const me = {
 and what you care about. Keep it concrete — mention real tools, real
 numbers, real outcomes rather than generic adjectives.`,
 
+  resume: '/resume.pdf',
+
   links: [
     { label: 'GitHub', url: 'https://github.com/mahmoud', icon: 'Github' },
     { label: 'LinkedIn', url: 'https://linkedin.com/in/mahmoud', icon: 'Linkedin' },
