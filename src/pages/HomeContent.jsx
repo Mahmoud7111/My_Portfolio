@@ -1,5 +1,8 @@
+import { useNavigate } from 'react-router-dom'
+import { ExternalLink, Star } from 'lucide-react'
+import { GithubIcon } from '../components/ui/BrandIcons'
 import { me } from '../data/me'
-import { projects } from '../data/projects'
+import { PROJECTS } from '../data/projects'
 import { ART } from '../components/ascii/art'
 import PCModel from '../components/3d/PCModel'
 
@@ -37,10 +40,10 @@ function SectionComment({ label }) {
 }
 
 export default function HomeContent() {
-  const featuredProjects = projects.filter((p) => p.featured)
+  const navigate = useNavigate()
 
   const stats = [
-    { n: '01', flag: '--projects',  value: projects.length,            label: 'Projects',   note: 'Shipped & maintained' },
+    { n: '01', flag: '--projects',  value: PROJECTS.length,            label: 'Projects',   note: 'Shipped & maintained' },
     { n: '02', flag: '--skills',    value: allSkills.length,           label: 'Skills',     note: 'Across all categories' },
     { n: '03', flag: '--languages', value: me.skills.languages.length, label: 'Languages',  note: 'Writing code daily' },
     { n: '04', flag: '--years',     value: '5+',                       label: 'Years',      note: 'Shipping production code' },
@@ -215,7 +218,7 @@ export default function HomeContent() {
             <span className="hc-panel__bar">▍</span>
             <span className="hc-panel__filename">featured-projects.sh</span>
             <span className="hc-panel__sep">—</span>
-            <span className="hc-panel__subtitle">{featuredProjects.length} pinned</span>
+            <span className="hc-panel__subtitle">2 pinned</span>
           </div>
           <span className="hc-panel__controls">⌃ ⌄ ×</span>
         </div>
@@ -230,25 +233,90 @@ export default function HomeContent() {
             {ART.PROJECTS}
           </pre>
 
-          {/* Project cards */}
-          <div className="hc-project-grid">
-            {featuredProjects.map((p) => (
-              <div key={p.id} className="hc-project-card">
-                <div className="hc-project-card__header">
-                  <span className="hc-project-card__name">./{p.name}</span>
-                  <div className="hc-project-card__icons">
-                    <span title="Copy">⎘</span>
-                    <span title="Open">↗</span>
+          {/* Project cards — same row-card style as projects page */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            {PROJECTS.slice(0, 2).map((p, i) => (
+              <article key={p.name} className="project-row-card">
+                <div className="project-row-card__inner">
+                  <div className="project-row-card__gutter">
+                    <span className="gutter-bracket">[</span>
+                    <span className="gutter-index">{String(i + 1).padStart(2, '0')}</span>
+                    <span className="gutter-bracket">]</span>
+                  </div>
+                  <div className="project-row-card__image">
+                    <div className="project-row-card__image-wrap">
+                      {p.image ? (
+                        <>
+                          <img src={p.image} alt={p.name} loading="lazy" />
+                          <div className="project-row-card__image-overlay" />
+                        </>
+                      ) : (
+                        <div className="project-row-card__no-preview">
+                          <span>[ no preview ]</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                  <div className="project-row-card__content">
+                    <div className="project-path">
+                      <span className="project-path-prefix">~/projects/</span>
+                      <span className="project-path-name">{p.name}</span>
+                      <span className="project-path-meta">
+                        {'{'}{p.branch}{'} '}
+                        <span className="project-path-dot" />
+                        {p.updated && (
+                          <span style={{ marginLeft: 8 }}>· {p.updated}</span>
+                        )}
+                      </span>
+                    </div>
+                    <p className="project-desc">
+                      <span className="project-desc-prefix">&gt;</span>
+                      {p.desc}
+                    </p>
+                    <div className="project-tag-pills">
+                      {p.tags.map((tag) => (
+                        <span key={tag} className="project-tag-pill">{tag}</span>
+                      ))}
+                    </div>
+                    <div className="project-meta-actions">
+                      <div className="project-meta-left">
+                        {p.stars !== undefined && (
+                          <span className="project-stars">
+                            <Star size={11} />
+                            {p.stars}
+                          </span>
+                        )}
+                        {p.status && (
+                          <span className="project-status">
+                            <span className="project-status-dot" />
+                            {p.status}
+                          </span>
+                        )}
+                      </div>
+                      <div className="project-actions-right">
+                        {p.github && (
+                          <a href={p.github} target="_blank" rel="noreferrer" className="btn-source">
+                            <GithubIcon size={12} /> source
+                          </a>
+                        )}
+                        {p.live && (
+                          <a href={p.live} target="_blank" rel="noreferrer" className="btn-live">
+                            <ExternalLink size={12} /> live
+                          </a>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <p className="hc-project-card__desc">{p.description}</p>
-                <div className="hc-project-card__tags">
-                  {p.tags.map((tag) => (
-                    <span key={tag} className="hc-tag">{tag}</span>
-                  ))}
-                </div>
-              </div>
+              </article>
             ))}
+          </div>
+
+          {/* View all button */}
+          <div style={{ textAlign: 'center', marginTop: 20 }}>
+            <button onClick={() => navigate('/projects')} className="btn-outline">
+              view all --projects
+            </button>
           </div>
         </div>
       </div>

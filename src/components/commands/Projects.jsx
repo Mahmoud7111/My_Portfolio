@@ -1,15 +1,15 @@
-import { projects } from '../../data/projects'
+import { PROJECTS } from '../../data/projects'
 
 export default function Projects() {
   return (
     <div className="cmd-output">
       <p style={{ color: 'var(--text-muted)', marginBottom: 8 }}>
-        // {projects.length} repositories found.
+        // {PROJECTS.length} repositories found.
       </p>
-      {projects.map((p) => (
-        <div key={p.id} style={{ marginBottom: 10 }}>
+      {PROJECTS.map((p) => (
+        <div key={p.name} style={{ marginBottom: 10 }}>
           <span className="cmd-name">{p.name}</span>
-          <p style={{ color: 'var(--text-body)' }}>{p.description}</p>
+          <p style={{ color: 'var(--text-body)' }}>{p.desc}</p>
           <div style={{ display: 'flex', gap: 6, marginTop: 4, flexWrap: 'wrap' }}>
             {p.tags.map((t) => (
               <span key={t} className="pill-coral-inline">

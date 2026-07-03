@@ -127,8 +127,13 @@ export default function TerminalWindow() {
     return () => clearInterval(id)
   }, [])
 
-  // ── Close mobile menu on route change ────────────────────────
-  useEffect(() => { setMenuOpen(false) }, [location.pathname])
+  // ── Scroll to top + close mobile menu on route change ───────
+  useEffect(() => {
+    setMenuOpen(false)
+    if (bodyRef.current) {
+      bodyRef.current.scrollTop = 0
+    }
+  }, [location.pathname])
 
   // ── Auto-scroll to keep prompt in view after command output ──
   useEffect(() => {
