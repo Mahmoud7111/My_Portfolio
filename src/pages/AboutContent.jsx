@@ -169,7 +169,7 @@ export default function AboutContent() {
           <CmdLine>ls ./achievements &amp;&amp; ls ./publications &amp;&amp; ls ./certs</CmdLine>
           <div className="achv-banner">
             <AsciiArt art={ART.ACHIEVED} color="var(--coral)" glow="var(--coral-glow)" />
-            <AsciiArt art={ART.TROPHY} color="var(--gold)" fontSize="10px" hideOnMobile={false} />
+            <AsciiArt art={ART.TROPHY} color="var(--gold)" fontSize="11px" hideOnMobile={false} />
           </div>
           <div className="ab-milestones-grid">
             {me.milestones.map((ms, i) => {
