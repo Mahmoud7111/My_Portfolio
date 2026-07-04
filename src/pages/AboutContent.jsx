@@ -36,11 +36,12 @@ function PanelChrome({ filename, subtitle, controls }) {
   )
 }
 
-function CmdLine({ children }) {
+function CmdLine({ cmd, arg }) {
   return (
     <div className="hc-cmd-line">
       <span className="hc-prompt">$</span>
-      <span className="hc-cmd">{children}</span>
+      {cmd && <span className="hc-cmd">{cmd}</span>}
+      {arg && <span className="hc-var">{arg}</span>}
     </div>
   )
 }
@@ -55,7 +56,7 @@ export default function AboutContent() {
       <div className="hc-panel" style={{ marginBottom: 40 }}>
         <PanelChrome filename="about.md" subtitle="bio" />
         <div className="hc-panel__body">
-          <CmdLine>cat about.md</CmdLine>
+          <CmdLine cmd="cat" arg="about.md" />
 
           <AsciiArt art={ART.ABOUT_ME} color="var(--cyan)" glow="var(--cyan-glow)" />
 
@@ -100,7 +101,7 @@ export default function AboutContent() {
           subtitle={`${JOURNEY.length} entries`}
         />
         <div className="hc-panel__body">
-          <CmdLine>git log --all --oneline</CmdLine>
+          <CmdLine cmd="git log --all" arg="--oneline" />
           <div className="ab-timeline">
             {JOURNEY.map((entry, i) => {
               const ts = TYPE_STYLES[entry.type] || TYPE_STYLES.experience
@@ -130,7 +131,7 @@ export default function AboutContent() {
       <div className="hc-panel" style={{ marginBottom: 40 }}>
         <PanelChrome filename="stack.json" subtitle={`${totalSkills} entries`} />
         <div className="hc-panel__body">
-          <CmdLine>cat stack.json</CmdLine>
+          <CmdLine cmd="cat" arg="stack.json" />
 
           <div className="ab-stack-header">
             <AsciiArt art={ART.STACK} color="var(--cyan)" glow="var(--cyan-glow)" />
@@ -166,7 +167,15 @@ export default function AboutContent() {
       <div className="hc-panel" style={{ marginBottom: 40 }}>
         <PanelChrome filename="milestones.log" subtitle={`${me.milestones.length} entries`} />
         <div className="hc-panel__body">
-          <CmdLine>ls ./achievements &amp;&amp; ls ./publications &amp;&amp; ls ./certs</CmdLine>
+          <div className="hc-cmd-line">
+            <span className="hc-prompt">$</span>
+            <span className="hc-cmd">ls </span>
+            <span className="hc-var">./achievements</span>
+            <span className="hc-cmd"> && ls </span>
+            <span className="hc-var">./publications</span>
+            <span className="hc-cmd"> && ls </span>
+            <span className="hc-var">./certs</span>
+          </div>
           <div className="achv-banner">
             <AsciiArt art={ART.ACHIEVED} color="var(--coral)" glow="var(--coral-glow)" />
             <AsciiArt art={ART.TROPHY} color="var(--gold)" fontSize="11px" hideOnMobile={false} />
@@ -200,7 +209,7 @@ export default function AboutContent() {
       <div className="hc-panel" style={{ marginBottom: 40 }}>
         <PanelChrome filename="education.md" subtitle="uni + courses" />
         <div className="hc-panel__body">
-          <CmdLine>cat education.md</CmdLine>
+          <CmdLine cmd="cat" arg="education.md" />
           <div className="ab-edu-grid">
             <div className="ab-edu-degree">
               {me.education.map((edu, i) => (
@@ -216,7 +225,8 @@ export default function AboutContent() {
             <div className="ab-edu-courses">
               <div className="ab-courses-header">
                 <span className="ab-courses-prompt">$</span>
-                <span className="ab-courses-cmd">ls ./courses</span>
+                <span className="ab-courses-cmd">ls</span>
+                <span className="hc-var">./courses</span>
                 <span className="ab-courses-count">// {me.courses.length} items</span>
               </div>
               <div className="ab-courses-list">
@@ -235,7 +245,7 @@ export default function AboutContent() {
       <div className="hc-panel" style={{ marginBottom: 40 }}>
         <PanelChrome filename="whoami.yaml" subtitle="quick facts" />
         <div className="hc-panel__body">
-          <CmdLine>cat whoami.yaml</CmdLine>
+          <CmdLine cmd="cat" arg="whoami.yaml" />
           <div className="ab-facts-grid">
             {me.quickFacts.map((fact, i) => {
               const Icon = ICONS[fact.icon]
@@ -262,7 +272,7 @@ export default function AboutContent() {
       <div className="hc-panel" style={{ marginBottom: 24 }}>
         <PanelChrome filename="languages.i18n" subtitle="spoken" />
         <div className="hc-panel__body">
-          <CmdLine>locale -a</CmdLine>
+          <CmdLine cmd="locale" arg="-a" />
           <div className="ab-langs-grid">
             {me.languages.map((lang, i) => {
               const langColor = i % 2 === 0 ? 'ab-icon-sq--coral' : 'ab-icon-sq--cyan'

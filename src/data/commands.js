@@ -8,7 +8,7 @@
 
 export const COMMANDS = [
   { id: 'about', desc: "View my background and Bio", type: 'output' },
-  { id: 'chat', desc: "Start a conversation with Gallillio, my personal AI that knows everything about me", type: 'action' },
+  { id: 'chat', desc: "Start a conversation with 7oka, my personal AI that knows everything about me", type: 'action' },
   { id: 'clear', desc: "Clear the terminal", type: 'action' },
   { id: 'contact', desc: "Get my contact information", type: 'output' },
   { id: 'courses', desc: "View my taken courses", type: 'output' },

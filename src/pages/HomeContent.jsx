@@ -90,7 +90,7 @@ export default function HomeContent() {
             <div className="hc-about-left">
               <div className="hc-cmd-line" style={{ marginBottom: 12 }}>
                 <span className="hc-prompt">$</span>
-                <span className="hc-cmd">whoami</span>
+                <span className="hc-var">whoami</span>
               </div>
               
               <h1 style={{ fontSize: 'clamp(24px, 3vw, 36px)', margin: '0 0 4px', color: 'var(--text-heading)', fontWeight: 700 }}>
@@ -152,8 +152,9 @@ export default function HomeContent() {
             <span className="hc-prompt">$</span>
             <span className="hc-cmd">
               awk &apos;&#123; print{' '}
-              <span className="hc-var">$value</span> &#125;&apos; stats.tsv
+              <span className="hc-var">$value</span> &#125;&apos;{' '}
             </span>
+            <span className="hc-var">stats.tsv</span>
           </div>
           <div className="hc-stat-grid">
             {stats.map((s) => (
@@ -192,7 +193,8 @@ export default function HomeContent() {
         <div className="hc-panel__body hc-panel__body--no-pad-v">
           <div className="hc-cmd-line" style={{ padding: '16px 0 8px' }}>
             <span className="hc-prompt">$</span>
-            <span className="hc-cmd">watch -n 1 tech-feed</span>
+            <span className="hc-cmd">watch -n 1 </span>
+            <span className="hc-var">tech-feed</span>
           </div>
           <div className="hc-feed-marquee">
             <div className="hc-feed-marquee__track">
@@ -235,7 +237,8 @@ export default function HomeContent() {
         <div className="hc-panel__body">
           <div className="hc-cmd-line" style={{ marginBottom: 20 }}>
             <span className="hc-prompt">$</span>
-            <span className="hc-cmd">ls ~/projects/featured</span>
+            <span className="hc-cmd">ls </span>
+            <span className="hc-var">~/projects/featured</span>
           </div>
 
           {/* Big PROJECTS heading */}
@@ -349,7 +352,8 @@ export default function HomeContent() {
         <div className="hc-panel__body hc-cta-body">
           <div className="hc-cmd-line" style={{ marginBottom: 12 }}>
             <span className="hc-prompt">$</span>
-            <span className="hc-cmd">echo --build-something</span>
+            <span className="hc-cmd">echo </span>
+            <span className="hc-var">--build-something</span>
           </div>
 
           <div className="hc-cta-center">

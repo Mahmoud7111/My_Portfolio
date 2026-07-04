@@ -32,7 +32,7 @@ export const UNLOCKABLES = [
   {
     id: 'ai-conversationalist',
     name: 'AI Conversationalist',
-    desc: 'Activated chat assistant mode to talk with the Gallillio AI',
+    desc: 'Activated chat assistant mode to talk with the Mahmoud AI',
     lockedDesc: 'Type chat in the terminal to open the AI assistant',
     rarity: 'rare',
     icon: '✧',

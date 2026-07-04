@@ -132,6 +132,7 @@
 
 .hc-prompt {
   color: var(--coral);
+  text-shadow: 0 0 8px var(--coral-glow), 0 0 16px var(--coral-glow);
   flex-shrink: 0;
 }
 
@@ -141,6 +142,7 @@
 
 .hc-var {
   color: var(--cyan);
+  font-size: 15px;
 }
 
 // ── About split ───────────────────────────────────────────────

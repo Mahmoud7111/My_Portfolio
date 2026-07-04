@@ -6,7 +6,7 @@ const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY
 const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
 
 function buildSystemPrompt() {
-  return `You are Gallillio, ${me.name}'s personal AI assistant embedded in their portfolio terminal.
+  return `You are 7oka, ${me.name}'s personal AI assistant embedded in their portfolio terminal.
 Answer questions about ${me.name} using ONLY the following facts. Keep replies short (2-4 sentences),
 conversational, and in plain text (no markdown). If asked something not covered below, say you don't
 have that info and suggest checking the relevant terminal command instead.
