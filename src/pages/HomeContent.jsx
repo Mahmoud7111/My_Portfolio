@@ -120,10 +120,15 @@ export default function HomeContent() {
             </div>
           </div>
 
-          <a href={me.resumeUrl} download className="ab-download-btn" style={{ marginTop: 20 }}>
-            <Download size={14} />
-            <span>$ download resume.pdf</span>
-          </a>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 20, flexWrap: 'wrap' }}>
+            <a href={me.resumeUrl} download className="ab-download-btn">
+              <Download size={14} />
+              <span>$ download resume.pdf</span>
+            </a>
+            <button onClick={() => navigate('/about')} className="btn-outline btn-outline--nav">
+              learn more → about
+            </button>
+          </div>
         </div>
       </div>
 
@@ -319,7 +324,7 @@ export default function HomeContent() {
 
           {/* View all button */}
           <div style={{ textAlign: 'center', marginTop: 20 }}>
-            <button onClick={() => navigate('/projects')} className="btn-outline">
+            <button onClick={() => navigate('/projects')} className="btn-outline btn-outline--nav">
               view all --projects
             </button>
           </div>
@@ -379,6 +384,9 @@ export default function HomeContent() {
                 </a>
               ))}
             </div>
+            <button onClick={() => navigate('/contact')} className="btn-outline btn-outline--nav" style={{ marginTop: 16 }}>
+              connect → contact
+            </button>
           </div>
         </div>
       </div>

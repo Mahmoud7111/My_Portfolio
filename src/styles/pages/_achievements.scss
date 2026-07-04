@@ -17,6 +17,37 @@ $mint: #5dfa92;
     }
   }
 
+  .achv-intro {
+    border-left: 3px solid var(--coral);
+    padding: 14px 18px;
+    margin: 18px 0 0;
+    background: linear-gradient(90deg, rgba(224,108,117,0.06) 0%, transparent 60%);
+    max-width: 680px;
+
+    .achv-intro-heading {
+      @include mono(15px, 700);
+      color: var(--coral);
+      margin-bottom: 8px;
+      letter-spacing: 0.3px;
+    }
+
+    .achv-intro-diamond {
+      margin-right: 6px;
+    }
+
+    .achv-intro-lines {
+      @include mono(13px);
+      color: var(--text-body);
+      line-height: 1.8;
+    }
+
+    .achv-intro-prefix {
+      color: var(--coral);
+      margin-right: 6px;
+      user-select: none;
+    }
+  }
+
   // ── Progress block ─────────────────────────────────────
   .achv-progress-block {
     margin: 20px 0 28px;
@@ -205,19 +236,33 @@ $mint: #5dfa92;
       &.locked { background: var(--text-dim); }
     }
 
-    .card-title-icon {
-      display: inline-block;
-      margin-right: 6px;
-      font-size: 14px;
-      vertical-align: middle;
-      color: var(--card-border);
-    }
-
     .card-title {
       @include mono(16px, 700);
       color: var(--text-heading);
       margin: 0 0 8px;
       line-height: 1.3;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title-icon {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0;
+      font-size: 14px;
+      color: var(--card-border);
+      background: color-mix(in srgb, var(--card-border) 12%, transparent);
+      transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+
+      &:hover {
+        transform: scale(1.1);
+        box-shadow: 0 0 14px var(--card-glow);
+      }
     }
 
     .card-desc {

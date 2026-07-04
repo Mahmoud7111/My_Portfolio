@@ -63,6 +63,13 @@ export default function AchievementsContent() {
           <span className="hc-var">achievements.log</span>
         </div>
         <AsciiArt art={ART.ACHIEVEMENTS} color="var(--coral)" glow="var(--coral-glow)" />
+        <div className="achv-intro">
+          <div className="achv-intro-heading"><span className="achv-intro-diamond">◆</span> This is Your Achievements!</div>
+          <div className="achv-intro-lines">
+            <span className="achv-intro-prefix">&gt;</span> Explore the portfolio and interact with different sections to unlock achievements.<br />
+            <span className="achv-intro-prefix">&gt;</span> Some achievements are secret and will only be revealed once unlocked!
+          </div>
+        </div>
       </div>
 
       {/* Progress block */}

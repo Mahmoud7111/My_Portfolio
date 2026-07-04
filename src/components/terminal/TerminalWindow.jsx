@@ -299,7 +299,7 @@ export default function TerminalWindow() {
                 className={`tmux-tab ${isActive ? 'active' : ''}`}
                 onClick={() => navigate(tab.path)}
               >
-                [{i + 1}:{tab.label}{isActive ? '*' : '-'}]
+                [<span className="tmux-tab-num">{i + 1}</span>:<span className="tmux-tab-label">{tab.label}</span>{isActive ? '*' : '-'}]
               </button>
             )
           })}
@@ -317,7 +317,7 @@ export default function TerminalWindow() {
                 className={`tmux-tab tmux-tab--right ${isActive ? 'active' : ''}`}
                 onClick={() => navigate(tab.path)}
               >
-                [{idx}:{tab.label}{isActive ? '*' : '-'}]
+                [<span className="tmux-tab-num">{idx}</span>:<span className="tmux-tab-label">{tab.label}</span>{isActive ? '*' : '-'}]
               </button>
             )
           })()}

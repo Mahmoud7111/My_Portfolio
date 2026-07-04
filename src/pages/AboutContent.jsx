@@ -92,25 +92,31 @@ export default function AboutContent() {
       </div>
 
       {/* ══════════════════════════════════════════════════════════ */}
-      {/* PANEL 2 — whoami.yaml — quick facts                       */}
+      {/* PANEL 2 — journey.log — entries                           */}
       {/* ══════════════════════════════════════════════════════════ */}
       <div className="hc-panel" style={{ marginBottom: 40 }}>
-        <PanelChrome filename="whoami.yaml" subtitle="quick facts" />
+        <PanelChrome
+          filename="journey.log"
+          subtitle={`${JOURNEY.length} entries`}
+        />
         <div className="hc-panel__body">
-          <CmdLine>cat whoami.yaml</CmdLine>
-          <div className="ab-facts-grid">
-            {me.quickFacts.map((fact, i) => {
-              const Icon = ICONS[fact.icon]
-              const iconColor = i % 2 === 0 ? 'ab-icon-sq--coral' : 'ab-icon-sq--cyan'
+          <CmdLine>git log --all --oneline</CmdLine>
+          <div className="ab-timeline">
+            {JOURNEY.map((entry, i) => {
+              const ts = TYPE_STYLES[entry.type] || TYPE_STYLES.experience
               return (
-                <div key={fact.label} className="ab-fact-card">
-                  <div className={`ab-icon-sq ${iconColor}`}>
-                    {Icon && <Icon size={16} />}
+                <div key={i} className="ab-timeline-item">
+                  <div className="ab-timeline-meta">
+                    <span className="ab-timeline-date">{entry.date}</span>
+                    <span className={ts.className}>{ts.label}</span>
                   </div>
-                  <div className="ab-fact-content">
-                    <span className="ab-fact-label">{fact.label}</span>
-                    <span className="ab-fact-sublabel">{fact.sublabel}</span>
-                  </div>
+                  <h3 className="ab-timeline-title">{entry.title}</h3>
+                  <p className="ab-timeline-desc">{entry.description}</p>
+                  {entry.link && (
+                    <a href={entry.link} target="_blank" rel="noreferrer" className="ab-timeline-link">
+                      View details <ExternalLink size={12} />
+                    </a>
+                  )}
                 </div>
               )
             })}
@@ -119,24 +125,68 @@ export default function AboutContent() {
       </div>
 
       {/* ══════════════════════════════════════════════════════════ */}
-      {/* PANEL 3 — languages.i18n — spoken                         */}
+      {/* PANEL 3 — stack.json — N entries                          */}
       {/* ══════════════════════════════════════════════════════════ */}
       <div className="hc-panel" style={{ marginBottom: 40 }}>
-        <PanelChrome filename="languages.i18n" subtitle="spoken" />
+        <PanelChrome filename="stack.json" subtitle={`${totalSkills} entries`} />
         <div className="hc-panel__body">
-          <CmdLine>locale -a</CmdLine>
-          <div className="ab-langs-grid">
-            {me.languages.map((lang, i) => {
-              const langColor = i % 2 === 0 ? 'ab-icon-sq--coral' : 'ab-icon-sq--cyan'
+          <CmdLine>cat stack.json</CmdLine>
+
+          <div className="ab-stack-header">
+            <AsciiArt art={ART.STACK} color="var(--cyan)" glow="var(--cyan-glow)" />
+            <pre className="ab-env-box" aria-hidden="true">{ART.ENV_BOX}</pre>
+          </div>
+
+          <div className="ab-divider">
+            <span>◆ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─</span>
+          </div>
+
+          <div className="ab-skills-grid">
+            {SKILL_CATEGORIES.map((cat) => (
+              <div key={cat.key} className="ab-skill-category">
+                <div className="ab-skill-header">
+                  <span className="ab-skill-triangle">▸</span>
+                  <span className="ab-skill-name">{cat.label}</span>
+                  <span className="ab-skill-count">// {cat.items.length} entries</span>
+                </div>
+                <div className="ab-skill-pills">
+                  {cat.items.map((s) => (
+                    <span key={s} className="pill-neutral-inline">{s}</span>
+            ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ══════════════════════════════════════════════════════════ */}
+      {/* PANEL 4 — milestones.log — achievements / publications / certs */}
+      {/* ══════════════════════════════════════════════════════════ */}
+      <div className="hc-panel" style={{ marginBottom: 40 }}>
+        <PanelChrome filename="milestones.log" subtitle={`${me.milestones.length} entries`} />
+        <div className="hc-panel__body">
+          <CmdLine>ls ./achievements &amp;&amp; ls ./publications &amp;&amp; ls ./certs</CmdLine>
+          <div className="achv-banner">
+            <AsciiArt art={ART.ACHIEVED} color="var(--coral)" glow="var(--coral-glow)" />
+            <AsciiArt art={ART.TROPHY} color="var(--gold)" fontSize="10px" hideOnMobile={false} />
+          </div>
+          <div className="ab-milestones-grid">
+            {me.milestones.map((ms, i) => {
+              const colorMap = { award: 'coral', publication: 'cyan', certification: 'cyan' }
+              const typeColor = colorMap[ms.type] || 'cyan'
+              const Icon = ms.type === 'award' ? Trophy : ms.type === 'publication' ? FileText : Award
               return (
-                <div key={lang.name} className="ab-lang-card">
-                  <div className={`ab-icon-sq ${langColor}`}>
-                    <Languages size={16} />
+                <div key={i} className={`ab-milestone-card ab-milestone-card--${typeColor}`}>
+                  <div className="ab-milestone-top">
+                    <div className={`ab-icon-sq ab-icon-sq--${typeColor}`}>
+                      <Icon size={16} />
+                    </div>
+                    <span className={`ab-milestone-type ab-milestone-type--${typeColor}`}>// {ms.type}</span>
                   </div>
-                  <div className="ab-lang-content">
-                    <span className="ab-lang-name">{lang.name}</span>
-                    <span className="ab-lang-level">{lang.level}</span>
-                  </div>
+                  <span className="ab-milestone-title">◈ {ms.title}</span>
+                  <span className="ab-milestone-org">{ms.org}</span>
+                  <span className="ab-milestone-year">{ms.year}</span>
                 </div>
               )
             })}
@@ -145,7 +195,7 @@ export default function AboutContent() {
       </div>
 
       {/* ══════════════════════════════════════════════════════════ */}
-      {/* PANEL 4 — education.md — uni + courses                    */}
+      {/* PANEL 5 — education.md — uni + courses                    */}
       {/* ══════════════════════════════════════════════════════════ */}
       <div className="hc-panel" style={{ marginBottom: 40 }}>
         <PanelChrome filename="education.md" subtitle="uni + courses" />
@@ -180,31 +230,25 @@ export default function AboutContent() {
       </div>
 
       {/* ══════════════════════════════════════════════════════════ */}
-      {/* PANEL 5 — journey.log — entries                           */}
+      {/* PANEL 6 — whoami.yaml — quick facts                       */}
       {/* ══════════════════════════════════════════════════════════ */}
       <div className="hc-panel" style={{ marginBottom: 40 }}>
-        <PanelChrome
-          filename="journey.log"
-          subtitle={`${JOURNEY.length} entries`}
-        />
+        <PanelChrome filename="whoami.yaml" subtitle="quick facts" />
         <div className="hc-panel__body">
-          <CmdLine>git log --all --oneline</CmdLine>
-          <div className="ab-timeline">
-            {JOURNEY.map((entry, i) => {
-              const ts = TYPE_STYLES[entry.type] || TYPE_STYLES.experience
+          <CmdLine>cat whoami.yaml</CmdLine>
+          <div className="ab-facts-grid">
+            {me.quickFacts.map((fact, i) => {
+              const Icon = ICONS[fact.icon]
+              const iconColor = i % 2 === 0 ? 'ab-icon-sq--coral' : 'ab-icon-sq--cyan'
               return (
-                <div key={i} className="ab-timeline-item">
-                  <div className="ab-timeline-meta">
-                    <span className="ab-timeline-date">{entry.date}</span>
-                    <span className={ts.className}>{ts.label}</span>
+                <div key={fact.label} className="ab-fact-card">
+                  <div className={`ab-icon-sq ${iconColor}`}>
+                    {Icon && <Icon size={16} />}
                   </div>
-                  <h3 className="ab-timeline-title">{entry.title}</h3>
-                  <p className="ab-timeline-desc">{entry.description}</p>
-                  {entry.link && (
-                    <a href={entry.link} target="_blank" rel="noreferrer" className="ab-timeline-link">
-                      View details <ExternalLink size={12} />
-                    </a>
-                  )}
+                  <div className="ab-fact-content">
+                    <span className="ab-fact-label">{fact.label}</span>
+                    <span className="ab-fact-sublabel">{fact.sublabel}</span>
+                  </div>
                 </div>
               )
             })}
@@ -213,67 +257,24 @@ export default function AboutContent() {
       </div>
 
       {/* ══════════════════════════════════════════════════════════ */}
-      {/* PANEL 6 — stack.json — N entries                          */}
+      {/* PANEL 7 — languages.i18n — spoken                         */}
       {/* ══════════════════════════════════════════════════════════ */}
       <div className="hc-panel" style={{ marginBottom: 24 }}>
-        <PanelChrome filename="stack.json" subtitle={`${totalSkills} entries`} />
+        <PanelChrome filename="languages.i18n" subtitle="spoken" />
         <div className="hc-panel__body">
-          <CmdLine>cat stack.json</CmdLine>
-
-          <div className="ab-stack-header">
-            <AsciiArt art={ART.STACK} color="var(--cyan)" glow="var(--cyan-glow)" />
-            <pre className="ab-env-box" aria-hidden="true">{ART.ENV_BOX}</pre>
-          </div>
-
-          <div className="ab-divider">
-            <span>◆ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─</span>
-          </div>
-
-          <div className="ab-skills-grid">
-            {SKILL_CATEGORIES.map((cat) => (
-              <div key={cat.key} className="ab-skill-category">
-                <div className="ab-skill-header">
-                  <span className="ab-skill-triangle">▸</span>
-                  <span className="ab-skill-name">{cat.label}</span>
-                  <span className="ab-skill-count">// {cat.items.length} entries</span>
-                </div>
-                <div className="ab-skill-pills">
-                  {cat.items.map((s) => (
-                    <span key={s} className="pill-neutral-inline">{s}</span>
-            ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ══════════════════════════════════════════════════════════ */}
-      {/* PANEL 7 — milestones.log — achievements / publications / certs */}
-      {/* ══════════════════════════════════════════════════════════ */}
-      <div className="hc-panel" style={{ marginBottom: 24 }}>
-        <PanelChrome filename="milestones.log" subtitle={`${me.milestones.length} entries`} />
-        <div className="hc-panel__body">
-          <CmdLine>ls ./achievements &amp;&amp; ls ./publications &amp;&amp; ls ./certs</CmdLine>
-          <div className="achv-banner">
-            <AsciiArt art={ART.ACHIEVED} color="var(--coral)" glow="var(--coral-glow)" />
-            <AsciiArt art={ART.TROPHY} color="var(--gold)" fontSize="10px" hideOnMobile={false} />
-          </div>
-          <div className="ab-milestones-grid">
-            {me.milestones.map((ms, i) => {
-              const iconColor = i % 2 === 0 ? 'ab-icon-sq--coral' : 'ab-icon-sq--cyan'
-              const Icon = ms.type === 'award' ? Trophy : ms.type === 'publication' ? FileText : Award
+          <CmdLine>locale -a</CmdLine>
+          <div className="ab-langs-grid">
+            {me.languages.map((lang, i) => {
+              const langColor = i % 2 === 0 ? 'ab-icon-sq--coral' : 'ab-icon-sq--cyan'
               return (
-                <div key={i} className="ab-milestone-card">
-                  <div className="ab-milestone-top">
-                    <div className={`ab-icon-sq ${iconColor}`}>
-                      <Icon size={16} />
-                    </div>
-                    <span className="ab-milestone-type">// {ms.type}</span>
+                <div key={lang.name} className="ab-lang-card">
+                  <div className={`ab-icon-sq ${langColor}`}>
+                    <Languages size={16} />
                   </div>
-                  <span className="ab-milestone-title">{ms.title}</span>
-                  <span className="ab-milestone-org">{ms.org}</span>
-                  <span className="ab-milestone-year">{ms.year}</span>
+                  <div className="ab-lang-content">
+                    <span className="ab-lang-name">{lang.name}</span>
+                    <span className="ab-lang-level">{lang.level}</span>
+                  </div>
                 </div>
               )
             })}

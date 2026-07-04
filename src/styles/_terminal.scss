@@ -257,6 +257,19 @@
   @include mobile { display: none; }
 }
 
+.tmux-tab-num {
+  color: var(--coral);
+}
+
+.tmux-tab-label {
+  color: var(--text-body);
+}
+
+.tmux-tab.active .tmux-tab-num,
+.tmux-tab.active .tmux-tab-label {
+  color: #0f0f17;
+}
+
 .tmux-tab-new {
   @include mono(11px);
   color: var(--text-dim);
@@ -279,6 +292,11 @@
     color: #0f0f17;
     background: var(--coral);
     font-weight: 600;
+
+    .tmux-tab-num,
+    .tmux-tab-label {
+      color: #0f0f17;
+    }
   }
 }
 
@@ -541,10 +559,26 @@
   border-radius: var(--radius-md);
   padding: 6px 12px;
   transition: var(--transition-fast);
+  cursor: pointer;
+  background: transparent;
 
   &:hover {
     border-color: var(--cyan-edge);
     color: var(--text-heading);
+  }
+}
+
+.btn-outline--nav {
+  color: var(--coral);
+  border-color: var(--coral-edge);
+  padding: 8px 18px;
+  font-weight: 600;
+
+  &:hover {
+    border-color: var(--coral);
+    color: #fff;
+    box-shadow: 0 0 16px var(--coral-glow);
+    background: rgba(224, 108, 117, 0.08);
   }
 }
 
