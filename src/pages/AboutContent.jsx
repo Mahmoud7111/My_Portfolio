@@ -1,4 +1,4 @@
-import { Download, ExternalLink, MapPin, Briefcase, Coffee, Music, Layers, Cpu, Languages, GraduationCap } from 'lucide-react'
+import { Download, ExternalLink, MapPin, Briefcase, Coffee, Music, Layers, Cpu, Languages, GraduationCap, Award, FileText, Trophy } from 'lucide-react'
 import AsciiArt from '../components/ascii/AsciiArt'
 import { ART } from '../components/ascii/art'
 import { me } from '../data/me'
@@ -244,6 +244,39 @@ export default function AboutContent() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ══════════════════════════════════════════════════════════ */}
+      {/* PANEL 7 — milestones.log — achievements / publications / certs */}
+      {/* ══════════════════════════════════════════════════════════ */}
+      <div className="hc-panel" style={{ marginBottom: 24 }}>
+        <PanelChrome filename="milestones.log" subtitle={`${me.milestones.length} entries`} />
+        <div className="hc-panel__body">
+          <CmdLine>ls ./achievements &amp;&amp; ls ./publications &amp;&amp; ls ./certs</CmdLine>
+          <div className="achv-banner">
+            <AsciiArt art={ART.ACHIEVED} color="var(--coral)" glow="var(--coral-glow)" />
+            <AsciiArt art={ART.TROPHY} color="var(--gold)" fontSize="10px" hideOnMobile={false} />
+          </div>
+          <div className="ab-milestones-grid">
+            {me.milestones.map((ms, i) => {
+              const iconColor = i % 2 === 0 ? 'ab-icon-sq--coral' : 'ab-icon-sq--cyan'
+              const Icon = ms.type === 'award' ? Trophy : ms.type === 'publication' ? FileText : Award
+              return (
+                <div key={i} className="ab-milestone-card">
+                  <div className="ab-milestone-top">
+                    <div className={`ab-icon-sq ${iconColor}`}>
+                      <Icon size={16} />
+                    </div>
+                    <span className="ab-milestone-type">// {ms.type}</span>
+                  </div>
+                  <span className="ab-milestone-title">{ms.title}</span>
+                  <span className="ab-milestone-org">{ms.org}</span>
+                  <span className="ab-milestone-year">{ms.year}</span>
+                </div>
+              )
+            })}
           </div>
         </div>
       </div>

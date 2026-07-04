@@ -1,17 +1,142 @@
 @use '../mixins' as *;
 
 // ============================================================
-// ACHIEVEMENTS PAGE
+// ACHIEVEMENTS PAGE — gamification dashboard
+// Dark glass cards, rarity-colored borders, terminal aesthetic
 // ============================================================
 
-.achievements-page {
-  @include section();
+$mint: #5dfa92;
 
+.achievements-page {
+  padding-top: 0;
+
+  // ── Header ────────────────────────────────────────────
+  .achv-header {
+    .hc-cmd-line {
+      margin-bottom: 6px;
+    }
+  }
+
+  // ── Progress block ─────────────────────────────────────
+  .achv-progress-block {
+    margin: 20px 0 28px;
+    padding: 14px 16px;
+    background: rgba(12, 12, 16, 0.45);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+
+    .hc-cmd-line {
+      margin-bottom: 8px;
+    }
+
+    .achv-progress-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .achv-progress-fraction {
+      @include mono(18px, 700);
+      color: var(--text-body);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .achv-fraction-num {
+      color: var(--cyan);
+      text-shadow: 0 0 10px var(--cyan-glow);
+    }
+
+    .achv-progress-pct {
+      @include mono(13px, 500);
+      color: var(--text-body);
+    }
+
+    .achv-progress-tag {
+      @include mono(11px);
+      color: var(--text-dim);
+      opacity: 0.7;
+    }
+
+    .achv-progress-bar {
+      @include mono(16px, 700);
+      letter-spacing: 2px;
+      line-height: 1.4;
+      user-select: none;
+    }
+
+    .achv-bar-bracket {
+      color: var(--text-dim);
+    }
+
+    .achv-bar-fill {
+      color: var(--cyan);
+      text-shadow: 0 0 8px var(--cyan-glow);
+    }
+
+    .achv-bar-empty {
+      color: var(--surface-3);
+    }
+  }
+
+  // ── Filter pills ─────────────────────────────────────
+  .achv-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+
+  .achv-filter-pill {
+    @include mono(12px, 500);
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border-dim);
+    background: var(--surface-3);
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    &:hover {
+      border-color: var(--coral-edge);
+      color: var(--text-body);
+    }
+
+    &.active {
+      background: var(--coral);
+      color: #fff;
+      border-color: var(--coral);
+    }
+
+    .achv-filter-count {
+      @include mono(10px, 400);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 5px;
+      border-radius: 999px;
+      background: var(--surface-4);
+      color: var(--text-muted);
+    }
+
+    &.active .achv-filter-count {
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+    }
+  }
+
+  // ── Cards grid ───────────────────────────────────────
   .achievements-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
-    margin-top: 32px;
+    gap: 20px;
 
     @include mobile {
       grid-template-columns: 1fr;
@@ -19,30 +144,251 @@
   }
 
   .achievement-card {
-    @include card-surface();
-    padding: 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    opacity: 0.4;
+    position: relative;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+    padding: 20px;
+    background: linear-gradient(145deg, rgba(22,22,30,0.6), rgba(14,14,20,0.8));
+    transition: all var(--transition-slow);
+    overflow: hidden;
+
+    // Glassy card effect
+    backdrop-filter: blur(6px);
+
+    // Subtle colored border glow for unlocked
+    box-shadow: 0 0 0 1px var(--card-border), 0 0 16px -4px var(--card-glow);
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 0 1px var(--card-border), 0 8px 24px -6px var(--card-glow);
+    }
+
+    &.locked {
+      opacity: 0.55;
+      filter: grayscale(0.35);
+      --card-glow: transparent;
+      --card-border: var(--border);
+    }
 
     &.unlocked {
       opacity: 1;
-      border-color: var(--cyan-edge);
+    }
+
+    // ── Inner content ────────────────────────────────
+    .card-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+
+      .card-rarity {
+        @include mono(11px, 600);
+        letter-spacing: 0.4px;
+      }
+
+      .card-status {
+        @include mono(11px);
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+    }
+
+    .card-status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      display: inline-block;
+      margin-right: 4px;
+
+      &.unlocked { background: $mint; box-shadow: 0 0 6px $mint; }
+      &.locked { background: var(--text-dim); }
+    }
+
+    .card-title-icon {
+      display: inline-block;
+      margin-right: 6px;
+      font-size: 14px;
+      vertical-align: middle;
+      color: var(--card-border);
+    }
+
+    .card-title {
+      @include mono(16px, 700);
+      color: var(--text-heading);
+      margin: 0 0 8px;
+      line-height: 1.3;
+    }
+
+    .card-desc {
+      @include mono(12px);
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin: 0 0 14px;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .card-btn {
+      @include mono(11px, 500);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid;
+      transition: all var(--transition-fast);
+      cursor: default;
+      user-select: none;
+
+      &.unlocked {
+        border-color: var(--card-glow);
+        background: color-mix(in srgb, var(--card-glow) 10%, transparent);
+      }
+
+      &.locked {
+        border-color: var(--border-dim);
+        color: var(--text-dim);
+        background: var(--surface-3);
+      }
+    }
+
+    // Lock overlay for locked cards
+    .card-lock-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        transparent 60%,
+        rgba(12,12,16,0.4) 100%
+      );
+      pointer-events: none;
+      border-radius: inherit;
     }
   }
 
-  .achievement-icon {
-    color: var(--gold);
-  }
+  // ── Clear button ──────────────────────────────────────────
+  .achv-clear {
+    margin-top: 48px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border-dim);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
 
-  .achievement-name {
-    @include mono(13px, 600);
+    .achv-clear-btn {
+      all: unset;
+      @include mono(13px, 600);
+      cursor: pointer;
+      padding: 10px 22px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--coral-edge);
+      background: var(--coral-tint);
+      color: var(--coral);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all var(--transition-fast);
+      box-shadow: 0 0 12px -4px rgba(224, 108, 117, 0.2);
+
+      &:hover {
+        border-color: var(--coral);
+        background: rgba(224, 108, 117, 0.15);
+        box-shadow: 0 0 18px -4px rgba(224, 108, 117, 0.35);
+      }
+    }
+
+    .achv-clear-hint {
+      @include mono(11px);
+      color: var(--text-dim);
+    }
+  }
+}
+
+// ── Confirm Dialog ──────────────────────────────────────────
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(8, 8, 12, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+.confirm-dialog {
+  width: 100%;
+  max-width: 400px;
+  padding: 0;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--confirm-accent, var(--coral));
+  background: #15151c;
+  box-shadow: 0 0 30px -8px var(--confirm-accent, var(--coral));
+  overflow: hidden;
+}
+
+.confirm-header {
+  @include mono(13px, 700);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-dim);
+  color: var(--confirm-accent, var(--coral));
+  letter-spacing: 0.3px;
+}
+
+.confirm-icon {
+  font-size: 16px;
+}
+
+.confirm-body {
+  @include mono(12px);
+  padding: 18px 20px;
+  color: var(--text-body);
+  line-height: 1.6;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 8px;
+  padding: 12px 20px;
+  border-top: 1px solid var(--border-dim);
+  justify-content: flex-end;
+}
+
+.confirm-btn {
+  all: unset;
+  @include mono(12px, 600);
+  cursor: pointer;
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-dim);
+  transition: all var(--transition-fast);
+}
+
+.confirm-btn--cancel {
+  color: var(--text-body);
+  background: var(--surface-3);
+
+  &:hover {
+    border-color: var(--text-muted);
     color: var(--text-heading);
   }
+}
 
-  .achievement-desc {
-    @include mono(11px);
-    color: var(--text-muted);
+.confirm-btn--confirm {
+  color: #fff;
+  background: var(--coral);
+  border-color: var(--coral);
+
+  &:hover {
+    background: #d4555e;
+    border-color: #d4555e;
   }
 }

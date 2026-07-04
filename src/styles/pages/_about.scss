@@ -598,3 +598,58 @@
     }
   }
 }
+
+/* ── Panel 7: Milestones (achievements / publications / certs) ─ */
+
+.ab-milestones-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ab-milestone-card {
+  @include card-surface;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base), transform var(--transition-base);
+
+  &:hover {
+    border-color: var(--cyan-edge);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02), 0 0 16px var(--cyan-glow);
+    transform: translateY(-1px);
+  }
+}
+
+.ab-milestone-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ab-milestone-type {
+  @include mono(10px);
+  color: var(--text-dim);
+  text-transform: lowercase;
+}
+
+.ab-milestone-title {
+  @include sans(15px, 600);
+  color: var(--text-heading);
+}
+
+.ab-milestone-org {
+  @include sans(13px);
+  color: var(--text-body);
+}
+
+.ab-milestone-year {
+  @include mono(11px);
+  color: var(--text-muted);
+}

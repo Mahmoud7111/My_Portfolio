@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Personal portfolio styled as a macOS terminal. React 19 + Vite + SCSS. Features an interactive terminal with tab navigation, Groq AI chatbot, EmailJS contact form, and full EN/AR i18n with RTL.
+Personal portfolio styled as a macOS terminal. React 19 + Vite + SCSS. Features an interactive terminal with tab navigation, Groq AI chatbot, and EmailJS contact form.
 
 ## Development Commands
 
@@ -49,7 +49,6 @@ Commands are defined in `src/data/commands.js` as a registry. Each entry has `id
 1. Add entry to `src/data/commands.js`
 2. Create component in `src/components/commands/`
 3. Register it in `CommandOutput.jsx`
-4. Add translation strings to both `src/locales/en/translation.json` and `src/locales/ar/translation.json`
 
 ### Single Source of Truth for Personal Data
 
@@ -59,14 +58,6 @@ Commands are defined in `src/data/commands.js` as a registry. Each entry has `id
 
 `src/data/projects.js` and `src/data/unlockables.js` are the other two data files.
 
-### i18n (EN/AR)
-
-`src/i18n.js` initializes i18next with `LanguageDetector`. Two translation files: `src/locales/en/translation.json` and `src/locales/ar/translation.json`. When the language changes, `i18n.js` syncs `document.documentElement.dir` and `lang`. Terminal and code elements stay LTR via the `.ltr-island` class (see `_globals.scss`). Keep both translation files in sync.
-
-### AI Chatbot
-
-`useChat.js` sends messages to Groq's API (`llama-3.3-70b-versatile`). The system prompt is built dynamically from `me.js`. Users enter chat mode via the `chat` terminal command and exit with `exit`.
-
 ### Achievements / Gamification
 
 `useAchievements.js` persists unlocked achievements to `localStorage` under key `portfolio_achievements`. Achievement definitions live in `src/data/unlockables.js`.
@@ -74,6 +65,29 @@ Commands are defined in `src/data/commands.js` as a registry. Each entry has `id
 ### Styling
 
 SCSS with a single entry point `src/styles/main.scss`. Import order matters: `variables` → `mixins` → `reset` → `globals` → pages → `terminal` → `cursor`. Uses CSS custom properties defined in `_variables.scss` (e.g. `--coral`, `--cyan`, `--text-body`).
+
+Special about page classes (all prefixed with `.ab-`) live in `src/styles/pages/_about.scss` — ~590 lines, full BEM. Key reused components:
+- `.ab-icon-sq` / `.ab-icon-sq--coral` / `.ab-icon-sq--cyan` — 36×36 square icon containers, `scale(1.1)` + glow on hover
+- `.ab-download-btn` — bordered rectangle button with Download icon + `$ download resume.pdf` text
+
+### About Page (6 panels)
+
+Built in `src/pages/AboutContent.jsx` (rendered inside `TerminalWindow` via `pages/About.jsx` wrapper). Each panel uses `hc-panel` chrome (filename — comment, ⌃ ⌄ ×, dashed border) from `_home.scss`. Panels:
+1. **bio.md** — avatar, name, role, location, quick facts (`.ab-icon-sq` icons)
+2. **journey.log** — 4 timeline entries from `src/data/journey.js` (ordered array, `[PLACEHOLDER]` titles/descriptions)
+3. **languages.json** — spoken languages with `.ab-icon-sq` icons
+4. **education.cert** — degree card + online courses as pills
+5. **stack.yml** — skills grid with `ART.STACK` ASCII header
+6. **hobbies.txt** — interests row
+
+Data sources:
+- `src/data/me.js` — added `hobbiesLine`, `resumeUrl`, `currently`, `quickFacts` (all `[PLACEHOLDER]`-marked)
+- `src/data/journey.js` — manually-ordered 4-entry timeline array
+- `src/components/ascii/art.js` — `ART.ABOUT_ME`, `ART.STACK`, `ART.ENV_BOX`
+
+### AI Chatbot
+
+`useChat.js` sends messages to Groq's API (`llama-3.3-70b-versatile`). The system prompt is built dynamically from `me.js`. Users enter chat mode via the `chat` terminal command and exit with `exit`.
 
 ### Custom Cursor
 
@@ -84,3 +98,7 @@ SCSS with a single entry point `src/styles/main.scss`. Import order matters: `va
 - All env vars are `VITE_` prefixed (Vite requirement for client-side access)
 - No test framework configured
 - Not deployed yet — planned for Vercel
+- **About page data**: all new fields in `me.js` and `journey.js` are `[PLACEHOLDER]`-marked for easy replacement
+- **No new colors**: about page uses only `--coral`, `--cyan`, `--text-*` existing CSS variables
+- **No Tailwind / no inline styles** on about page (except dynamic values)
+- Homepage and contact page download buttons: `ab-download-btn` rectangle style with `<Download size={14} />` icon

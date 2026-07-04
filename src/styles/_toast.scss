@@ -1,0 +1,63 @@
+@use 'mixins' as *;
+
+// ============================================================
+// TOAST — notification for achievement unlocks
+// Terminal-styled slide-in, rarity-colored border/glow
+// ============================================================
+
+.achv-toast {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 9999;
+  max-width: 340px;
+  min-width: 280px;
+  padding: 14px 18px;
+  border-radius: var(--radius-md);
+
+  background: #15151c;
+  border: 1px solid var(--toast-color);
+  box-shadow:
+    0 0 0 1px var(--toast-color),
+    0 0 24px -4px var(--toast-color);
+
+  .achv-toast-header {
+    @include mono(10px, 700);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-body);
+    letter-spacing: 0.6px;
+    margin-bottom: 10px;
+  }
+
+  .achv-toast-badge {
+    font-size: 16px;
+    line-height: 1;
+    filter: drop-shadow(0 0 4px var(--toast-color));
+  }
+
+  .achv-toast-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .achv-toast-name {
+    @include mono(14px, 700);
+    color: var(--text-heading);
+    line-height: 1.3;
+  }
+
+  .achv-toast-desc {
+    @include mono(11px);
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .achv-toast-footer {
+    @include mono(10px, 600);
+    margin-top: 10px;
+    letter-spacing: 0.4px;
+  }
+}

@@ -90,7 +90,9 @@ numbers, real outcomes rather than generic adjectives.`,
     },
   ],
 
-  achievements: [
-    { title: 'Achievement title', org: 'Where / who issued it', year: '2025' },
+  milestones: [
+    { title: '[PLACEHOLDER]', org: '[PLACEHOLDER]', year: '2025', type: 'award' },
+    { title: '[PLACEHOLDER]', org: '[PLACEHOLDER]', year: '2024', type: 'certification' },
+    { title: '[PLACEHOLDER]', org: '[PLACEHOLDER]', year: '2023', type: 'publication' },
   ],
 }

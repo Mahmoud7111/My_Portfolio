@@ -6,8 +6,11 @@ import { ART } from '../ascii/art'
 import CommandOutput from '../commands/CommandOutput'
 import { useTerminal } from '../../hooks/useTerminal'
 import { useChat } from '../../hooks/useChat'
+import { useEasterEggs } from '../../hooks/useEasterEggs'
+import { useGlobalAchievements } from '../../hooks/useGlobalAchievements'
 import { me } from '../../data/me'
 import TerminalClosedScreen from './TerminalClosedScreen'
+import AchievementToast from '../ui/AchievementToast'
 
 import HomeContent from '../../pages/HomeContent'
 import ProjectsContent from '../../pages/ProjectsContent'
@@ -21,7 +24,7 @@ const TABS = [
   { id: 'projects',     path: '/projects',     label: 'projects' },
   { id: 'about',        path: '/about',        label: 'about' },
   { id: 'contact',      path: '/contact',      label: 'contact' },
-  { id: 'achievements', path: '/achievements', label: 'achievements' },
+  { id: 'achievements', path: '/achievements', label: 'your achievements' },
 ]
 
 const PATH_MAP = {
@@ -113,6 +116,10 @@ export default function TerminalWindow() {
     useTerminal()
   const { sendMessage, isLoading } = useChat()
 
+  const { lastUnlocked, clearLastUnlocked, onCloseClick, onMinimizeClick, onMaximizeClick, onRestoreFromMinimized } =
+    useEasterEggs()
+  useGlobalAchievements()
+
   // ── Clock ────────────────────────────────────────────────────
   useEffect(() => {
     const tick = () => {
@@ -142,6 +149,15 @@ export default function TerminalWindow() {
     }
   }, [history, location.pathname])
 
+  // ── Track minimise→restore cycles for easter egg ────────────
+  const prevWindowState = useRef(windowState)
+  useEffect(() => {
+    if (prevWindowState.current === 'minimized' && windowState === 'normal') {
+      onRestoreFromMinimized()
+    }
+    prevWindowState.current = windowState
+  }, [windowState, onRestoreFromMinimized])
+
 
   // ── Submit ───────────────────────────────────────────────────
   const handleSubmit = async (e) => {
@@ -156,10 +172,14 @@ export default function TerminalWindow() {
     }
   }
 
-  const handleMinimize = () =>
-    setWindowState(s => s === 'minimized' ? 'normal' : 'minimized')
-  const handleMaximize = () =>
-    setWindowState(s => s === 'maximized' ? 'normal' : 'maximized')
+  const handleMinimize = () => {
+    onMinimizeClick()
+    setWindowState((s) => (s === 'minimized' ? 'normal' : 'minimized'))
+  }
+  const handleMaximize = () => {
+    onMaximizeClick()
+    setWindowState((s) => (s === 'maximized' ? 'normal' : 'maximized'))
+  }
 
   if (windowState === 'closed') {
     return <TerminalClosedScreen onReturn={() => setWindowState('normal')} />
@@ -215,11 +235,11 @@ export default function TerminalWindow() {
         {/* ══ ROW 1 — tmux title bar ══════════════════════════ */}
         <div className="trow trow--tmux">
           <div className="traffic-lights">
-            <button
-              className="traffic-light close"
-              aria-label="Close terminal"
-              onClick={() => setWindowState('closed')}
-            />
+              <button
+                className="traffic-light close"
+                aria-label="Close terminal"
+                onClick={() => { onCloseClick(); setWindowState('closed') }}
+              />
             <button
               className="traffic-light minimize"
               aria-label="Minimize terminal"
@@ -271,7 +291,7 @@ export default function TerminalWindow() {
         {/* ══ ROW 3 — tmux windows tab bar ════════════════════ */}
         <div className="trow trow--tabs" style={{ position: 'relative' }}>
           <span className="tmux-windows-label">windows:</span>
-          {TABS.map((tab, i) => {
+          {TABS.filter((t) => t.id !== 'achievements').map((tab, i) => {
             const isActive = location.pathname === tab.path
             return (
               <button
@@ -284,6 +304,33 @@ export default function TerminalWindow() {
             )
           })}
           <span className="tmux-tab-new">[+:new]</span>
+
+          <span className="tmux-tab-separator" aria-hidden="true">│</span>
+
+          {(() => {
+            const tab = TABS.find((t) => t.id === 'achievements')
+            const idx = TABS.indexOf(tab) + 1
+            const isActive = location.pathname === tab.path
+            return (
+              <button
+                key={tab.id}
+                className={`tmux-tab tmux-tab--right ${isActive ? 'active' : ''}`}
+                onClick={() => navigate(tab.path)}
+              >
+                [{idx}:{tab.label}{isActive ? '*' : '-'}]
+              </button>
+            )
+          })()}
+
+          <a
+            className="tmux-download"
+            href={me.resumeUrl}
+            download
+            title="Download resume"
+          >
+            <span className="tmux-download-icon">↓</span>
+            <span className="tmux-download-label">resume</span>
+          </a>
 
           {/* ── Mobile current tab label ── */}
           <span className="tmux-mobile-label">
@@ -325,6 +372,15 @@ export default function TerminalWindow() {
                     </button>
                   )
                 })}
+                <a
+                  className="tmux-mobile-tab tmux-mobile-tab--dl"
+                  href={me.resumeUrl}
+                  download
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <span className="tab-indicator" aria-hidden="true" />
+                  ↓ resume
+                </a>
               </motion.div>
             )}
           </AnimatePresence>
@@ -403,6 +459,15 @@ export default function TerminalWindow() {
         {/* ══ Powerline footer ════════════════════════════════ */}
         <PowerlineFooter currentPath={currentPath} shortTime={clock.short} />
       </motion.div>
+
+      <AnimatePresence>
+        {lastUnlocked && (
+          <AchievementToast
+            achievement={lastUnlocked}
+            onDismiss={clearLastUnlocked}
+          />
+        )}
+      </AnimatePresence>
     </>
   )
 }

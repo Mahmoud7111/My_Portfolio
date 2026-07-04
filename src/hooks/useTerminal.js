@@ -2,6 +2,9 @@ import { useState, useCallback, useRef } from 'react'
 import { getCommand } from '../data/commands'
 import { useAchievements } from './useAchievements'
 
+const GREETINGS = ['hello', 'hi', 'hey', 'sup', 'yo', 'greetings', 'good morning', 'good evening', 'howdy']
+const KONAMI_SEQ = ['u', 'u', 'd', 'd', 'l', 'r', 'l', 'r', 'b', 'a']
+
 /**
  * Drives the interactive terminal: history of executed lines,
  * current input, command dispatch, chat-mode toggling.
@@ -17,6 +20,7 @@ export function useTerminal() {
   const [chatMode, setChatMode] = useState(false)
   const [commandsRun, setCommandsRun] = useState(new Set())
   const inputRef = useRef(null)
+  const konamiRef = useRef([])
 
   const pushLine = useCallback((entry) => {
     setHistory((prev) => [...prev, entry])
@@ -26,8 +30,22 @@ export function useTerminal() {
 
   const runCommand = useCallback(
     (raw) => {
-      const trimmed = raw.trim()
+      const trimmed = raw.trim().toLowerCase()
       if (!trimmed) return
+
+      // ── Greeting easter egg ────────────────────────────────
+      if (GREETINGS.includes(trimmed) || GREETINGS.some((g) => trimmed.startsWith(g))) {
+        unlock('greeting')
+      }
+
+      // ── Konami code tracking ───────────────────────────────
+      konamiRef.current = [...konamiRef.current, ...trimmed.split('')].slice(-KONAMI_SEQ.length)
+      if (
+        konamiRef.current.length === KONAMI_SEQ.length &&
+        konamiRef.current.every((c, i) => c === KONAMI_SEQ[i])
+      ) {
+        unlock('konami')
+      }
 
       pushLine({ type: 'input', value: trimmed })
 
@@ -44,8 +62,11 @@ export function useTerminal() {
       // Track achievement progress
       setCommandsRun((prev) => {
         const next = new Set(prev).add(cmd.id)
-        if (next.size === 1) unlock('first-command')
-        if (next.size >= 5) unlock('explorer')
+        if (next.size === 1) {
+          unlock('first-visit')
+          unlock('first-step')
+        }
+        if (next.size >= 7) unlock('terminal-master')
         return next
       })
 
@@ -55,6 +76,7 @@ export function useTerminal() {
           return
         case 'chat':
           setChatMode(true)
+          unlock('ai-conversationalist')
           pushLine({
             type: 'system',
             value: [
