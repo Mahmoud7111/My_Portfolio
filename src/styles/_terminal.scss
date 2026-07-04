@@ -763,6 +763,88 @@ $ch-w: 10px;
   50%       { opacity: 0.3; }
 }
 
+// ══ Hello World Intro Screen ═══════════════════════════════════
+.hw-screen {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  transition: opacity 0.6s ease;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 2px,
+      rgba(77, 208, 206, 0.012) 2px,
+      rgba(77, 208, 206, 0.012) 4px
+    );
+    z-index: 1;
+  }
+
+  &--fade {
+    opacity: 0;
+  }
+}
+
+.hw-scanlines { display: none; }
+
+.hw-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.hw-title {
+  font-family: var(--font-mono);
+  font-size: clamp(36px, 10vw, 96px);
+  font-weight: 700;
+  color: var(--cyan);
+  text-shadow:
+    0 0 20px var(--cyan-glow),
+    0 0 60px rgba(77, 208, 206, 0.3),
+    0 0 100px rgba(77, 208, 206, 0.15);
+  letter-spacing: 4px;
+  margin: 0;
+  min-height: 1.2em;
+}
+
+.hw-cursor {
+  display: inline-block;
+  color: var(--coral);
+  font-weight: 400;
+  animation: tc-blink 530ms steps(1) infinite;
+}
+
+.hw-subtitle {
+  font-size: clamp(12px, 2vw, 16px);
+  color: var(--text-muted);
+  margin-top: 24px;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  letter-spacing: 1px;
+
+  &--visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hw-prompt {
+  color: var(--coral);
+  font-weight: 600;
+}
+
 // ══ Terminal Closed Screen — THEME COLORS ═════════════════════
 // Uses site variables (cyan/coral/surface) instead of hard-coded green
 

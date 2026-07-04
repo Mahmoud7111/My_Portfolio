@@ -10,6 +10,7 @@ import { useEasterEggs } from '../../hooks/useEasterEggs'
 import { useGlobalAchievements } from '../../hooks/useGlobalAchievements'
 import { me } from '../../data/me'
 import TerminalClosedScreen from './TerminalClosedScreen'
+import HelloWorldScreen from './HelloWorldScreen'
 import AchievementToast from '../ui/AchievementToast'
 
 import HomeContent from '../../pages/HomeContent'
@@ -111,7 +112,7 @@ export default function TerminalWindow() {
   const location      = useLocation()
   const vp            = useViewport()
 
-  const [windowState, setWindowState] = useState('normal')
+  const [windowState, setWindowState] = useState('hello')
   const [clock,       setClock]       = useState({ long: '', short: '' })
   const [menuOpen,    setMenuOpen]    = useState(false)
   const bodyRef = useRef(null)
@@ -183,6 +184,10 @@ export default function TerminalWindow() {
   const handleMaximize = () => {
     onMaximizeClick()
     setWindowState((s) => (s === 'maximized' ? 'normal' : 'maximized'))
+  }
+
+  if (windowState === 'hello') {
+    return <HelloWorldScreen onReady={() => setWindowState('normal')} />
   }
 
   if (windowState === 'closed') {
