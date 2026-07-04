@@ -75,3 +75,11 @@ p {
     display: none !important;
   }
 }
+
+// ASCII art — smaller on mobile so wide headers fit
+@media (max-width: 600px) {
+  .ascii-art,
+  .contact-banner {
+    font-size: clamp(8px, 2vw, 11px) !important;
+  }
+}

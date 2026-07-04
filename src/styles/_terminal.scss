@@ -345,7 +345,7 @@
   gap: 5px;
   background: rgba(77, 208, 206, 0.08);
   border: 1px solid var(--cyan-edge);
-  border-radius: var(--radius-sm);
+  border-radius: 0;
   padding: 3px 10px;
   cursor: pointer;
   color: var(--cyan);
@@ -388,34 +388,37 @@
   right: 0;
   left: 0;
   z-index: 101;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
+  background: #11111a;
+  border: 1px solid var(--cyan-edge);
   border-top: none;
   overflow: hidden;
   transform-origin: top center;
+  box-shadow: 4px 8px 24px rgba(0,0,0,0.5);
 }
 
 .tmux-mobile-tab {
   display: flex;
   width: 100%;
   align-items: center;
-  gap: 10px;
-  padding: 10px 16px;
-  color: var(--text-dim);
+  gap: 12px;
+  padding: 12px 18px;
   background: transparent;
   border: none;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(224, 108, 117, 0.12);
+  border-left: 3px solid transparent;
   cursor: pointer;
   font-family: var(--font-mono);
   font-size: 13px;
   text-align: left;
+  letter-spacing: 0.3px;
   transition:
-    color var(--transition-fast),
-    background var(--transition-fast);
+    background var(--transition-fast),
+    padding-left var(--transition-fast),
+    border-color var(--transition-fast);
 
   &:hover {
-    color: var(--text-heading);
-    background: rgba(255, 255, 255, 0.03);
+    background: rgba(224, 108, 117, 0.06);
+    padding-left: 22px;
   }
 
   &:last-child {
@@ -423,36 +426,42 @@
   }
 
   &.active {
-    color: var(--cyan);
-    background: rgba(77, 208, 206, 0.06);
-    font-weight: 600;
-  }
-
-  .tab-indicator {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--cyan);
-    opacity: 0;
-    transition: opacity var(--transition-fast);
-  }
-
-  &.active .tab-indicator {
-    opacity: 1;
+    background: rgba(77, 208, 206, 0.08);
+    border-left-color: var(--cyan);
   }
 }
 
+.tab-cmd {
+  color: var(--text-body);
+  transition: color var(--transition-fast);
+}
+
+.tmux-mobile-tab.active .tab-cmd {
+  color: var(--cyan);
+}
+
+.tab-prompt {
+  display: inline-block;
+  width: 10px;
+  text-align: center;
+}
+
 .tmux-mobile-tab--dl {
-  color: #fff !important;
-  font-weight: 700;
   background: rgba(224, 108, 117, 0.2) !important;
   border-bottom: 1px solid var(--coral-edge) !important;
 
+  .tab-cmd {
+    color: #fff;
+    font-weight: 700;
+  }
+
   &:hover {
     background: rgba(224, 108, 117, 0.35) !important;
+    padding-left: 22px !important;
+  }
+
+  &.active {
+    border-left-color: var(--coral) !important;
   }
 }
 
@@ -579,6 +588,20 @@
     color: #fff;
     box-shadow: 0 0 16px var(--coral-glow);
     background: rgba(224, 108, 117, 0.08);
+  }
+}
+
+.btn-outline--cyan {
+  color: var(--cyan);
+  border-color: var(--cyan-edge);
+  padding: 8px 18px;
+  font-weight: 600;
+
+  &:hover {
+    border-color: var(--cyan);
+    color: #fff;
+    box-shadow: 0 0 16px var(--cyan-glow);
+    background: rgba(86, 192, 212, 0.08);
   }
 }
 

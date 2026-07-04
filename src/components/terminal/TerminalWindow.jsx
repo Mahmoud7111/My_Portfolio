@@ -367,8 +367,7 @@ export default function TerminalWindow() {
                       className={`tmux-mobile-tab ${isActive ? 'active' : ''}`}
                       onClick={() => { navigate(tab.path); setMenuOpen(false) }}
                     >
-                      <span className="tab-indicator" aria-hidden="true" />
-                      {tab.label}
+                      <span className="tab-cmd"><span className="tab-prompt">{isActive ? '>' : '$'}</span> cd {tab.path}</span>
                     </button>
                   )
                 })}
@@ -378,8 +377,7 @@ export default function TerminalWindow() {
                   download
                   onClick={() => setMenuOpen(false)}
                 >
-                  <span className="tab-indicator" aria-hidden="true" />
-                  ↓ resume
+                  <span className="tab-cmd">↓ resume</span>
                 </a>
               </motion.div>
             )}

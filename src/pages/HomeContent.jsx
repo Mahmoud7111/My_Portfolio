@@ -125,7 +125,7 @@ export default function HomeContent() {
               <Download size={14} />
               <span>$ download resume.pdf</span>
             </a>
-            <button onClick={() => navigate('/about')} className="btn-outline btn-outline--nav">
+            <button onClick={() => navigate('/about')} className="btn-outline btn-outline--cyan">
               learn more → about
             </button>
           </div>
