@@ -71,11 +71,13 @@ function buildTarget(state, vp) {
   const isMobile = vw < 768
 
   // Normal state geometry
-  const nW = isMobile ? vw : Math.min(1100, vw - 32)
-  const nH = isMobile ? vh : vh - 80
-  const nL = isMobile ? 0 : Math.round((vw - nW) / 2)
-  const nT = isMobile ? 0 : 32
-  const nR = isMobile ? 0 : 12 // borderRadius
+  const nW = isMobile ? vw - 16 : Math.min(1100, vw - 32)
+  const nH = isMobile ? vh - 60 : vh - 80
+  const nL = isMobile ? 8 : Math.round((vw - nW) / 2)
+  const nT = isMobile ? 30 : 32
+  const nR = isMobile ? 10 : 12
+  const nMinW = isMobile ? 280 : undefined
+  const nMinH = isMobile ? 360 : undefined
 
   switch (state) {
     case 'maximized':
@@ -90,6 +92,7 @@ function buildTarget(state, vp) {
         top: nT, left: nL,
         width: nW, height: nH,
         borderRadius: nR,
+        minWidth: nMinW, minHeight: nMinH,
         opacity: 0, y: 140, scale: 0.88,
       }
     default: // 'normal'
@@ -97,6 +100,7 @@ function buildTarget(state, vp) {
         top: nT, left: nL,
         width: nW, height: nH,
         borderRadius: nR,
+        minWidth: nMinW, minHeight: nMinH,
         opacity: 1, y: 0, scale: 1,
       }
   }
