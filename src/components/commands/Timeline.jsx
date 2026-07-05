@@ -1,19 +1,14 @@
-import { me } from '../../data/me'
+import { JOURNEY } from '../../data/journey'
 
 export default function Timeline() {
-  const items = [
-    ...me.experience.map((e) => ({ year: e.period, label: e.role, org: e.org })),
-    ...me.education.map((e) => ({ year: e.year, label: e.degree, org: e.institution })),
-  ]
-
   return (
     <div className="cmd-output">
-      {items.map((item, i) => (
+      {JOURNEY.map((entry, i) => (
         <p key={i}>
-          <span style={{ color: 'var(--text-muted)' }}>{item.year}</span>{' '}
+          <span style={{ color: 'var(--text-muted)' }}>{entry.date}</span>{' '}
           <span style={{ color: 'var(--coral)' }}>▸</span>{' '}
-          <span style={{ color: 'var(--text-heading)' }}>{item.label}</span>{' '}
-          <span style={{ color: 'var(--cyan)' }}>@ {item.org}</span>
+          <span style={{ color: 'var(--text-heading)' }}>{entry.title}</span>{' '}
+          <span style={{ color: 'var(--cyan)' }}>· {entry.type}</span>
         </p>
       ))}
     </div>

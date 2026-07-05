@@ -150,6 +150,7 @@ export default function Contact() {
               )}
             </form>
           )}
+        </div>
 
         <div className="contact-footer">
           <div className="contact-footer__left">

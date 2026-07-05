@@ -8,46 +8,47 @@ export const me = {
   name: 'Mahmoud Sayed',
   handle: 'mahmoud',
   title: 'Software & AI Engineer',
-  location: 'City, Country',
+  location: 'Cairo, Egypt',
   status: 'available', // 'available' | 'busy' | 'open-to-work'
-  email: 'you@mahmoud.dev',
+  email: 'mahmoudsyd24@gmail.com',
 
-  bio: `Replace this with 2-3 sentences about who you are, what you build,
-and what you care about. Keep it concrete — mention real tools, real
-numbers, real outcomes rather than generic adjectives.`,
+  bio: `I build full-stack platforms with React 18, Node.js, Express, and
+MongoDB, thinking through architecture as much as code — how data
+flows, where state lives, what breaks at scale. I'm also expanding
+into Python and the ML stack as part of my AI degree. I care about
+code that holds up under a real team and a real deadline, not just
+demos that work once.`,
 
-  hobbiesLine: 'Outside of work I [PLACEHOLDER: pour-over coffee, mechanical-keyboard firmware, and occasionally losing at chess online].',
+  hobbiesLine: `Outside of work I'm drinking Turkish coffee, more Turkish coffee, and then wondering why I can't sleep.`,
 
-  resume: '/resume.pdf',   // kept for backwards compat (contact page)
-  resumeUrl: '/resume.pdf',
+  resume: '/My_Resume2.pdf',
+  resumeUrl: '/My_Resume2.pdf',
 
   currently: [
-    '[PLACEHOLDER: shipping a semantic-caching layer for LLM apps]',
-    '[PLACEHOLDER: writing a rust cli for terminal-native pair programming]',
-    '[PLACEHOLDER: reading — designing data-intensive apps (again)]',
+    'Building this portfolio with React 18',
+    'Learning more about AI and ML with Python',
+    'Exploring the latest in web development and AI tools',
   ],
 
   quickFacts: [
-    { icon: 'MapPin',     label: 'Location',      sublabel: '[PLACEHOLDER: Cairo, Egypt — remote-friendly]' },
-    { icon: 'Briefcase',  label: 'Availability',   sublabel: '[PLACEHOLDER: open to full-time & contract]' },
-    { icon: 'Coffee',     label: 'Daily fuel',     sublabel: '[PLACEHOLDER: x43 pour-over — 2 cups/day]' },
-    { icon: 'Music',      label: 'Interests',      sublabel: '[PLACEHOLDER: Lo-fi hip-hop — #focus]' },
-    { icon: 'Layers',     label: 'Current focus',  sublabel: '[PLACEHOLDER: designing data-intensive apps]' },
-    { icon: 'Cpu',        label: 'Specialty',      sublabel: '[PLACEHOLDER: AI infra — devEx tooling]' },
+    { icon: 'MapPin',     label: 'Location',      sublabel: 'Cairo, Egypt — remote-friendly' },
+    { icon: 'Briefcase',  label: 'Availability',   sublabel: 'Open to full-time & contract' },
+    { icon: 'Coffee',     label: 'Daily fuel',     sublabel: 'x43 pour-over — 2 cups/day' },
+    { icon: 'Code',       label: 'Passion',      sublabel: 'Building scalable systems' },    { icon: 'Layers',     label: 'Current focus',  sublabel: 'designing data-intensive apps' },
+    { icon: 'Cpu',        label: 'Specialty',      sublabel: 'AI infra — devEx tooling' },
   ],
 
   links: [
-    { label: 'GitHub', url: 'https://github.com/mahmoud', icon: 'Github' },
-    { label: 'LinkedIn', url: 'https://linkedin.com/in/mahmoud', icon: 'Linkedin' },
-    { label: 'Twitter', url: 'https://twitter.com/mahmoud', icon: 'Twitter' },
-    { label: 'Email', url: 'mailto:you@mahmoud.dev', icon: 'Mail' },
+    { label: 'GitHub', url: 'https://github.com/Mahmoud7111', icon: 'Github' },
+    { label: 'LinkedIn', url: 'https://www.linkedin.com/in/mahmoud7111/', icon: 'Linkedin' },
+    { label: 'Email', url: 'mailto:mahmoudsyd24@gmail.com', icon: 'Mail' },
   ],
 
   skills: {
-    languages: ['JavaScript', 'TypeScript', 'Python', 'C++'],
-    frameworks: ['React', 'Node.js', 'Express', 'Next.js'],
-    aiml: ['PyTorch', 'TensorFlow', 'LangChain', 'Hugging Face'],
-    tools: ['Docker', 'Git', 'AWS', 'PostgreSQL'],
+    languages: ['JavaScript', 'Python', 'C++', 'Java', 'SQL', 'HTML5', 'CSS3'],
+    frameworks: ['React', 'Vite', 'Framer Motion', 'Node.js', 'Express.js', 'MongoDB', 'JavaFX', 'Qt'],
+    ai_tools: ['Claude', 'OpenCode', 'Multi-Agent Systems','Skills' ,'Claude Hooks', 'Antigravity'],
+    tools: ['Git', 'GitHub', 'Figma', 'Arduino' ],
   },
 
   languages: [
@@ -58,15 +59,18 @@ numbers, real outcomes rather than generic adjectives.`,
   education: [
     {
       degree: 'B.Sc. Computer Science',
-      institution: '[PLACEHOLDER]',
-      year: '2021 — 2025',
-      details: 'GPA: 0.00 / 4.0',
+      institution: 'Misr International University (MIU)',
+      year: '2024 — 2028',
+      details: 'GPA: 3.3 / 4.0',
     },
   ],
 
   courses: [
-    { name: 'Machine Learning Specialization', provider: 'Coursera / Stanford' },
-    { name: 'CS50', provider: 'Harvard' },
+    { name: 'IBM AI Engineer (In Progress)', provider: 'Coursera / IBM' },
+    { name: 'Build with AI, Masr Edition', provider: 'Google' },
+    { name : 'Claude Code in Action', provider: 'Anthropic' },
+    { name : 'python Essentials', provider: 'Cisco' },
+    { name : 'Front-End Web Development', provider: 'MSP Tech club' },
   ],
 
   experience: [
@@ -91,8 +95,8 @@ numbers, real outcomes rather than generic adjectives.`,
   ],
 
   milestones: [
-    { title: '[PLACEHOLDER]', org: '[PLACEHOLDER]', year: '2025', type: 'award' },
-    { title: '[PLACEHOLDER]', org: '[PLACEHOLDER]', year: '2024', type: 'certification' },
-    { title: '[PLACEHOLDER]', org: '[PLACEHOLDER]', year: '2023', type: 'publication' },
+    { title: 'TOP 3 MSP Software Hackathon', org: 'MSP Tech Club', year: '2025', type: 'award' },
+    //{ title: '[PLACEHOLDER]', org: '[PLACEHOLDER]', year: '2024', type: 'certification' },
+    //{ title: '[PLACEHOLDER]', org: '[PLACEHOLDER]', year: '2023', type: 'publication' },
   ],
 }

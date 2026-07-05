@@ -3,7 +3,7 @@ import { me } from '../../data/me'
 const GROUPS = [
   { key: 'languages', label: 'languages' },
   { key: 'frameworks', label: 'frameworks' },
-  { key: 'aiml', label: 'ai / ml' },
+  { key: 'ai_tools', label: 'ai tools' },
   { key: 'tools', label: 'tools' },
 ]
 

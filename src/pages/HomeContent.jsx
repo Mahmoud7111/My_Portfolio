@@ -98,19 +98,19 @@ export default function HomeContent() {
                 {me.name}
               </h1>
               <p style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--cyan)', margin: '0 0 24px' }}>
-                software & ai engineer · building intelligent systems
+                {me.title}
               </p>
               
               <p style={{ margin: '0 0 24px', fontSize: 'clamp(14px, 1.5vw, 16px)', lineHeight: 1.8, color: 'var(--text-body)', maxWidth: 520 }}>
-                I design and ship production AI systems — from retrieval pipelines and agent runtimes to the developer tools that make them feel natural to use. I care deeply about taste in interfaces, latency budgets you can feel, and code that reads like prose.
+                {me.bio}
               </p>
               
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-muted)' }}>
                 <span>~/{me.location.toLowerCase()}</span>
                 <span>·</span>
-                <span>5y experience</span>
-                <span>·</span>
-                <span style={{ color: 'var(--cyan)' }}>open to work</span>
+                <span style={{ color: me.status === 'available' ? 'var(--cyan)' : 'var(--text-muted)' }}>
+                  {me.status === 'available' ? 'open to work' : me.status}
+                </span>
               </div>
             </div>
             <div 

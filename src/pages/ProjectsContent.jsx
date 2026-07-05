@@ -96,17 +96,17 @@ export default function ProjectsContent() {
       </RevealOnScroll>
 
       {/* ── Cards ──────────────────────────────── */}
-      <RevealOnScroll>
       <TypingLine text="ls -la ./projects" wrapperClassName="projects-opener">
         <span className="projects-opener__cmd">ls -la </span>
         <span className="projects-opener__arg">./projects</span>
       </TypingLine>
       <div className="projects-cards">
         {filtered.map((p, i) => (
-          <ProjectCard key={p.name} project={p} index={String(i + 1).padStart(2, '0')} />
+          <RevealOnScroll key={p.name}>
+            <ProjectCard project={p} index={String(i + 1).padStart(2, '0')} />
+          </RevealOnScroll>
         ))}
       </div>
-      </RevealOnScroll>
 
       {/* ── Empty state ────────────────────────── */}
       {filtered.length === 0 && (
@@ -115,6 +115,21 @@ export default function ProjectsContent() {
           <span className="projects-empty__text">no matches. try another query.</span>
         </div>
       )}
+
+      {/* ── View more on GitHub ────────────────── */}
+      <RevealOnScroll>
+        <div className="projects-github-cta">
+          <a
+            href="https://github.com/Mahmoud7111"
+            target="_blank"
+            rel="noreferrer"
+            className="projects-github-btn"
+          >
+            <GithubIcon size={15} />
+            <span>$ view more on github</span>
+          </a>
+        </div>
+      </RevealOnScroll>
     </div>
   )
 }

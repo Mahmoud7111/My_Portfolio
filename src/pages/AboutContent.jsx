@@ -1,4 +1,4 @@
-import { Download, ExternalLink, MapPin, Briefcase, Coffee, Music, Layers, Cpu, Languages, GraduationCap, Award, FileText, Trophy } from 'lucide-react'
+import { Download, ExternalLink, MapPin, Briefcase, Coffee, Music, Layers, Cpu, Code, Languages, GraduationCap, Award, FileText, Trophy } from 'lucide-react'
 import AsciiArt from '../components/ascii/AsciiArt'
 import { ART } from '../components/ascii/art'
 import { me } from '../data/me'
@@ -6,7 +6,7 @@ import { JOURNEY } from '../data/journey'
 import RevealOnScroll from '../components/ui/RevealOnScroll'
 import TypingLine from '../components/ui/TypingLine'
 
-const ICONS = { MapPin, Briefcase, Coffee, Music, Layers, Cpu }
+const ICONS = { MapPin, Briefcase, Coffee, Music, Layers, Cpu, Code }
 
 const TYPE_STYLES = {
   experience:    { className: 'ab-type-pill ab-type-pill--cyan',      label: 'Professional experience' },
@@ -18,7 +18,7 @@ const TYPE_STYLES = {
 const SKILL_CATEGORIES = [
   { key: 'languages',  label: 'Languages',  items: me.skills.languages },
   { key: 'frameworks', label: 'Frameworks', items: me.skills.frameworks },
-  { key: 'aiml',       label: 'AI / ML',    items: me.skills.aiml },
+  { key: 'ai_tools',   label: 'AI Tools',   items: me.skills.ai_tools },
   { key: 'tools',      label: 'Tools',      items: me.skills.tools },
 ]
 
