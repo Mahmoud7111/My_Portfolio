@@ -112,7 +112,6 @@ export default function AchievementsContent() {
       </div>
 
       {/* Cards grid */}
-      <RevealOnScroll>
       <TypingLine text="cat achievements.json">
         <span className="hc-cmd">cat </span>
         <span className="hc-var">achievements.json</span>
@@ -167,7 +166,6 @@ export default function AchievementsContent() {
           )
         })}
       </div>
-      </RevealOnScroll>
 
       {/* Clear button */}
       <div className="achv-clear">

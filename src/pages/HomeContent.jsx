@@ -153,8 +153,8 @@ export default function HomeContent() {
         <div className="hc-panel__body">
           <TypingLine text="awk '{ print $value }' stats.tsv">
             <span className="hc-cmd">
-              awk &apos;&#123; print{' '}
-              <span className="hc-var">$value</span> &#125;&apos;{' '}
+              awk '&#123; print{' '}
+              <span className="hc-var">$value</span> &#125;'{' '}
             </span>
             <span className="hc-var">stats.tsv</span>
           </TypingLine>
