@@ -124,7 +124,7 @@ export default function TerminalWindow() {
   const startTyping = () => setTypingCount((n) => n + 1)
   const stopTyping  = () => setTypingCount((n) => Math.max(0, n - 1))
 
-  const { history, input, setInput, submit, chatMode, runFromClick, inputRef, pushLine } =
+  const { history, input, setInput, submit, chatMode, runFromClick, inputRef, pushLine, tabComplete, getCompletion } =
     useTerminal()
   const { sendMessage, isLoading } = useChat()
 
@@ -460,26 +460,61 @@ export default function TerminalWindow() {
               <form
                 onSubmit={handleSubmit}
                 className="terminal-prompt"
-                style={{ marginTop: 8, marginBottom: 32 }}
+                style={{ marginTop: 8, marginBottom: 32, position: 'relative' }}
               >
                 <span className="prompt-symbol">$</span>
-                <input
-                  ref={inputRef}
-                  value={input}
-                  onChange={e => setInput(e.target.value)}
-                  autoFocus
-                  spellCheck={false}
-                  autoComplete="off"
-                  placeholder={chatMode ? 'Ask me anything...' : ''}
-                  style={{
-                    flex: 1,
-                    background: 'transparent',
-                    color: 'var(--text-body)',
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: 14,
-                    caretColor: 'var(--coral)',
-                  }}
-                />
+                <div className="terminal-input-wrap" style={{ position: 'relative', flex: 1, display: 'flex', alignItems: 'center' }}>
+                  {/* Ghost autocomplete suggestion rendered behind the input */}
+                  <span
+                    className="terminal-ghost"
+                    aria-hidden="true"
+                    style={{
+                      position: 'absolute',
+                      left: 0,
+                      top: 0,
+                      bottom: 0,
+                      display: 'flex',
+                      alignItems: 'center',
+                      pointerEvents: 'none',
+                      color: 'var(--text-muted)',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 14,
+                      whiteSpace: 'pre',
+                      opacity: 0.55,
+                    }}
+                  >
+                    {(() => {
+                      const match = chatMode ? null : getCompletion(input)
+                      if (!match) return ''
+                      return match
+                    })()}
+                  </span>
+                  <input
+                    ref={inputRef}
+                    value={input}
+                    onChange={e => setInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Tab' && !chatMode) {
+                        e.preventDefault()
+                        tabComplete()
+                      }
+                    }}
+                    autoFocus
+                    spellCheck={false}
+                    autoComplete="off"
+                    placeholder={chatMode ? 'Ask me anything...' : ''}
+                    style={{
+                      flex: 1,
+                      background: 'transparent',
+                      color: 'var(--cyan)',
+                      fontFamily: 'var(--font-mono)',
+                      fontSize: 14,
+                      caretColor: 'var(--coral)',
+                      position: 'relative',
+                      zIndex: 1,
+                    }}
+                  />
+                </div>
               </form>
               <HomeContent />
             </>

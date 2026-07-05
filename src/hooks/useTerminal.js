@@ -1,5 +1,5 @@
-import { useState, useCallback, useRef } from 'react'
-import { getCommand } from '../data/commands'
+import { useState, useCallback, useRef, useMemo } from 'react'
+import { COMMANDS, getCommand } from '../data/commands'
 import { useAchievements } from './useAchievements'
 
 const GREETINGS = ['hello', 'hi', 'hey', 'sup', 'yo', 'greetings', 'good morning', 'good evening', 'howdy']
@@ -27,6 +27,33 @@ export function useTerminal() {
   }, [])
 
   const clear = useCallback(() => setHistory([]), [])
+
+  // ── Command list for autocomplete (sorted, lowercase ids) ──
+  const commandIds = useMemo(
+    () => COMMANDS.map((c) => c.id).sort(),
+    [],
+  )
+
+  // Returns the best autocomplete match for the current input prefix,
+  // or null if no command starts with that prefix.
+  const getCompletion = useCallback(
+    (raw) => {
+      const prefix = raw.trim().toLowerCase()
+      if (!prefix) return null
+      // exact match → no completion to offer
+      if (commandIds.includes(prefix)) return null
+      const match = commandIds.find((id) => id.startsWith(prefix))
+      return match ?? null
+    },
+    [commandIds],
+  )
+
+  // Tab handler: complete the current input to the best matching command.
+  // If a completion exists, replace the input with it. Otherwise no-op.
+  const tabComplete = useCallback(() => {
+    const match = getCompletion(input)
+    if (match) setInput(match)
+  }, [input, getCompletion])
 
   const runCommand = useCallback(
     (raw) => {
@@ -131,5 +158,7 @@ export function useTerminal() {
     runFromClick,
     inputRef,
     pushLine,
+    tabComplete,
+    getCompletion,
   }
 }
