@@ -58,7 +58,7 @@ export default function AboutContent() {
       <div className="hc-panel" style={{ marginBottom: 40 }}>
         <PanelChrome filename="about.md" subtitle="bio" />
         <div className="hc-panel__body">
-          <TypingLine text="cat about.md" delay={0}>
+          <TypingLine text="cat about.md">
             <CmdLine cmd="cat" arg="about.md" />
           </TypingLine>
 
@@ -107,7 +107,7 @@ export default function AboutContent() {
           subtitle={`${JOURNEY.length} entries`}
         />
         <div className="hc-panel__body">
-          <TypingLine text="git log --all --oneline" delay={100}>
+          <TypingLine text="git log --all --oneline">
             <CmdLine cmd="git log --all" arg="--oneline" />
           </TypingLine>
           <div className="ab-timeline">
@@ -141,7 +141,7 @@ export default function AboutContent() {
       <div className="hc-panel" style={{ marginBottom: 40 }}>
         <PanelChrome filename="stack.json" subtitle={`${totalSkills} entries`} />
         <div className="hc-panel__body">
-          <TypingLine text="cat stack.json" delay={200}>
+          <TypingLine text="cat stack.json">
             <CmdLine cmd="cat" arg="stack.json" />
           </TypingLine>
 
@@ -181,7 +181,7 @@ export default function AboutContent() {
       <div className="hc-panel" style={{ marginBottom: 40 }}>
         <PanelChrome filename="milestones.log" subtitle={`${me.milestones.length} entries`} />
         <div className="hc-panel__body">
-          <TypingLine text="ls ./achievements && ls ./publications && ls ./certs" delay={300}>
+          <TypingLine text="ls ./achievements && ls ./publications && ls ./certs">
             <span className="hc-cmd">ls </span>
             <span className="hc-var">./achievements</span>
             <span className="hc-cmd"> && ls </span>
@@ -224,7 +224,7 @@ export default function AboutContent() {
       <div className="hc-panel" style={{ marginBottom: 40 }}>
         <PanelChrome filename="education.md" subtitle="uni + courses" />
         <div className="hc-panel__body">
-          <TypingLine text="cat education.md" delay={400}>
+          <TypingLine text="cat education.md">
             <CmdLine cmd="cat" arg="education.md" />
           </TypingLine>
           <div className="ab-edu-grid">
@@ -264,7 +264,7 @@ export default function AboutContent() {
       <div className="hc-panel" style={{ marginBottom: 40 }}>
         <PanelChrome filename="whoami.yaml" subtitle="quick facts" />
         <div className="hc-panel__body">
-          <TypingLine text="cat whoami.yaml" delay={500}>
+          <TypingLine text="cat whoami.yaml">
             <CmdLine cmd="cat" arg="whoami.yaml" />
           </TypingLine>
           <div className="ab-facts-grid">
@@ -295,7 +295,7 @@ export default function AboutContent() {
       <div className="hc-panel" style={{ marginBottom: 24 }}>
         <PanelChrome filename="languages.i18n" subtitle="spoken" />
         <div className="hc-panel__body">
-          <TypingLine text="locale -a" delay={600}>
+          <TypingLine text="locale -a">
             <CmdLine cmd="locale" arg="-a" />
           </TypingLine>
           <div className="ab-langs-grid">

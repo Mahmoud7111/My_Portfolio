@@ -91,6 +91,10 @@ export default function AchievementsContent() {
       </div>
 
       {/* Filter pills */}
+      <TypingLine text="grep --filter achievements.db">
+        <span className="hc-cmd">grep --filter </span>
+        <span className="hc-var">achievements.db</span>
+      </TypingLine>
       <div className="achv-filters">
         {FILTERS.map((f) => {
           const isActive = activeFilter === f
@@ -109,6 +113,10 @@ export default function AchievementsContent() {
 
       {/* Cards grid */}
       <RevealOnScroll>
+      <TypingLine text="cat achievements.json">
+        <span className="hc-cmd">cat </span>
+        <span className="hc-var">achievements.json</span>
+      </TypingLine>
       <div className="achievements-grid">
         {filtered.map((a) => {
           const locked = !isUnlocked(a.id)

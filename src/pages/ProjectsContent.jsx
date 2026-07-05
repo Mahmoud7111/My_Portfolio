@@ -5,6 +5,7 @@ import AsciiArt from '../components/ascii/AsciiArt'
 import { ART } from '../components/ascii/art'
 import { PROJECTS, ALL_TAGS } from '../data/projects'
 import RevealOnScroll from '../components/ui/RevealOnScroll'
+import TypingLine from '../components/ui/TypingLine'
 
 const TAG_TO_EXT = {
   python: '.py',
@@ -35,12 +36,11 @@ export default function ProjectsContent() {
       <AsciiArt art={ART.PROJECTS} color="var(--coral)" glow="var(--coral-glow)" />
 
       {/* ── Shell opener ───────────────────────── */}
-      <div className="projects-opener">
-        <span className="projects-opener__prompt">$ </span>
+      <TypingLine text='find ./projects -type d -name "*"' wrapperClassName="projects-opener">
         <span className="projects-opener__cmd">find </span>
         <span className="projects-opener__arg">./projects -type d -name &quot;*&quot;</span>
-        <span className="projects-opener__comment">// {PROJECTS.length} repositories</span>
-      </div>
+      </TypingLine>
+      <span className="projects-opener__comment">// {PROJECTS.length} repositories</span>
 
       {/* ── ASCII folder + scanning log ────────── */}
       <div className="projects-header">
@@ -66,6 +66,10 @@ export default function ProjectsContent() {
 
       {/* ── Filter chips + grep ────────────────── */}
       <RevealOnScroll>
+      <TypingLine text="grep --tags ./projects" wrapperClassName="projects-opener">
+        <span className="projects-opener__cmd">grep --tags </span>
+        <span className="projects-opener__arg">./projects</span>
+      </TypingLine>
       <div className="projects-toolbar">
         <div className="projects-chips">
           {ALL_TAGS.map((tag) => (
@@ -93,6 +97,10 @@ export default function ProjectsContent() {
 
       {/* ── Cards ──────────────────────────────── */}
       <RevealOnScroll>
+      <TypingLine text="ls -la ./projects" wrapperClassName="projects-opener">
+        <span className="projects-opener__cmd">ls -la </span>
+        <span className="projects-opener__arg">./projects</span>
+      </TypingLine>
       <div className="projects-cards">
         {filtered.map((p, i) => (
           <ProjectCard key={p.name} project={p} index={String(i + 1).padStart(2, '0')} />

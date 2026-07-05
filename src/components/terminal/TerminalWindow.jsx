@@ -12,6 +12,8 @@ import { me } from '../../data/me'
 import TerminalClosedScreen from './TerminalClosedScreen'
 import HelloWorldScreen from './HelloWorldScreen'
 import AchievementToast from '../ui/AchievementToast'
+import TypewriterText from '../ui/TypewriterText'
+import { useTypewriter } from '../../hooks/useTypewriter'
 
 import HomeContent from '../../pages/HomeContent'
 import ProjectsContent from '../../pages/ProjectsContent'
@@ -115,7 +117,12 @@ export default function TerminalWindow() {
   const [windowState, setWindowState] = useState('hello')
   const [clock,       setClock]       = useState({ long: '', short: '' })
   const [menuOpen,    setMenuOpen]    = useState(false)
+  const [typingCount, setTypingCount] = useState(0)
   const bodyRef = useRef(null)
+
+  const isTyping = typingCount > 0
+  const startTyping = () => setTypingCount((n) => n + 1)
+  const stopTyping  = () => setTypingCount((n) => Math.max(0, n - 1))
 
   const { history, input, setInput, submit, chatMode, runFromClick, inputRef, pushLine } =
     useTerminal()
@@ -167,6 +174,7 @@ export default function TerminalWindow() {
   // ── Submit ───────────────────────────────────────────────────
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (isTyping) return // ignore Enter while output is being typed out
     const value = input.trim()
     if (chatMode && value && value.toLowerCase() !== 'exit') {
       submit()
@@ -437,7 +445,12 @@ export default function TerminalWindow() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.2, ease: 'easeOut' }}
                   >
-                    <HistoryLine entry={entry} onCommandClick={runFromClick} />
+                    <HistoryLine
+                      entry={entry}
+                      onCommandClick={runFromClick}
+                      onTypingStart={startTyping}
+                      onTypingDone={stopTyping}
+                    />
                   </motion.div>
                 ))}
               </div>
@@ -531,8 +544,36 @@ function Seg({ children, variant, dir, z = 1 }) {
   )
 }
 
+// ── Chat reply line — typed inline with useTypewriter ────────
+function ChatReplyLine({ value, onTypingStart, onTypingDone }) {
+  const { typedLines, isTyping } = useTypewriter(value, 18, onTypingDone)
+  const startedRef = useRef(false)
+
+  useEffect(() => {
+    if (isTyping && !startedRef.current) {
+      startedRef.current = true
+      onTypingStart?.()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  return (
+    <p style={{ color: 'var(--text-body)', marginBottom: 8 }}>
+      <span style={{ color: 'var(--cyan)' }}>{me.handle}&gt;</span>{' '}
+      {typedLines[0] || '\u00A0'}
+      {isTyping && (
+        <span
+          className="terminal-cursor"
+          style={{ display: 'inline-block', marginLeft: 2, verticalAlign: 'middle' }}
+          aria-hidden="true"
+        />
+      )}
+    </p>
+  )
+}
+
 // ── History rendering ────────────────────────────────────────
-function HistoryLine({ entry, onCommandClick }) {
+function HistoryLine({ entry, onCommandClick, onTypingStart, onTypingDone }) {
   if (entry.type === 'input') {
     return <p><span className="prompt-symbol">$</span> {entry.value}</p>
   }
@@ -540,9 +581,13 @@ function HistoryLine({ entry, onCommandClick }) {
     const lines = Array.isArray(entry.value) ? entry.value : [entry.value]
     return (
       <div style={{ marginBottom: 8 }}>
-        {lines.map((line, i) => (
-          <p key={i} style={{ color: 'var(--text-body)' }}>{line || '\u00A0'}</p>
-        ))}
+        <TypewriterText
+          text={lines}
+          onStart={onTypingStart}
+          onComplete={onTypingDone}
+          lineClassName="tw-system-line"
+          lineStyle={{ color: 'var(--text-body)' }}
+        />
       </div>
     )
   }
@@ -553,9 +598,11 @@ function HistoryLine({ entry, onCommandClick }) {
   }
   if (entry.type === 'chat-reply') {
     return (
-      <p style={{ color: 'var(--text-body)', marginBottom: 8 }}>
-        <span style={{ color: 'var(--cyan)' }}>{me.handle}&gt;</span> {entry.value}
-      </p>
+      <ChatReplyLine
+        value={entry.value}
+        onTypingStart={onTypingStart}
+        onTypingDone={onTypingDone}
+      />
     )
   }
   return null

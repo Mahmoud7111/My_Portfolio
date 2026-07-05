@@ -75,8 +75,9 @@
   margin-bottom: 24px;
   line-height: 1.5;
 
-  &__prompt {
-    color: var(--coral);
+  .hc-prompt {
+    font-weight: 400;
+    text-shadow: none;
   }
 
   &__cmd {
@@ -267,6 +268,11 @@
 
   &__prompt {
     @include mono(11px);
+
+    .hc-prompt {
+      font-weight: 400;
+      text-shadow: none;
+    }
   }
 
   &__prompt-dollar {

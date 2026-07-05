@@ -151,14 +151,13 @@ export default function HomeContent() {
           <span className="hc-panel__controls">⌃ ⌄ ×</span>
         </div>
         <div className="hc-panel__body">
-          <div className="hc-cmd-line" style={{ marginBottom: 24 }}>
-            <span className="hc-prompt">$</span>
+          <TypingLine text="awk '{ print $value }' stats.tsv">
             <span className="hc-cmd">
               awk &apos;&#123; print{' '}
               <span className="hc-var">$value</span> &#125;&apos;{' '}
             </span>
             <span className="hc-var">stats.tsv</span>
-          </div>
+          </TypingLine>
           <div className="hc-stat-grid">
             {stats.map((s) => (
               <div key={s.n} className="hc-stat-card">

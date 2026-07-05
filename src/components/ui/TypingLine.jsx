@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { useInView } from 'framer-motion'
 
 function extractText(children) {
   if (!children) return ''
@@ -13,42 +14,43 @@ function extractText(children) {
     .join('')
 }
 
-export default function TypingLine({ children, text, delay = 0 }) {
+export default function TypingLine({ children, text, wrapperClassName }) {
   const [typed, setTyped] = useState('')
   const [done, setDone] = useState(false)
   const indexRef = useRef(0)
   const fullText = text || extractText(children)
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, amount: 0.5 })
 
   useEffect(() => {
-    if (!fullText) return
+    if (!fullText || !isInView) return
     indexRef.current = 0
     setTyped('')
     setDone(false)
 
-    const startTimeout = setTimeout(() => {
-      const id = setInterval(() => {
-        indexRef.current++
-        setTyped(fullText.slice(0, indexRef.current))
-        if (indexRef.current >= fullText.length) {
-          clearInterval(id)
-          setTimeout(() => setDone(true), 150)
-        }
-      }, 50)
-      return () => clearInterval(id)
-    }, delay)
+    const id = setInterval(() => {
+      indexRef.current++
+      setTyped(fullText.slice(0, indexRef.current))
+      if (indexRef.current >= fullText.length) {
+        clearInterval(id)
+        setTimeout(() => setDone(true), 150)
+      }
+    }, 50)
 
-    return () => clearTimeout(startTimeout)
-  }, [fullText, delay])
+    return () => clearInterval(id)
+  }, [fullText, isInView])
 
   return (
-    <div className="hc-cmd-line">
-      <span className="hc-prompt">$</span>
+    <div ref={ref} className={wrapperClassName || 'hc-cmd-line'}>
+      <span className="hc-prompt">$ </span>
       {done ? (
         children
       ) : (
         <span>
-          {typed}
-          <span className="typing-cursor">_</span>
+          {isInView ? (typed || '\u00A0') : '\u00A0'}
+          {isInView && !done && (
+            <span className="typing-cursor">_</span>
+          )}
         </span>
       )}
     </div>

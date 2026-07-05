@@ -5,6 +5,7 @@ import { GithubIcon, LinkedinIcon, TwitterIcon } from '../components/ui/BrandIco
 import { ART } from '../components/ascii/art'
 import { me } from '../data/me'
 import RevealOnScroll from '../components/ui/RevealOnScroll'
+import TypingLine from '../components/ui/TypingLine'
 
 const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID
 const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
@@ -55,11 +56,10 @@ export default function ContactContent() {
           {ART.CONTACT}
         </pre>
 
-        <div className="opener">
-          <span className="opener__prompt">$ </span>
+        <TypingLine text={`mail --compose ${me.email}`} wrapperClassName="opener">
           <span className="opener__cmd">mail --compose </span>
           <span className="opener__target">{me.email}</span>
-        </div>
+        </TypingLine>
 
         <div className="status-strip">
           <div className="status-item">
@@ -155,11 +155,10 @@ export default function ContactContent() {
 
         <div className="contact-footer">
           <div className="contact-footer__left">
-            <div className="contact-footer__prompt">
-              <span className="contact-footer__prompt-dollar">$ </span>
+            <TypingLine text="ls ./socials" wrapperClassName="contact-footer__prompt">
               <span className="contact-footer__prompt-cmd">ls </span>
               <span className="contact-footer__prompt-path">./socials</span>
-            </div>
+            </TypingLine>
             <h3 className="contact-footer__heading">Find me on</h3>
           </div>
 
