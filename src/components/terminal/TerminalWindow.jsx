@@ -403,7 +403,7 @@ export default function TerminalWindow() {
 
         {/* ══ Body ════════════════════════════════════════════ */}
         <div
-          className="terminal-body"
+          className={`terminal-body ${windowState === 'maximized' ? 'terminal-body--maximized' : ''}`}
           ref={bodyRef}
         >
           <AnimatePresence mode="wait">
