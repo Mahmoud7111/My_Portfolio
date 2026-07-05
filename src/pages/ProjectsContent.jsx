@@ -4,6 +4,7 @@ import { GithubIcon } from '../components/ui/BrandIcons'
 import AsciiArt from '../components/ascii/AsciiArt'
 import { ART } from '../components/ascii/art'
 import { PROJECTS, ALL_TAGS } from '../data/projects'
+import RevealOnScroll from '../components/ui/RevealOnScroll'
 
 const TAG_TO_EXT = {
   python: '.py',
@@ -64,6 +65,7 @@ export default function ProjectsContent() {
       <div className="projects-rule" />
 
       {/* ── Filter chips + grep ────────────────── */}
+      <RevealOnScroll>
       <div className="projects-toolbar">
         <div className="projects-chips">
           {ALL_TAGS.map((tag) => (
@@ -87,13 +89,16 @@ export default function ProjectsContent() {
           />
         </div>
       </div>
+      </RevealOnScroll>
 
       {/* ── Cards ──────────────────────────────── */}
+      <RevealOnScroll>
       <div className="projects-cards">
         {filtered.map((p, i) => (
           <ProjectCard key={p.name} project={p} index={String(i + 1).padStart(2, '0')} />
         ))}
       </div>
+      </RevealOnScroll>
 
       {/* ── Empty state ────────────────────────── */}
       {filtered.length === 0 && (

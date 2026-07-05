@@ -3,6 +3,8 @@ import AsciiArt from '../components/ascii/AsciiArt'
 import { ART } from '../components/ascii/art'
 import { me } from '../data/me'
 import { JOURNEY } from '../data/journey'
+import RevealOnScroll from '../components/ui/RevealOnScroll'
+import TypingLine from '../components/ui/TypingLine'
 
 const ICONS = { MapPin, Briefcase, Coffee, Music, Layers, Cpu }
 
@@ -38,11 +40,10 @@ function PanelChrome({ filename, subtitle, controls }) {
 
 function CmdLine({ cmd, arg }) {
   return (
-    <div className="hc-cmd-line">
-      <span className="hc-prompt">$</span>
+    <>
       {cmd && <span className="hc-cmd">{cmd}</span>}
       {arg && <span className="hc-var">{arg}</span>}
-    </div>
+    </>
   )
 }
 
@@ -53,10 +54,13 @@ export default function AboutContent() {
       {/* ══════════════════════════════════════════════════════════ */}
       {/* PANEL 1 — about.md — bio                                  */}
       {/* ══════════════════════════════════════════════════════════ */}
+      <RevealOnScroll>
       <div className="hc-panel" style={{ marginBottom: 40 }}>
         <PanelChrome filename="about.md" subtitle="bio" />
         <div className="hc-panel__body">
-          <CmdLine cmd="cat" arg="about.md" />
+          <TypingLine text="cat about.md" delay={0}>
+            <CmdLine cmd="cat" arg="about.md" />
+          </TypingLine>
 
           <AsciiArt art={ART.ABOUT_ME} color="var(--cyan)" glow="var(--cyan-glow)" />
 
@@ -91,17 +95,21 @@ export default function AboutContent() {
           </div>
         </div>
       </div>
+      </RevealOnScroll>
 
       {/* ══════════════════════════════════════════════════════════ */}
       {/* PANEL 2 — journey.log — entries                           */}
       {/* ══════════════════════════════════════════════════════════ */}
+      <RevealOnScroll>
       <div className="hc-panel" style={{ marginBottom: 40 }}>
         <PanelChrome
           filename="journey.log"
           subtitle={`${JOURNEY.length} entries`}
         />
         <div className="hc-panel__body">
-          <CmdLine cmd="git log --all" arg="--oneline" />
+          <TypingLine text="git log --all --oneline" delay={100}>
+            <CmdLine cmd="git log --all" arg="--oneline" />
+          </TypingLine>
           <div className="ab-timeline">
             {JOURNEY.map((entry, i) => {
               const ts = TYPE_STYLES[entry.type] || TYPE_STYLES.experience
@@ -124,14 +132,18 @@ export default function AboutContent() {
           </div>
         </div>
       </div>
+      </RevealOnScroll>
 
       {/* ══════════════════════════════════════════════════════════ */}
       {/* PANEL 3 — stack.json — N entries                          */}
       {/* ══════════════════════════════════════════════════════════ */}
+      <RevealOnScroll>
       <div className="hc-panel" style={{ marginBottom: 40 }}>
         <PanelChrome filename="stack.json" subtitle={`${totalSkills} entries`} />
         <div className="hc-panel__body">
-          <CmdLine cmd="cat" arg="stack.json" />
+          <TypingLine text="cat stack.json" delay={200}>
+            <CmdLine cmd="cat" arg="stack.json" />
+          </TypingLine>
 
           <div className="ab-stack-header">
             <AsciiArt art={ART.STACK} color="var(--cyan)" glow="var(--cyan-glow)" />
@@ -160,22 +172,23 @@ export default function AboutContent() {
           </div>
         </div>
       </div>
+      </RevealOnScroll>
 
       {/* ══════════════════════════════════════════════════════════ */}
       {/* PANEL 4 — milestones.log — achievements / publications / certs */}
       {/* ══════════════════════════════════════════════════════════ */}
+      <RevealOnScroll>
       <div className="hc-panel" style={{ marginBottom: 40 }}>
         <PanelChrome filename="milestones.log" subtitle={`${me.milestones.length} entries`} />
         <div className="hc-panel__body">
-          <div className="hc-cmd-line">
-            <span className="hc-prompt">$</span>
+          <TypingLine text="ls ./achievements && ls ./publications && ls ./certs" delay={300}>
             <span className="hc-cmd">ls </span>
             <span className="hc-var">./achievements</span>
             <span className="hc-cmd"> && ls </span>
             <span className="hc-var">./publications</span>
             <span className="hc-cmd"> && ls </span>
             <span className="hc-var">./certs</span>
-          </div>
+          </TypingLine>
           <div className="achv-banner">
             <AsciiArt art={ART.ACHIEVED} color="var(--coral)" glow="var(--coral-glow)" />
             <AsciiArt art={ART.TROPHY} color="var(--gold)" fontSize="11px" hideOnMobile={false} />
@@ -202,14 +215,18 @@ export default function AboutContent() {
           </div>
         </div>
       </div>
+      </RevealOnScroll>
 
       {/* ══════════════════════════════════════════════════════════ */}
       {/* PANEL 5 — education.md — uni + courses                    */}
       {/* ══════════════════════════════════════════════════════════ */}
+      <RevealOnScroll>
       <div className="hc-panel" style={{ marginBottom: 40 }}>
         <PanelChrome filename="education.md" subtitle="uni + courses" />
         <div className="hc-panel__body">
-          <CmdLine cmd="cat" arg="education.md" />
+          <TypingLine text="cat education.md" delay={400}>
+            <CmdLine cmd="cat" arg="education.md" />
+          </TypingLine>
           <div className="ab-edu-grid">
             <div className="ab-edu-degree">
               {me.education.map((edu, i) => (
@@ -238,14 +255,18 @@ export default function AboutContent() {
           </div>
         </div>
       </div>
+      </RevealOnScroll>
 
       {/* ══════════════════════════════════════════════════════════ */}
       {/* PANEL 6 — whoami.yaml — quick facts                       */}
       {/* ══════════════════════════════════════════════════════════ */}
+      <RevealOnScroll>
       <div className="hc-panel" style={{ marginBottom: 40 }}>
         <PanelChrome filename="whoami.yaml" subtitle="quick facts" />
         <div className="hc-panel__body">
-          <CmdLine cmd="cat" arg="whoami.yaml" />
+          <TypingLine text="cat whoami.yaml" delay={500}>
+            <CmdLine cmd="cat" arg="whoami.yaml" />
+          </TypingLine>
           <div className="ab-facts-grid">
             {me.quickFacts.map((fact, i) => {
               const Icon = ICONS[fact.icon]
@@ -265,14 +286,18 @@ export default function AboutContent() {
           </div>
         </div>
       </div>
+      </RevealOnScroll>
 
       {/* ══════════════════════════════════════════════════════════ */}
       {/* PANEL 7 — languages.i18n — spoken                         */}
       {/* ══════════════════════════════════════════════════════════ */}
+      <RevealOnScroll>
       <div className="hc-panel" style={{ marginBottom: 24 }}>
         <PanelChrome filename="languages.i18n" subtitle="spoken" />
         <div className="hc-panel__body">
-          <CmdLine cmd="locale" arg="-a" />
+          <TypingLine text="locale -a" delay={600}>
+            <CmdLine cmd="locale" arg="-a" />
+          </TypingLine>
           <div className="ab-langs-grid">
             {me.languages.map((lang, i) => {
               const langColor = i % 2 === 0 ? 'ab-icon-sq--coral' : 'ab-icon-sq--cyan'
@@ -291,6 +316,7 @@ export default function AboutContent() {
           </div>
         </div>
       </div>
+      </RevealOnScroll>
 
     </div>
   )

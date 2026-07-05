@@ -398,6 +398,14 @@ export default function TerminalWindow() {
           className="terminal-body"
           ref={bodyRef}
         >
+          <AnimatePresence mode="wait">
+          <motion.div
+            key={location.pathname}
+            initial={{ opacity: 0, y: 6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+          >
           {location.pathname === '/' && (
             <>
               <AsciiArt
@@ -417,13 +425,20 @@ export default function TerminalWindow() {
                   or selecting a section from the <span style={{ color: 'var(--gold)' }}>navigation menu</span> above.
                 </p>
                 <p className="hc-hint">
-                  Type <span className="hc-key">&apos;help&apos;</span> for commands &nbsp;·&nbsp;{' '}
-                  <span className="hc-key">&apos;chat&apos;</span> to open the AI assistant
+                  Type <span className="hc-key">'help'</span> for commands &nbsp;·&nbsp;{' '}
+                  <span className="hc-key">'chat'</span> to open the AI assistant
                 </p>
               </div>
               <div>
                 {history.map((entry, i) => (
-                  <HistoryLine key={i} entry={entry} onCommandClick={runFromClick} />
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: -4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.2, ease: 'easeOut' }}
+                  >
+                    <HistoryLine entry={entry} onCommandClick={runFromClick} />
+                  </motion.div>
                 ))}
               </div>
               {isLoading && (
@@ -461,6 +476,8 @@ export default function TerminalWindow() {
           {location.pathname === '/about'        && <AboutContent />}
           {location.pathname === '/contact'      && <ContactContent />}
           {location.pathname === '/achievements' && <AchievementsContent />}
+          </motion.div>
+          </AnimatePresence>
         </div>
 
         {/* ══ Powerline footer ════════════════════════════════ */}

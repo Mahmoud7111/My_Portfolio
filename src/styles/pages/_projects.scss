@@ -100,8 +100,13 @@
   font-family: var(--font-mono);
   font-size: 12px;
   cursor: pointer;
-  transition: all 150ms ease;
+  transition: all var(--transition-fast);
   line-height: 1.5;
+
+  &:hover {
+    border-color: var(--cyan-edge);
+    transform: translateY(-1px);
+  }
 }
 
 .projects-chip--active {
@@ -182,7 +187,7 @@
   overflow: hidden;
   position: relative;
   background: var(--surface);
-  transition: box-shadow 200ms ease, border-color 200ms ease;
+  transition: box-shadow var(--transition-base), border-color var(--transition-base);
 }
 
 /* Top-edge coral shine */
@@ -196,7 +201,7 @@
   background: linear-gradient(90deg, transparent, var(--coral), transparent);
   box-shadow: 0 0 12px var(--coral-glow);
   opacity: 0;
-  transition: opacity 200ms ease;
+  transition: opacity var(--transition-base);
   pointer-events: none;
   z-index: 2;
 }
@@ -485,7 +490,7 @@
   align-items: center;
   gap: 4px;
   opacity: 0;
-  transition: opacity 150ms ease;
+  transition: opacity var(--transition-fast);
 }
 
 .project-row-card:hover .project-open-hint {
@@ -514,7 +519,7 @@
   font-family: var(--font-mono);
   font-size: 12px;
   text-decoration: none;
-  transition: all 150ms ease;
+  transition: all var(--transition-fast);
 }
 
 .btn-source:hover {
@@ -534,7 +539,7 @@
   font-family: var(--font-mono);
   font-size: 12px;
   text-decoration: none;
-  transition: all 150ms ease;
+  transition: all var(--transition-fast);
 }
 
 .btn-live:hover {

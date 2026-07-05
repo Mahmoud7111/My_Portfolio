@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import { ExternalLink, Star, Download } from 'lucide-react'
 import { GithubIcon } from '../components/ui/BrandIcons'
+import RevealOnScroll from '../components/ui/RevealOnScroll'
+import TypingLine from '../components/ui/TypingLine'
 import { me } from '../data/me'
 import { PROJECTS } from '../data/projects'
 import { ART } from '../components/ascii/art'
@@ -57,7 +59,7 @@ export default function HomeContent() {
       {/* ══════════════════════════════════════════════════════ */}
       <SectionComment label="about" />
 
-
+      <RevealOnScroll>
       <div className="hc-panel" style={{ marginBottom: 40, marginTop: 12 }}>
         {/* Chrome bar */}
         <div className="hc-panel__chrome">
@@ -88,10 +90,9 @@ export default function HomeContent() {
 
           <div className="hc-about-3d-split">
             <div className="hc-about-left">
-              <div className="hc-cmd-line" style={{ marginBottom: 12 }}>
-                <span className="hc-prompt">$</span>
+              <TypingLine text="whoami">
                 <span className="hc-var">whoami</span>
-              </div>
+              </TypingLine>
               
               <h1 style={{ fontSize: 'clamp(24px, 3vw, 36px)', margin: '0 0 4px', color: 'var(--text-heading)', fontWeight: 700 }}>
                 {me.name}
@@ -131,12 +132,14 @@ export default function HomeContent() {
           </div>
         </div>
       </div>
+      </RevealOnScroll>
 
       {/* ══════════════════════════════════════════════════════ */}
       {/* STATS                                                  */}
       {/* ══════════════════════════════════════════════════════ */}
       <SectionComment label="by-the-numbers" />
 
+      <RevealOnScroll>
       <div className="hc-panel" style={{ marginBottom: 40 }}>
         <div className="hc-panel__chrome">
           <div className="hc-panel__chrome-left">
@@ -172,12 +175,14 @@ export default function HomeContent() {
           </div>
         </div>
       </div>
+      </RevealOnScroll>
 
       {/* ══════════════════════════════════════════════════════ */}
       {/* TECH FEED                                              */}
       {/* ══════════════════════════════════════════════════════ */}
       <SectionComment label="tech-feed" />
 
+      <RevealOnScroll>
       <div className="hc-panel" style={{ marginBottom: 40 }}>
         <div className="hc-panel__chrome">
           <div className="hc-panel__chrome-left">
@@ -191,11 +196,10 @@ export default function HomeContent() {
           </span>
         </div>
         <div className="hc-panel__body hc-panel__body--no-pad-v">
-          <div className="hc-cmd-line" style={{ padding: '16px 0 8px' }}>
-            <span className="hc-prompt">$</span>
+          <TypingLine text="watch -n 1 tech-feed">
             <span className="hc-cmd">watch -n 1 </span>
             <span className="hc-var">tech-feed</span>
-          </div>
+          </TypingLine>
           <div className="hc-feed-marquee">
             <div className="hc-feed-marquee__track">
               {[...allSkills, ...allSkills].map((skill, i) => (
@@ -218,12 +222,14 @@ export default function HomeContent() {
           </div>
         </div>
       </div>
+      </RevealOnScroll>
 
       {/* ══════════════════════════════════════════════════════ */}
       {/* FEATURED PROJECTS                                      */}
       {/* ══════════════════════════════════════════════════════ */}
       <SectionComment label="featured" />
 
+      <RevealOnScroll>
       <div className="hc-panel" style={{ marginBottom: 40 }}>
         <div className="hc-panel__chrome">
           <div className="hc-panel__chrome-left">
@@ -235,11 +241,10 @@ export default function HomeContent() {
           <span className="hc-panel__controls">⌃ ⌄ ×</span>
         </div>
         <div className="hc-panel__body">
-          <div className="hc-cmd-line" style={{ marginBottom: 20 }}>
-            <span className="hc-prompt">$</span>
+          <TypingLine text="ls ~/projects/featured">
             <span className="hc-cmd">ls </span>
             <span className="hc-var">~/projects/featured</span>
-          </div>
+          </TypingLine>
 
           {/* Big PROJECTS heading */}
           <pre className="hc-projects-ascii" aria-hidden="true">
@@ -333,12 +338,14 @@ export default function HomeContent() {
           </div>
         </div>
       </div>
+      </RevealOnScroll>
 
       {/* ══════════════════════════════════════════════════════ */}
       {/* CONTACT CTA                                            */}
       {/* ══════════════════════════════════════════════════════ */}
       <SectionComment label="contact" />
 
+      <RevealOnScroll>
       <div className="hc-panel hc-panel--cta" style={{ marginBottom: 24 }}>
         <div className="hc-panel__chrome">
           <div className="hc-panel__chrome-left">
@@ -350,11 +357,10 @@ export default function HomeContent() {
           <span className="hc-panel__controls">⌃ ⌄ ×</span>
         </div>
         <div className="hc-panel__body hc-cta-body">
-          <div className="hc-cmd-line" style={{ marginBottom: 12 }}>
-            <span className="hc-prompt">$</span>
+          <TypingLine text="echo --build-something">
             <span className="hc-cmd">echo </span>
             <span className="hc-var">--build-something</span>
-          </div>
+          </TypingLine>
 
           <div className="hc-cta-center">
             {/* Status pill */}
@@ -394,6 +400,7 @@ export default function HomeContent() {
           </div>
         </div>
       </div>
+      </RevealOnScroll>
 
     </div>
   )

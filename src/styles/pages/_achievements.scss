@@ -136,6 +136,7 @@ $mint: #5dfa92;
     &:hover {
       border-color: var(--coral-edge);
       color: var(--text-body);
+      transform: translateY(-1px);
     }
 
     &.active {

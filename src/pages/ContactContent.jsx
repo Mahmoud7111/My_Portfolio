@@ -4,6 +4,7 @@ import emailjs from '@emailjs/browser'
 import { GithubIcon, LinkedinIcon, TwitterIcon } from '../components/ui/BrandIcons'
 import { ART } from '../components/ascii/art'
 import { me } from '../data/me'
+import RevealOnScroll from '../components/ui/RevealOnScroll'
 
 const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID
 const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
@@ -77,6 +78,7 @@ export default function ContactContent() {
           </div>
         </div>
 
+        <RevealOnScroll>
         {status === 'sent' ? (
           <div className="contact-success">
             <pre className="contact-success__pre">
@@ -149,6 +151,7 @@ export default function ContactContent() {
             )}
           </form>
         )}
+        </RevealOnScroll>
 
         <div className="contact-footer">
           <div className="contact-footer__left">

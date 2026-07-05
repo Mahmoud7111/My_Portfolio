@@ -3,6 +3,8 @@ import AsciiArt from '../components/ascii/AsciiArt'
 import { ART } from '../components/ascii/art'
 import { useAchievements } from '../hooks/useAchievements'
 import ConfirmDialog from '../components/ui/ConfirmDialog'
+import RevealOnScroll from '../components/ui/RevealOnScroll'
+import TypingLine from '../components/ui/TypingLine'
 
 const FILTERS = ['all', 'unlocked', 'locked', 'common', 'rare', 'legendary']
 
@@ -57,11 +59,10 @@ export default function AchievementsContent() {
     <div className="achievements-page container">
       {/* Terminal header */}
       <div className="achv-header">
-        <div className="hc-cmd-line">
-          <span className="hc-prompt">$</span>
+        <TypingLine text="cat achievements.log">
           <span className="hc-cmd">cat </span>
           <span className="hc-var">achievements.log</span>
-        </div>
+        </TypingLine>
         <AsciiArt art={ART.ACHIEVEMENTS} color="var(--coral)" glow="var(--coral-glow)" />
         <div className="achv-intro">
           <div className="achv-intro-heading"><span className="achv-intro-diamond">◆</span> This is Your Achievements!</div>
@@ -74,10 +75,9 @@ export default function AchievementsContent() {
 
       {/* Progress block */}
       <div className="achv-progress-block">
-        <div className="hc-cmd-line">
-          <span className="hc-prompt">$</span>
+        <TypingLine text="progress --show">
           <span className="hc-cmd">progress --show</span>
-        </div>
+        </TypingLine>
         <div className="achv-progress-top">
           <span className="achv-progress-fraction"><span className="achv-fraction-num">{num} / {den}</span> <span className="achv-progress-pct">({pct}%)</span></span>
           <span className="achv-progress-tag">rm --unlocked  // {num} unlocked</span>
@@ -108,6 +108,7 @@ export default function AchievementsContent() {
       </div>
 
       {/* Cards grid */}
+      <RevealOnScroll>
       <div className="achievements-grid">
         {filtered.map((a) => {
           const locked = !isUnlocked(a.id)
@@ -158,6 +159,7 @@ export default function AchievementsContent() {
           )
         })}
       </div>
+      </RevealOnScroll>
 
       {/* Clear button */}
       <div className="achv-clear">
