@@ -48,7 +48,7 @@ demos that work once.`,
     languages: ['JavaScript', 'Python', 'C++', 'Java', 'SQL', 'HTML5', 'CSS3'],
     frameworks: ['React', 'Vite', 'Framer Motion', 'Node.js', 'Express.js', 'MongoDB', 'JavaFX', 'Qt'],
     ai_tools: ['Claude', 'OpenCode', 'Multi-Agent Systems','Skills' ,'Claude Hooks', 'Antigravity'],
-    tools: ['Git', 'GitHub', 'Figma', 'Arduino' ],
+    tools: ['Git', 'GitHub', 'Postman', 'Figma', 'Arduino' ],
   },
 
   languages: [

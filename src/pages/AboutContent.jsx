@@ -5,6 +5,7 @@ import { me } from '../data/me'
 import { JOURNEY } from '../data/journey'
 import RevealOnScroll from '../components/ui/RevealOnScroll'
 import TypingLine from '../components/ui/TypingLine'
+import { useResumeAchievement } from '../hooks/useResumeAchievement'
 
 const ICONS = { MapPin, Briefcase, Coffee, Music, Layers, Cpu, Code }
 
@@ -48,6 +49,7 @@ function CmdLine({ cmd, arg }) {
 }
 
 export default function AboutContent() {
+  const onResumeClick = useResumeAchievement()
   return (
     <div className="ab-root">
 
@@ -73,6 +75,7 @@ export default function AboutContent() {
                 href={me.resumeUrl}
                 download
                 className="ab-download-btn"
+                onClick={onResumeClick}
               >
                 <Download size={14} />
                 <span>$ download resume.pdf</span>

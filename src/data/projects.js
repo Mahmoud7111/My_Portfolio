@@ -46,7 +46,7 @@ export const PROJECTS = [
   },
   {
     name: 'my-portfolio',
-    desc: 'Terminal-style personal portfolio website built with React, Vite, Three.js, and Framer Motion — featuring an interactive terminal, AI chatbot, and gamified achievements.',
+    desc: 'The website you are currently on! My Terminal-style personal portfolio website built with React, Vite, Three.js, and Framer Motion — featuring an interactive terminal, AI chatbot, and gamified achievements.',
     tags: ['web', 'react', 'threejs'],
     stars: 0,
     status: 'active',

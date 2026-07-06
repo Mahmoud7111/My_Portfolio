@@ -7,6 +7,8 @@ import { me } from '../data/me'
 import { PROJECTS } from '../data/projects'
 import { ART } from '../components/ascii/art'
 import PCModel from '../components/3d/PCModel'
+import { useResumeAchievement } from '../hooks/useResumeAchievement'
+import { useAchievements } from '../hooks/useAchievements'
 
 const allSkills = Object.values(me.skills).flat()
 
@@ -43,6 +45,8 @@ function SectionComment({ label }) {
 
 export default function HomeContent() {
   const navigate = useNavigate()
+  const onResumeClick = useResumeAchievement()
+  const { unlock } = useAchievements()
 
   const stats = [
     { n: '01', flag: '--projects',  value: PROJECTS.length,            label: 'Projects',   note: 'Shipped & maintained' },
@@ -122,7 +126,7 @@ export default function HomeContent() {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 20, flexWrap: 'wrap' }}>
-            <a href={me.resumeUrl} download className="ab-download-btn">
+            <a href={me.resumeUrl} download className="ab-download-btn" onClick={onResumeClick}>
               <Download size={14} />
               <span>$ download resume.pdf</span>
             </a>
@@ -317,7 +321,7 @@ export default function HomeContent() {
                           </a>
                         )}
                         {p.live && (
-                          <a href={p.live} target="_blank" rel="noreferrer" className="btn-live">
+                          <a href={p.live} target="_blank" rel="noreferrer" className="btn-live" onClick={() => unlock('demo-explorer')}>
                             <ExternalLink size={12} /> live
                           </a>
                         )}

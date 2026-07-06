@@ -6,6 +6,8 @@ import { ART } from '../components/ascii/art'
 import { me } from '../data/me'
 import RevealOnScroll from '../components/ui/RevealOnScroll'
 import TypingLine from '../components/ui/TypingLine'
+import { useResumeAchievement } from '../hooks/useResumeAchievement'
+import { useAchievements } from '../hooks/useAchievements'
 
 const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID
 const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
@@ -21,6 +23,8 @@ const SOCIAL_ICONS = {
 export default function ContactContent() {
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [status, setStatus] = useState('idle')
+  const onResumeClick = useResumeAchievement()
+  const { unlock } = useAchievements()
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
 
@@ -31,6 +35,7 @@ export default function ContactContent() {
       await emailjs.send(SERVICE_ID, TEMPLATE_ID, form, PUBLIC_KEY)
       setStatus('sent')
       setForm({ name: '', email: '', message: '' })
+      unlock('contact-made')
     } catch (err) {
       console.error(err)
       setStatus('error')
@@ -173,6 +178,7 @@ export default function ContactContent() {
                   rel="noreferrer"
                   className="contact-footer__icon-btn"
                   aria-label={l.label}
+                  onClick={() => unlock('contact-made')}
                 >
                   {Icon && <Icon size={15} />}
                 </a>
@@ -182,7 +188,7 @@ export default function ContactContent() {
         </div>
 
         <div className="contact-download">
-          <a href={me.resume} download className="contact-download__btn">
+          <a href={me.resume} download className="contact-download__btn" onClick={onResumeClick}>
             <Download size={15} />
             $ download resume.pdf
           </a>

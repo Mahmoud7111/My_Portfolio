@@ -8,6 +8,7 @@ import { useTerminal } from '../../hooks/useTerminal'
 import { useChat } from '../../hooks/useChat'
 import { useEasterEggs } from '../../hooks/useEasterEggs'
 import { useGlobalAchievements } from '../../hooks/useGlobalAchievements'
+import { useAchievements } from '../../hooks/useAchievements'
 import { me } from '../../data/me'
 import TerminalClosedScreen from './TerminalClosedScreen'
 import HelloWorldScreen from './HelloWorldScreen'
@@ -131,6 +132,7 @@ export default function TerminalWindow() {
   const { lastUnlocked, clearLastUnlocked, onCloseClick, onMinimizeClick, onMaximizeClick, onRestoreFromMinimized } =
     useEasterEggs()
   useGlobalAchievements()
+  const { unlock } = useAchievements()
 
   // ── Clock ────────────────────────────────────────────────────
   useEffect(() => {
@@ -344,6 +346,7 @@ export default function TerminalWindow() {
             href={me.resumeUrl}
             download
             title="Download resume"
+            onClick={() => unlock('interested-aren-we')}
           >
             <span className="tmux-download-icon">↓</span>
             <span className="tmux-download-label">resume</span>
@@ -392,7 +395,7 @@ export default function TerminalWindow() {
                   className="tmux-mobile-tab tmux-mobile-tab--dl"
                   href={me.resumeUrl}
                   download
-                  onClick={() => setMenuOpen(false)}
+                  onClick={() => { setMenuOpen(false); unlock('interested-aren-we') }}
                 >
                   <span className="tab-cmd">↓ resume</span>
                 </a>

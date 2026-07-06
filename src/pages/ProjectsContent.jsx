@@ -6,6 +6,7 @@ import { ART } from '../components/ascii/art'
 import { PROJECTS, ALL_TAGS } from '../data/projects'
 import RevealOnScroll from '../components/ui/RevealOnScroll'
 import TypingLine from '../components/ui/TypingLine'
+import { useAchievements } from '../hooks/useAchievements'
 
 const TAG_TO_EXT = {
   python: '.py',
@@ -135,6 +136,7 @@ export default function ProjectsContent() {
 }
 
 function ProjectCard({ project, index }) {
+  const { unlock } = useAchievements()
   const firstTag = project.tags.find((t) => TAG_TO_EXT[t])
   const ext = firstTag ? TAG_TO_EXT[firstTag] : ''
 
@@ -226,6 +228,7 @@ function ProjectCard({ project, index }) {
                   target="_blank"
                   rel="noreferrer"
                   className="btn-live"
+                  onClick={() => unlock('demo-explorer')}
                 >
                   <ExternalLink size={12} /> live
                 </a>

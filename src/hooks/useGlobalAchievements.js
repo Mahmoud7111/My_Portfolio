@@ -1,18 +1,13 @@
 import { useEffect, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import { useAchievements } from './useAchievements'
 
-/**
- * Tracks global achievements that don't belong to a specific component:
- * - night-owl      (visit between midnight–4am)
- * - patient        (3+ minutes on site)
- * - persistent-visitor (5+ minutes on site)
- * - inspector      (DevTools opened)
- * - meta           (unlocked 5 others)
- * - achievement-hunter (unlocked 5 others)
- */
+const ALL_ROUTES = ['/', '/projects', '/about', '/contact', '/achievements']
+
 export function useGlobalAchievements() {
-  const { unlock, unlocked, isUnlocked } = useAchievements()
-  const startRef = useRef(Date.now())
+  const { unlock, unlocked } = useAchievements()
+  const location = useLocation()
+  const visitedRef = useRef(new Set())
 
   // ── night-owl ─────────────────────────────────────────────
   useEffect(() => {
@@ -39,8 +34,22 @@ export function useGlobalAchievements() {
         unlock('inspector')
       }
     }
-    // Poll every 2s for DevTools width difference
     const id = setInterval(check, 2000)
     return () => clearInterval(id)
   }, [unlock])
+
+  // ── site-explorer (visit all routes) ───────────────────────
+  useEffect(() => {
+    visitedRef.current.add(location.pathname)
+    if (ALL_ROUTES.every((r) => visitedRef.current.has(r))) {
+      unlock('site-explorer')
+    }
+  }, [location.pathname, unlock])
+
+  // ── achievement-hunter (unlock 5 others) ──────────────────
+  useEffect(() => {
+    if (unlocked.length >= 5) {
+      unlock('achievement-hunter')
+    }
+  }, [unlocked, unlock])
 }

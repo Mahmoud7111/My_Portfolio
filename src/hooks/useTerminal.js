@@ -21,6 +21,8 @@ export function useTerminal() {
   const [commandsRun, setCommandsRun] = useState(new Set())
   const inputRef = useRef(null)
   const konamiRef = useRef([])
+  const clearCountRef = useRef(0)
+  const helpCountRef = useRef(0)
 
   const pushLine = useCallback((entry) => {
     setHistory((prev) => [...prev, entry])
@@ -100,6 +102,8 @@ export function useTerminal() {
       switch (cmd.id) {
         case 'clear':
           clear()
+          clearCountRef.current += 1
+          if (clearCountRef.current >= 2) unlock('muscle-memory')
           return
         case 'chat':
           setChatMode(true)
@@ -115,6 +119,8 @@ export function useTerminal() {
           })
           return
         case 'help':
+          helpCountRef.current += 1
+          if (helpCountRef.current >= 3) unlock('for-the-vibes')
           pushLine({ type: 'output', commandId: 'help' })
           return
         default:

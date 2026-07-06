@@ -313,6 +313,10 @@
   overflow: hidden;
   position: relative;
 
+  &:hover .hc-feed-marquee__track {
+    animation-play-state: paused;
+  }
+
   &::before,
   &::after {
     content: '';
@@ -362,11 +366,14 @@
   white-space: nowrap;
   flex-shrink: 0;
   background: var(--surface-3);
-  transition: border-color var(--transition-fast), color var(--transition-fast);
+  transition: border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast), background var(--transition-fast);
 
   &:hover {
-    border-color: var(--coral-edge);
-    color: var(--text-body);
+    border-color: var(--cyan);
+    color: var(--cyan);
+    background: rgba(0, 229, 255, 0.06);
+    box-shadow: 0 0 12px var(--cyan-glow), inset 0 0 12px rgba(0, 229, 255, 0.04);
+    transform: scale(1.08);
   }
 
   &::after {

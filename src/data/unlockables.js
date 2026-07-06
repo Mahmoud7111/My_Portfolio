@@ -40,14 +40,6 @@ export const UNLOCKABLES = [
 
   // ─── Navigation & content ────────────────────────────────
   {
-    id: 'explorer',
-    name: 'explorer',
-    desc: 'Visited every tab in the portfolio.',
-    lockedDesc: 'Navigate to all sections: Projects, About, Contact, Achievements',
-    rarity: 'common',
-    icon: '◈',
-  },
-  {
     id: 'site-explorer',
     name: 'Site Explorer',
     desc: 'Visited all sections of the portfolio',
@@ -107,14 +99,6 @@ export const UNLOCKABLES = [
   },
 
   // ─── Meta ─────────────────────────────────────────────────
-  {
-    id: 'meta',
-    name: 'achievement hunter',
-    desc: 'Unlocked 5 other achievements.',
-    lockedDesc: 'Unlock more achievements to reach this one',
-    rarity: 'legendary',
-    icon: '★',
-  },
   {
     id: 'achievement-hunter',
     name: 'Achievement Hunter',
