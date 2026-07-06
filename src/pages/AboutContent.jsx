@@ -1,4 +1,5 @@
-import { Download, ExternalLink, MapPin, Briefcase, Coffee, Music, Layers, Cpu, Code, Languages, GraduationCap, Award, FileText, Trophy } from 'lucide-react'
+import { useState } from 'react'
+import { Download, ExternalLink, MapPin, Briefcase, Coffee, Music, Layers, Cpu, Code, Languages, GraduationCap, Award, FileText, Trophy, Filter } from 'lucide-react'
 import AsciiArt from '../components/ascii/AsciiArt'
 import { ART } from '../components/ascii/art'
 import { me } from '../data/me'
@@ -50,6 +51,7 @@ function CmdLine({ cmd, arg }) {
 
 export default function AboutContent() {
   const onResumeClick = useResumeAchievement()
+  const [journeyFilter, setJourneyFilter] = useState(new Set())
   return (
     <div className="ab-root">
 
@@ -113,25 +115,56 @@ export default function AboutContent() {
           <TypingLine text="git log --all --oneline">
             <CmdLine cmd="git log --all" arg="--oneline" />
           </TypingLine>
-          <div className="ab-timeline">
-            {JOURNEY.map((entry, i) => {
-              const ts = TYPE_STYLES[entry.type] || TYPE_STYLES.experience
+          <div className="ab-timeline-filter-label">
+            <Filter size={12} />
+            <span>Filter Timeline:</span>
+          </div>
+          <div className="ab-timeline-filters">
+            {Object.keys(TYPE_STYLES).map((t) => {
+              const active = journeyFilter.size === 0 || journeyFilter.has(t)
               return (
-                <div key={i} className="ab-timeline-item">
-                  <div className="ab-timeline-meta">
-                    <span className="ab-timeline-date">{entry.date}</span>
-                    <span className={ts.className}>{ts.label}</span>
-                  </div>
-                  <h3 className="ab-timeline-title">{entry.title}</h3>
-                  <p className="ab-timeline-desc">{entry.description}</p>
-                  {entry.link && (
-                    <a href={entry.link} target="_blank" rel="noreferrer" className="ab-timeline-link">
-                      View details <ExternalLink size={12} />
-                    </a>
-                  )}
-                </div>
+                <button
+                  key={t}
+                  className={`ab-timeline-filter${active ? ' ab-timeline-filter--active' : ''}`}
+                  onClick={() => {
+                    setJourneyFilter((prev) => {
+                      const next = new Set(prev)
+                      if (next.has(t)) {
+                        next.delete(t)
+                      } else {
+                        next.add(t)
+                      }
+                      return next
+                    })
+                  }}
+                >
+                  <span className="ab-timeline-filter__check">{active ? '[✓]' : '[ ]'}</span>
+                  {TYPE_STYLES[t].label}
+                </button>
               )
             })}
+            </div>
+          <div className="ab-timeline">
+            {JOURNEY
+              .filter((e) => journeyFilter.size === 0 || journeyFilter.has(e.type))
+              .map((entry, i) => {
+                const ts = TYPE_STYLES[entry.type] || TYPE_STYLES.experience
+                return (
+                  <div key={i} className="ab-timeline-item">
+                    <div className="ab-timeline-meta">
+                      <span className="ab-timeline-date">{entry.date}</span>
+                      <span className={ts.className}>{ts.label}</span>
+                    </div>
+                    <h3 className="ab-timeline-title">{entry.title}</h3>
+                    <p className="ab-timeline-desc">{entry.description}</p>
+                    {entry.link && (
+                      <a href={entry.link} target="_blank" rel="noreferrer" className="ab-timeline-link">
+                        View details <ExternalLink size={12} />
+                      </a>
+                    )}
+                  </div>
+                )
+              })}
           </div>
         </div>
       </div>
