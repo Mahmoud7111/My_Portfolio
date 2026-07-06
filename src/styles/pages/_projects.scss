@@ -123,17 +123,23 @@
 .projects-search {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   background: #1a1a22;
-  border: 1px solid #262630;
+  border: 1px solid #3a3a48;
   border-radius: var(--radius-md);
-  padding: 5px 12px;
-  min-width: 220px;
+  padding: 6px 14px;
+  min-width: 240px;
   margin-left: auto;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:focus-within {
+    border-color: var(--cyan);
+    box-shadow: 0 0 12px rgba(0, 229, 255, 0.15);
+  }
 }
 
 .projects-search__icon {
-  color: var(--text-dim);
+  color: var(--cyan);
   flex-shrink: 0;
 }
 
@@ -150,7 +156,7 @@
 }
 
 .projects-search__input::placeholder {
-  color: var(--text-dim);
+  color: var(--text-muted);
 }
 
 /* ── Cards container ────────────────────────────────────────── */

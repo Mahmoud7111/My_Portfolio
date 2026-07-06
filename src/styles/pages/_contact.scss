@@ -309,13 +309,15 @@
     background: var(--surface-3);
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
-    color: var(--text-body);
+    color: var(--text-muted);
     cursor: pointer;
-    transition: background var(--transition-fast);
+    transition: border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
     text-decoration: none;
 
     &:hover {
-      background: var(--surface-2);
+      border-color: var(--cyan);
+      color: var(--cyan);
+      box-shadow: 0 0 15px var(--cyan-glow);
     }
   }
 }

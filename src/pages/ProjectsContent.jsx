@@ -49,9 +49,9 @@ export default function ProjectsContent() {
 │      └────────────────┐
 │   ./projects          │
 │                       │
-│   ▸ neural-router/    │
-│   ▸ vector-cache/     │
-│   ▸ ...               │
+│   ▸ ${PROJECTS[0]?.name ?? '...'}/
+│   ▸ ${PROJECTS[1]?.name ?? '...'}/
+│   ▸ ...
 └───────────────────────┘`}
         </pre>
         <pre className="projects-scan">

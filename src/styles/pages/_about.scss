@@ -318,6 +318,16 @@
   flex-wrap: wrap;
   gap: 8px;
   align-items: flex-start;
+
+  .pill-neutral-inline {
+    transition: border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
+
+    &:hover {
+      border-color: var(--cyan-edge);
+      color: var(--cyan);
+      box-shadow: 0 0 10px var(--cyan-glow);
+    }
+  }
 }
 
 /* ── Panel 5: Timeline ────────────────────────────────────── */
@@ -348,6 +358,21 @@
   position: relative;
   width: 50%;
   padding-bottom: 40px;
+  transition: transform var(--transition-fast), filter var(--transition-fast);
+
+  &:hover {
+    filter: drop-shadow(0 0 8px var(--cyan-glow));
+  }
+
+  // Odd items: shift left on hover
+  &:nth-child(odd):hover {
+    transform: translateX(-4px);
+  }
+
+  // Even items: shift right on hover
+  &:nth-child(even):hover {
+    transform: translateX(4px);
+  }
 
   // Dot on the center line
   &::before {
