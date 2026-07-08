@@ -96,7 +96,7 @@ function TimelineList({ entries }) {
             initial={{ opacity: 0, x: xFrom, filter: 'blur(4px)' }}
             whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
             viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="ab-timeline-meta">
               <span className="ab-timeline-date">{entry.date}</span>

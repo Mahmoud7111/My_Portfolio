@@ -1,4 +1,6 @@
 import { useState } from 'react'
+import { motion } from 'framer-motion'
+import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import AsciiArt from '../components/ascii/AsciiArt'
 import { ART } from '../components/ascii/art'
 import { useAchievements } from '../hooks/useAchievements'
@@ -10,6 +12,7 @@ const FILTERS = ['all', 'unlocked', 'locked', 'common', 'rare', 'legendary']
 
 export default function AchievementsContent() {
   const { all, unlocked, isUnlocked, progress, clearAll } = useAchievements()
+  const prefersReduced = usePrefersReducedMotion()
   const [activeFilter, setActiveFilter] = useState('all')
   const [showClearConfirm, setShowClearConfirm] = useState(false)
 
@@ -58,22 +61,25 @@ export default function AchievementsContent() {
   return (
     <div className="achievements-page container">
       {/* Terminal header */}
-      <div className="achv-header">
-        <TypingLine text="cat achievements.log">
-          <span className="hc-cmd">cat </span>
-          <span className="hc-var">achievements.log</span>
-        </TypingLine>
-        <AsciiArt art={ART.ACHIEVEMENTS} color="var(--coral)" glow="var(--coral-glow)" />
-        <div className="achv-intro">
-          <div className="achv-intro-heading"><span className="achv-intro-diamond">◆</span> This is Your Achievements!</div>
-          <div className="achv-intro-lines">
-            <span className="achv-intro-prefix">&gt;</span> Explore the portfolio and interact with different sections to unlock achievements.<br />
-            <span className="achv-intro-prefix">&gt;</span> Some achievements are secret and will only be revealed once unlocked!
+      <RevealOnScroll>
+        <div className="achv-header">
+          <TypingLine text="cat achievements.log">
+            <span className="hc-cmd">cat </span>
+            <span className="hc-var">achievements.log</span>
+          </TypingLine>
+          <AsciiArt art={ART.ACHIEVEMENTS} color="var(--coral)" glow="var(--coral-glow)" />
+          <div className="achv-intro">
+            <div className="achv-intro-heading"><span className="achv-intro-diamond">◆</span> This is Your Achievements!</div>
+            <div className="achv-intro-lines">
+              <span className="achv-intro-prefix">&gt;</span> Explore the portfolio and interact with different sections to unlock achievements.<br />
+              <span className="achv-intro-prefix">&gt;</span> Some achievements are secret and will only be revealed once unlocked!
+            </div>
           </div>
         </div>
-      </div>
+      </RevealOnScroll>
 
       {/* Progress block */}
+      <RevealOnScroll delay={0.1}>
       <div className="achv-progress-block">
         <TypingLine text="progress --show">
           <span className="hc-cmd">progress --show</span>
@@ -89,12 +95,16 @@ export default function AchievementsContent() {
           <span className="achv-bar-bracket">]</span>
         </div>
       </div>
+      </RevealOnScroll>
 
       {/* Filter pills */}
-      <TypingLine text="grep --filter achievements.db">
-        <span className="hc-cmd">grep --filter </span>
-        <span className="hc-var">achievements.db</span>
-      </TypingLine>
+      <RevealOnScroll delay={0.1}>
+        <TypingLine text="grep --filter achievements.db">
+          <span className="hc-cmd">grep --filter </span>
+          <span className="hc-var">achievements.db</span>
+        </TypingLine>
+      </RevealOnScroll>
+      <RevealOnScroll delay={0.15}>
       <div className="achv-filters">
         {FILTERS.map((f) => {
           const isActive = activeFilter === f
@@ -110,26 +120,32 @@ export default function AchievementsContent() {
           )
         })}
       </div>
+      </RevealOnScroll>
 
       {/* Cards grid */}
-      <TypingLine text="cat achievements.json">
-        <span className="hc-cmd">cat </span>
-        <span className="hc-var">achievements.json</span>
-      </TypingLine>
+      <RevealOnScroll delay={0.2}>
+        <TypingLine text="cat achievements.json">
+          <span className="hc-cmd">cat </span>
+          <span className="hc-var">achievements.json</span>
+        </TypingLine>
+      </RevealOnScroll>
       <div className="achievements-grid">
-        {filtered.map((a) => {
+        {filtered.map((a, i) => {
           const locked = !isUnlocked(a.id)
           const meta = rarityMeta[a.rarity]
           const hiddenName = scramble(a.id)
-          return (
-            <div
-              key={a.id}
-              className={`achievement-card ${locked ? 'locked' : 'unlocked'}`}
-              style={{
-                '--card-glow': locked ? 'transparent' : meta.color,
-                '--card-border': locked ? 'var(--border)' : meta.color,
-              }}
-            >
+
+          const props = {
+            key: a.id,
+            className: `achievement-card ${locked ? 'locked' : 'unlocked'}`,
+            style: {
+              '--card-glow': locked ? 'transparent' : meta.color,
+              '--card-border': locked ? 'var(--border)' : meta.color,
+            }
+          }
+
+          const content = (
+            <>
               <div className="card-top-bar">
                 <span className="card-rarity" style={{ color: meta.color }}>
                   {locked ? '? ? ?' : meta.label}
@@ -162,7 +178,23 @@ export default function AchievementsContent() {
                 )}
               </div>
               {locked && <div className="card-lock-overlay" />}
-            </div>
+            </>
+          )
+
+          if (prefersReduced) {
+            return <div {...props}>{content}</div>
+          }
+
+          return (
+            <motion.div
+              {...props}
+              initial={{ opacity: 0, y: 32, filter: 'blur(4px)' }}
+              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: (i % 3) * 0.08 }}
+            >
+              {content}
+            </motion.div>
           )
         })}
       </div>

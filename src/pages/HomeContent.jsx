@@ -271,10 +271,10 @@ export default function HomeContent() {
             {PROJECTS.slice(0, 2).map((p, i) => (
               <motion.div
                 key={p.name}
-                initial={{ opacity: 0, y: 24, filter: 'blur(4px)' }}
+                initial={{ opacity: 0, y: 32, filter: 'blur(4px)' }}
                 whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: i * 0.15 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: i * 0.08 }}
               ><article className="project-row-card">
                 <div className="project-row-card__inner">
                   <div className="project-row-card__gutter">
