@@ -1,17 +1,28 @@
 import { motion } from 'framer-motion'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 
-export default function RevealOnScroll({ children, delay = 0 }) {
+const variants = {
+  hidden: { opacity: 0, y: 24, filter: 'blur(4px)' },
+  visible: { opacity: 1, y: 0, filter: 'blur(0px)' },
+}
+
+export default function RevealOnScroll({ children, delay = 0, className }) {
   const prefersReduced = usePrefersReducedMotion()
 
-  if (prefersReduced) return children
+  if (prefersReduced) return <div className={className}>{children}</div>
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.35 }}
-      transition={{ duration: 0.25, ease: 'easeOut', delay }}
+      className={className}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{
+        duration: 0.55,
+        ease: [0.22, 1, 0.36, 1],
+        delay,
+      }}
+      variants={variants}
     >
       {children}
     </motion.div>

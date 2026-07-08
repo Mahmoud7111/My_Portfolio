@@ -218,7 +218,7 @@
   align-items: center;
   gap: 12px;
   padding: 14px 18px;
-  flex: 1 1 calc(33.333% - 12px);
+  flex: 1; /* Allow cards to spread out evenly */
   min-width: 180px;
   transition: border-color var(--transition-base), box-shadow var(--transition-base), transform var(--transition-base);
 
@@ -425,14 +425,14 @@
     filter: drop-shadow(0 0 8px var(--cyan-glow));
   }
 
-  // Odd items: shift left on hover
+  // Odd items (1st, 3rd…): RIGHT side — shift right on hover
   &:nth-child(odd):hover {
-    transform: translateX(-4px);
+    transform: translateX(4px);
   }
 
-  // Even items: shift right on hover
+  // Even items (2nd, 4th…): LEFT side — shift left on hover
   &:nth-child(even):hover {
-    transform: translateX(4px);
+    transform: translateX(-4px);
   }
 
   // Dot on the center line
@@ -459,8 +459,22 @@
     background: var(--border);
   }
 
-  // Odd items: left side, right-aligned
+  // Odd items (1st, 3rd…): RIGHT side, left-aligned
   &:nth-child(odd) {
+    margin-left: 50%;
+    padding-left: 48px;
+
+    &::before {
+      left: -6px;
+    }
+
+    &::after {
+      left: 24px;
+    }
+  }
+
+  // Even items (2nd, 4th…): LEFT side, right-aligned
+  &:nth-child(even) {
     padding-right: 48px;
     text-align: right;
 
@@ -474,20 +488,6 @@
 
     .ab-timeline-meta {
       justify-content: flex-end;
-    }
-  }
-
-  // Even items: right side, left-aligned
-  &:nth-child(even) {
-    margin-left: 50%;
-    padding-left: 48px;
-
-    &::before {
-      left: -6px;
-    }
-
-    &::after {
-      left: 24px;
     }
   }
 

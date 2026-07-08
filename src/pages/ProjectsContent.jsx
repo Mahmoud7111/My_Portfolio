@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { ExternalLink, Search, Star } from 'lucide-react'
 import { GithubIcon } from '../components/ui/BrandIcons'
 import AsciiArt from '../components/ascii/AsciiArt'
@@ -7,6 +8,7 @@ import { PROJECTS, ALL_TAGS } from '../data/projects'
 import RevealOnScroll from '../components/ui/RevealOnScroll'
 import TypingLine from '../components/ui/TypingLine'
 import { useAchievements } from '../hooks/useAchievements'
+import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 
 const TAG_TO_EXT = {
   python: '.py',
@@ -101,13 +103,7 @@ export default function ProjectsContent() {
         <span className="projects-opener__cmd">ls -la </span>
         <span className="projects-opener__arg">./projects</span>
       </TypingLine>
-      <div className="projects-cards">
-        {filtered.map((p, i) => (
-          <RevealOnScroll key={p.name}>
-            <ProjectCard project={p} index={String(i + 1).padStart(2, '0')} />
-          </RevealOnScroll>
-        ))}
-      </div>
+      <CardList filtered={filtered} />
 
       {/* ── Empty state ────────────────────────── */}
       {filtered.length === 0 && (
@@ -131,6 +127,39 @@ export default function ProjectsContent() {
           </a>
         </div>
       </RevealOnScroll>
+    </div>
+  )
+}
+
+/**
+ * CardList — each card reveals individually as it scrolls into view.
+ */
+function CardList({ filtered }) {
+  const prefersReduced = usePrefersReducedMotion()
+
+  if (prefersReduced) {
+    return (
+      <div className="projects-cards">
+        {filtered.map((p, i) => (
+          <ProjectCard key={p.name} project={p} index={String(i + 1).padStart(2, '0')} />
+        ))}
+      </div>
+    )
+  }
+
+  return (
+    <div className="projects-cards">
+      {filtered.map((p, i) => (
+        <motion.div
+          key={p.name}
+          initial={{ opacity: 0, y: 28, filter: 'blur(4px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          viewport={{ once: true, amount: 0.25 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <ProjectCard project={p} index={String(i + 1).padStart(2, '0')} />
+        </motion.div>
+      ))}
     </div>
   )
 }

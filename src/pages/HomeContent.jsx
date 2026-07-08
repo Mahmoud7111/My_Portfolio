@@ -1,7 +1,10 @@
 import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
 import { ExternalLink, Star, Download } from 'lucide-react'
 import { GithubIcon } from '../components/ui/BrandIcons'
 import RevealOnScroll from '../components/ui/RevealOnScroll'
+import StaggerReveal, { StaggerItem } from '../components/ui/StaggerReveal'
+import AnimatedCounter from '../components/ui/AnimatedCounter'
 import TypingLine from '../components/ui/TypingLine'
 import TypewriterLoop from '../components/ui/TypewriterLoop'
 import { me } from '../data/me'
@@ -11,6 +14,7 @@ import { ART } from '../components/ascii/art'
 import PCModel from '../components/3d/PCModel'
 import { useResumeAchievement } from '../hooks/useResumeAchievement'
 import { useAchievements } from '../hooks/useAchievements'
+import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 
 const allSkills = Object.values(me.skills).flat()
 
@@ -166,20 +170,24 @@ export default function HomeContent() {
             </span>
             <span className="hc-var">stats.tsv</span>
           </TypingLine>
-          <div className="hc-stat-grid">
+          <StaggerReveal className="hc-stat-grid">
             {stats.map((s) => (
-              <div key={s.n} className="hc-stat-card">
-                <div className="hc-stat-card__header">
-                  <span className="hc-stat-card__num">{s.n}</span>
-                  <span className="hc-stat-card__flag">{s.flag}</span>
-                  <span className="hc-stat-card__dot" aria-hidden="true">●</span>
+              <StaggerItem key={s.n}>
+                <div className="hc-stat-card">
+                  <div className="hc-stat-card__header">
+                    <span className="hc-stat-card__num">{s.n}</span>
+                    <span className="hc-stat-card__flag">{s.flag}</span>
+                    <span className="hc-stat-card__dot" aria-hidden="true">●</span>
+                  </div>
+                  <div className="hc-stat-card__value">
+                    <AnimatedCounter value={s.value} duration={1400} />
+                  </div>
+                  <div className="hc-stat-card__label">{s.label}</div>
+                  <div className="hc-stat-card__note">{s.note}</div>
                 </div>
-                <div className="hc-stat-card__value">{s.value}</div>
-                <div className="hc-stat-card__label">{s.label}</div>
-                <div className="hc-stat-card__note">{s.note}</div>
-              </div>
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerReveal>
         </div>
       </div>
       </RevealOnScroll>
@@ -258,10 +266,16 @@ export default function HomeContent() {
             {ART.PROJECTS}
           </pre>
 
-          {/* Project cards — same row-card style as projects page */}
+          {/* Project cards — sequential slide-in */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             {PROJECTS.slice(0, 2).map((p, i) => (
-              <article key={p.name} className="project-row-card">
+              <motion.div
+                key={p.name}
+                initial={{ opacity: 0, y: 24, filter: 'blur(4px)' }}
+                whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: i * 0.15 }}
+              ><article className="project-row-card">
                 <div className="project-row-card__inner">
                   <div className="project-row-card__gutter">
                     <span className="gutter-bracket">[</span>
@@ -333,7 +347,7 @@ export default function HomeContent() {
                     </div>
                   </div>
                 </div>
-              </article>
+              </article></motion.div>
             ))}
           </div>
 

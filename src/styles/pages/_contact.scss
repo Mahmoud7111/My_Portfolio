@@ -7,6 +7,7 @@
 }
 
 .compose-panel {
+  position: relative;
   max-width: 640px;
   margin: 0 auto;
   border: 1px solid var(--border);
@@ -14,6 +15,26 @@
   overflow: hidden;
   background: var(--surface);
   box-shadow: 0 0 0 1px rgba(77, 208, 206, 0.05);
+
+  // Subtle gradient accent at the very top edge
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--coral-edge) 30%,
+      var(--cyan-edge) 70%,
+      transparent 100%
+    );
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 1;
+  }
 
   &__chrome {
     display: flex;

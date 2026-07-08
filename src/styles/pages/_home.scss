@@ -54,9 +54,37 @@
 
 // ── Panel shell ───────────────────────────────────────────────
 .hc-panel {
+  position: relative;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
   overflow: hidden;
+  transition: border-color 300ms ease, box-shadow 300ms ease;
+
+  // Subtle gradient accent at the very top edge
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--coral-edge) 30%,
+      var(--cyan-edge) 70%,
+      transparent 100%
+    );
+    opacity: 0.6;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  // Glow only appears on hover — never ambient
+  &:hover {
+    border-color: var(--cyan-edge);
+    box-shadow: 0 0 28px var(--cyan-tint), inset 0 0 20px rgba(77, 208, 206, 0.02);
+  }
 }
 
 .hc-panel__chrome {
