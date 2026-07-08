@@ -1,6 +1,6 @@
-import { Suspense, useRef, useMemo } from 'react'
+import { Suspense, useRef } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { useGLTF, OrbitControls, Center, Environment, Float, Grid, Sparkles, Html, useProgress } from '@react-three/drei'
+import { useGLTF, OrbitControls, Center, Float, Grid, Sparkles, Html, useProgress } from '@react-three/drei'
 
 import pcModelUrl from '../../assets/pc.glb?url'
 
@@ -58,7 +58,7 @@ export default function PCModel() {
   return (
     <Canvas
       camera={{ position: [0, 0, 4.5], fov: 40 }}
-      style={{ width: '100%', height: '100%', cursor: 'grab', touchAction: 'none' }}
+      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', cursor: 'grab', touchAction: 'none' }}
     >
       {/* Lighting tailored for the cyberpunk terminal theme */}
       <ambientLight intensity={0.4} />
@@ -70,7 +70,7 @@ export default function PCModel() {
       <PulsingLight color="#4dd0ce" />
 
       {/* Subtle floating dots/snow effect */}
-      <Sparkles count={100} scale={6} size={1.2} speed={0.3} opacity={0.4} color="#4dd0ce" position={[0, 0, -1.5]} />
+      <Sparkles count={40} scale={6} size={1.2} speed={0.3} opacity={0.4} color="#4dd0ce" position={[0, 0, -1.5]} />
       
       {/* Cyberspace terminal grid floor */}
       <Grid 
@@ -86,8 +86,6 @@ export default function PCModel() {
         fadeStrength={2} 
       />
       
-      <Environment preset="city" />
-
       <Suspense fallback={<Fallback />}>
         <Center>
           <Model />

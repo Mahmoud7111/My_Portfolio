@@ -272,6 +272,7 @@ export default function ContactContent() {
                     onClick={() => unlock('contact-made')}
                     initial={prefersReduced ? false : { opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
+                    whileHover={prefersReduced ? undefined : { y: -3, rotate: 5, transition: { duration: 0.7 } }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.35, delay: i * 0.08 }}
                   >

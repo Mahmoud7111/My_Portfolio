@@ -14,7 +14,6 @@ import { ART } from '../components/ascii/art'
 import PCModel from '../components/3d/PCModel'
 import { useResumeAchievement } from '../hooks/useResumeAchievement'
 import { useAchievements } from '../hooks/useAchievements'
-import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 
 const allSkills = Object.values(me.skills).flat()
 
@@ -125,9 +124,8 @@ export default function HomeContent() {
                 </span>
               </div>
             </div>
-            <div 
-              className="hc-model-canvas" 
-              style={{ minHeight: 300 }}
+            <div
+              className="hc-model-canvas"
             >
               <PCModel />
             </div>

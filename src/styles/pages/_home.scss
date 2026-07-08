@@ -302,6 +302,7 @@
   flex-shrink: 0;
   cursor: grab;
   touch-action: none;
+  position: relative;
 
   &:active {
     cursor: grabbing;
