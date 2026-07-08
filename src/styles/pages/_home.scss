@@ -248,10 +248,9 @@
   color: var(--coral);
   text-shadow: 0 0 10px var(--coral-glow), 0 0 20px var(--coral-glow);
   margin-left: 2px;
-  font-size: 0.75em;
+  font-size: 0.85em;
   position: relative;
-  top: -4px;
-  transform: scaleX(0.3);
+  top: -3px;
   transition: opacity 80ms linear;
   opacity: 1;
 
