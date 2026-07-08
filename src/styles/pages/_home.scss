@@ -248,9 +248,10 @@
   color: var(--coral);
   text-shadow: 0 0 10px var(--coral-glow), 0 0 20px var(--coral-glow);
   margin-left: 2px;
-  font-size: 0.85em;
+  font-size: 1em;
+  font-weight: 900;
   position: relative;
-  top: -3px;
+  top: -1px;
   transition: opacity 80ms linear;
   opacity: 1;
 

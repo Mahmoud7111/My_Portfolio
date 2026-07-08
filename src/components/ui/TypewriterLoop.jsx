@@ -52,7 +52,7 @@ export default function TypewriterLoop({ strings, speed = 70, deleteSpeed = 35, 
   return (
     <span ref={containerRef} className={className} style={style}>
       <span className="twl-text">{started ? (display || '\u00A0') : '\u00A0'}</span>
-      <span className="twl-cursor" data-show={showCursor && started}>|</span>
+      <span className="twl-cursor" data-show={showCursor && started}>▎</span>
     </span>
   )
 }

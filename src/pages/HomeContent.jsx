@@ -6,6 +6,7 @@ import TypingLine from '../components/ui/TypingLine'
 import TypewriterLoop from '../components/ui/TypewriterLoop'
 import { me } from '../data/me'
 import { PROJECTS } from '../data/projects'
+import { getStats } from '../data/stats'
 import { ART } from '../components/ascii/art'
 import PCModel from '../components/3d/PCModel'
 import { useResumeAchievement } from '../hooks/useResumeAchievement'
@@ -49,12 +50,7 @@ export default function HomeContent() {
   const onResumeClick = useResumeAchievement()
   const { unlock } = useAchievements()
 
-  const stats = [
-    { n: '01', flag: '--projects',  value: PROJECTS.length,            label: 'Projects',   note: 'Shipped & maintained' },
-    { n: '02', flag: '--skills',    value: allSkills.length,           label: 'Skills',     note: 'Across all categories' },
-    { n: '03', flag: '--languages', value: me.skills.languages.length, label: 'Languages',  note: 'Writing code daily' },
-    { n: '04', flag: '--years',     value: '5+',                       label: 'Years',      note: 'Shipping production code' },
-  ]
+  const stats = getStats()
 
   return (
     <div className="hc-root">
