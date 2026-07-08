@@ -30,6 +30,7 @@
   @include sans(28px, 700);
   color: var(--text-heading);
   margin: 0 0 16px;
+  min-height: 1.2em;
 }
 
 .ab-bio-text {

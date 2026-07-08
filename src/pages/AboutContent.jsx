@@ -6,6 +6,7 @@ import { me } from '../data/me'
 import { JOURNEY } from '../data/journey'
 import RevealOnScroll from '../components/ui/RevealOnScroll'
 import TypingLine from '../components/ui/TypingLine'
+import TypewriterLoop from '../components/ui/TypewriterLoop'
 import { useResumeAchievement } from '../hooks/useResumeAchievement'
 
 const ICONS = { MapPin, Briefcase, Coffee, Music, Layers, Cpu, Code }
@@ -70,7 +71,20 @@ export default function AboutContent() {
 
           <div className="ab-bio-grid">
             <div className="ab-bio-main">
-              <h1 className="ab-bio-heading">Hi, I&apos;m {me.name}.</h1>
+              <h1 className="ab-bio-heading">
+                <span className="ab-bio-prefix">Hi, I&apos;m{' '}</span>
+                <TypewriterLoop
+                  strings={[
+                    'Mahmoud Sayed',
+                    'Software & AI Engineer',
+                    'CS Student @ MIU',
+                    'Builder of Things That Matter',
+                  ]}
+                  speed={70}
+                  deleteSpeed={35}
+                  pause={911}
+                />
+              </h1>
               <p className="ab-bio-text">{me.bio}</p>
               <p className="ab-bio-hobbies">{me.hobbiesLine}</p>
               <a

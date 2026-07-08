@@ -3,6 +3,7 @@ import { ExternalLink, Star, Download } from 'lucide-react'
 import { GithubIcon } from '../components/ui/BrandIcons'
 import RevealOnScroll from '../components/ui/RevealOnScroll'
 import TypingLine from '../components/ui/TypingLine'
+import TypewriterLoop from '../components/ui/TypewriterLoop'
 import { me } from '../data/me'
 import { PROJECTS } from '../data/projects'
 import { ART } from '../components/ascii/art'
@@ -98,12 +99,19 @@ export default function HomeContent() {
                 <span className="hc-var">whoami</span>
               </TypingLine>
               
-              <h1 style={{ fontSize: 'clamp(24px, 3vw, 36px)', margin: '0 0 4px', color: 'var(--text-heading)', fontWeight: 700 }}>
-                {me.name}
+              <h1 className="hc-typewriter-h1" style={{ margin: '0 0 4px', fontWeight: 700 }}>
+                <TypewriterLoop
+                  strings={[
+                    'Mahmoud Sayed',
+                    'Software & AI Engineer',
+                    'CS Student @ MIU',
+                    'Builder of Things That Matter',
+                  ]}
+                  speed={70}
+                  deleteSpeed={35}
+                  pause={911}
+                />
               </h1>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: 13, color: 'var(--cyan)', margin: '0 0 24px' }}>
-                {me.title}
-              </p>
               
               <p style={{ margin: '0 0 24px', fontSize: 'clamp(14px, 1.5vw, 16px)', lineHeight: 1.8, color: 'var(--text-body)', maxWidth: 520 }}>
                 {me.bio}
