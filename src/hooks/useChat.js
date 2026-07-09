@@ -118,5 +118,9 @@ export function useChat() {
     [messages],
   )
 
-  return { sendMessage, isLoading, messages }
+  const clearChat = useCallback(() => {
+    setMessages([])
+  }, [])
+
+  return { sendMessage, isLoading, clearChat, messages }
 }

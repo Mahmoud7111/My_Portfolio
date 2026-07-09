@@ -84,6 +84,7 @@ export function useTerminal() {
         pushLine({
           type: 'system',
           value: [`bash: command not found: ${trimmed}`, "Type 'help' to see available commands."],
+          isError: true,
         })
         return
       }
@@ -106,6 +107,7 @@ export function useTerminal() {
           if (clearCountRef.current >= 2) unlock('muscle-memory')
           return
         case 'chat':
+          clear()
           setChatMode(true)
           unlock('ai-conversationalist')
           pushLine({
@@ -166,5 +168,6 @@ export function useTerminal() {
     pushLine,
     tabComplete,
     getCompletion,
+    clear,
   }
 }

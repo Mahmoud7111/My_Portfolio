@@ -132,7 +132,7 @@ export default function TerminalWindow() {
 
   const { history, input, setInput, submit, chatMode, runFromClick, inputRef, pushLine, tabComplete, getCompletion } =
     useTerminal()
-  const { sendMessage, isLoading } = useChat()
+  const { sendMessage, isLoading, clearChat } = useChat()
 
   const { lastUnlocked, clearLastUnlocked, onCloseClick, onMinimizeClick, onMaximizeClick, onRestoreFromMinimized } =
     useEasterEggs()
@@ -197,6 +197,7 @@ export default function TerminalWindow() {
   useEffect(() => {
     if (chatMode && !prevChatMode.current) {
       // entering chat mode
+      clearChat()
       setAiActivating(true)
       setAiReady(false)
       const t1 = setTimeout(() => setAiActivating(false), 2400)
@@ -231,7 +232,8 @@ export default function TerminalWindow() {
       triggerRipple()
       submit()
       const reply = await sendMessage(value)
-      pushLine({ type: 'chat-reply', value: reply })
+      const isError = reply === "couldn't reach the AI right now. try again in a bit."
+      pushLine({ type: 'chat-reply', value: reply, isError })
     } else {
       submit()
     }
@@ -833,7 +835,7 @@ function Seg({ children, variant, dir, z = 1 }) {
 }
 
 // ── Chat reply line — typed inline with useTypewriter ────────
-function ChatReplyLine({ value, onTypingStart, onTypingDone, inPanel }) {
+function ChatReplyLine({ value, isError, onTypingStart, onTypingDone, inPanel }) {
   const { typedLines, isTyping } = useTypewriter(value, 18, onTypingDone)
   const startedRef = useRef(false)
 
@@ -849,7 +851,7 @@ function ChatReplyLine({ value, onTypingStart, onTypingDone, inPanel }) {
     return (
       <div className="chat-reply-line">
         <span className="chat-reply-line__handle">{me.handle}&gt;</span>
-        <span className="chat-reply-line__text">
+        <span className="chat-reply-line__text" style={isError ? { color: 'var(--coral)' } : {}}>
           {typedLines[0] || '\u00A0'}
           {isTyping && (
             <span className="chat-reply-line__cursor" aria-hidden="true" />
@@ -860,7 +862,7 @@ function ChatReplyLine({ value, onTypingStart, onTypingDone, inPanel }) {
   }
 
   return (
-    <p style={{ color: 'var(--text-body)', marginBottom: 8 }}>
+    <p style={{ color: isError ? 'var(--coral)' : 'var(--text-body)', marginBottom: 8 }}>
       <span style={{ color: 'var(--cyan)' }}>{me.handle}&gt;</span>{' '}
       {typedLines[0] || '\u00A0'}
       {isTyping && (
@@ -895,7 +897,7 @@ function HistoryLine({ entry, onCommandClick, onTypingStart, onTypingDone, inCha
           onStart={onTypingStart}
           onComplete={onTypingDone}
           lineClassName={`tw-system-line${inChatPanel ? ' ai-system' : ''}`}
-          lineStyle={{ color: 'var(--text-body)' }}
+          lineStyle={{ color: entry.isError ? 'var(--coral)' : 'var(--text-body)' }}
         />
       </div>
     )
@@ -909,6 +911,7 @@ function HistoryLine({ entry, onCommandClick, onTypingStart, onTypingDone, inCha
     return (
       <ChatReplyLine
         value={entry.value}
+        isError={entry.isError}
         onTypingStart={onTypingStart}
         onTypingDone={onTypingDone}
         inPanel={inChatPanel}
