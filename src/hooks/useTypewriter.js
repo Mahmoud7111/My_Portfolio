@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { usePrefersReducedMotion } from './usePrefersReducedMotion'
 
-const LINE_PAUSE = 150
+const LINE_PAUSE = 40
 
 export function useTypewriter(text, speed = 18, onComplete) {
   const prefersReduced = usePrefersReducedMotion()
@@ -39,11 +39,19 @@ export function useTypewriter(text, speed = 18, onComplete) {
     setIsTyping(true)
     setTypedLines(lines.map(() => ''))
 
+    const CHARS_PER_TICK = 8 // batch chars to cut re-renders; makes activation messages near-instant
+
     const tick = () => {
-      charIdx++
+      charIdx += CHARS_PER_TICK
+      
+      // Capture the current values so the React state updater callback
+      // doesn't read the mutated values if we increment them below.
+      const currentLine = lineIdx
+      const currentChar = charIdx
+
       setTypedLines((prev) => {
         const next = [...prev]
-        next[lineIdx] = lines[lineIdx].slice(0, charIdx)
+        next[currentLine] = lines[currentLine].slice(0, currentChar)
         return next
       })
 

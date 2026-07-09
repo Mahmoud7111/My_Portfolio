@@ -27,8 +27,8 @@ export default function CustomCursor() {
 
     let rafId
     const animateTrail = () => {
-      trailX += (targetX - trailX) * 0.15
-      trailY += (targetY - trailY) * 0.15
+      trailX += (targetX - trailX) * 0.18
+      trailY += (targetY - trailY) * 0.18
       if (trailRef.current) {
         trailRef.current.style.transform = `translate(${trailX}px, ${trailY}px) translate(-50%, -50%)`
       }
@@ -48,7 +48,7 @@ export default function CustomCursor() {
 
   return (
     <>
-      <div ref={trailRef} className="cursor-trail" />
+      <div ref={trailRef} className="cursor-trail" style={{ transition: 'none' }} />
       <div ref={cursorRef} className="custom-cursor" />
     </>
   )

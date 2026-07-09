@@ -1,0 +1,616 @@
+// ============================================================
+// AI MODE — Premium "Assistant Activation" state
+// Active when chatMode is true. All colors use existing --cyan
+// tokens + two new AI-specific local variables (no global new colors).
+// ============================================================
+
+// ── Local AI accent tokens (scoped to this file) ────────────
+// These are just aliases at slightly different intensities, not new colors.
+$ai-cyan:       #4dd0ce;
+$ai-blue:       #38bdf8;   // electric blue highlight accent
+$ai-glow-soft:  rgba(77, 208, 206, 0.20);
+$ai-glow-mid:   rgba(77, 208, 206, 0.42);
+$ai-glow-hard:  rgba(77, 208, 206, 0.70);
+
+// ══════════════════════════════════════════════════════════════
+// 1. GLOBAL BACKDROP — dim everything outside the terminal
+// ══════════════════════════════════════════════════════════════
+
+.ai-mode-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 98; // below terminal-window (z:100) so it dims the page bg
+  pointer-events: none;
+  background: rgba(6, 6, 12, 0.72);
+  // backdrop-filter removed: blur on a full-viewport fixed element forces
+  // the browser to repaint the entire page every composite frame, killing cursor smoothness.
+  // Framer Motion drives opacity; no CSS transition needed
+}
+
+// ══════════════════════════════════════════════════════════════
+// 2. ACTIVATION OVERLAY — full-screen system-boot flash
+// ══════════════════════════════════════════════════════════════
+
+.ai-activation-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  overflow: hidden;
+  font-family: var(--font-mono);
+
+  // Faint scanlines background during activation
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 3px,
+      rgba(77, 208, 206, 0.025) 3px,
+      rgba(77, 208, 206, 0.025) 4px
+    );
+    pointer-events: none;
+    z-index: 1;
+    animation: ai-scanline-scroll 4s linear infinite;
+  }
+}
+
+@keyframes ai-scanline-scroll {
+  from { background-position: 0 0; }
+  to   { background-position: 0 40px; }
+}
+
+// The sweep glow bar that crosses the screen top→bottom
+.ai-sweep-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    $ai-glow-hard 30%,
+    #ffffff 50%,
+    $ai-glow-hard 70%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 20px 6px $ai-glow-mid,
+    0 0 60px 20px $ai-glow-soft;
+  pointer-events: none;
+  z-index: 2;
+
+  // Pure CSS variant — no JS top updates, compositor-only
+  &--css {
+    top: 0;
+    animation: ai-sweep-down 1.2s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+    will-change: transform;
+  }
+}
+
+@keyframes ai-sweep-down {
+  from { transform: translateY(-100%) scaleY(1); }
+  to   { transform: translateY(calc(100vh + 3px)) scaleY(1); }
+}
+
+// Status lines shown during activation sequence
+.ai-activation-status {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.ai-status-line {
+  font-size: 13px;
+  font-family: var(--font-mono);
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  opacity: 0;
+
+  &--label {
+    color: var(--text-muted);
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+
+  &--active {
+    color: $ai-cyan;
+    text-shadow: 0 0 12px $ai-glow-mid, 0 0 28px $ai-glow-soft;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 3px;
+  }
+
+  &--ok {
+    color: #4ade80;
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+}
+
+// Horizontal scan progress bar during activation
+.ai-scan-progress {
+  width: min(280px, 80vw);
+  height: 2px;
+  background: rgba(77, 208, 206, 0.12);
+  border: 1px solid rgba(77, 208, 206, 0.2);
+  position: relative;
+  z-index: 3;
+  overflow: hidden;
+
+  &__fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, $ai-cyan, #fff);
+    box-shadow: 0 0 10px $ai-glow-mid;
+
+    // Pure CSS variant — animates width via keyframes, no JS updates
+    &--css {
+      width: 0;
+      animation: ai-progress-fill 1.2s cubic-bezier(0.4, 0, 0.8, 1) forwards;
+      will-change: width;
+    }
+  }
+}
+
+@keyframes ai-progress-fill {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+// ══════════════════════════════════════════════════════════════
+// 3. TERMINAL WINDOW — AI mode state
+// ══════════════════════════════════════════════════════════════
+
+// When AI mode is active, push the terminal window into a cool-toned state
+.terminal-window--ai-mode {
+  border-color: rgba(77, 208, 206, 0.35) !important;
+  box-shadow:
+    // Holographic outer glow
+    0 0 0 1px rgba(77, 208, 206, 0.28),
+    0 0 40px rgba(77, 208, 206, 0.18),
+    0 0 80px rgba(77, 208, 206, 0.10),
+    0 0 120px rgba(56, 189, 248, 0.06),
+    0 30px 80px -20px rgba(0, 0, 0, 0.7),
+    inset 0 1px 0 rgba(77, 208, 206, 0.08) !important;
+  transition:
+    border-color 600ms ease,
+    box-shadow 600ms ease !important;
+}
+
+// ══════════════════════════════════════════════════════════════
+// 4. ENHANCED AMBIENT GLOW — replaces the basic terminal-chat-glow
+// ══════════════════════════════════════════════════════════════
+
+.terminal-chat-glow {
+  // Override the base definition with a more complex gradient
+  background:
+    radial-gradient(
+      ellipse at 50% -10%,
+      rgba(77, 208, 206, 0.22) 0%,
+      rgba(56, 189, 248, 0.08) 40%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse at 20% 80%,
+      rgba(77, 208, 206, 0.06) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 80% 80%,
+      rgba(56, 189, 248, 0.06) 0%,
+      transparent 50%
+    );
+  box-shadow:
+    inset 0 0 0 1px rgba(77, 208, 206, 0.25),
+    inset 0 0 80px rgba(77, 208, 206, 0.05);
+}
+
+// ══════════════════════════════════════════════════════════════
+// 5. BODY SCANLINES — persistent light scanline texture in AI mode
+// ══════════════════════════════════════════════════════════════
+
+.terminal-body--chat {
+  // Override background from _terminal.scss base
+  background: color-mix(in srgb, var(--surface-4) 82%, var(--cyan) 18%);
+  transition: background 700ms ease;
+
+  // Persistent faint scanlines in AI mode
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 3px,
+      rgba(77, 208, 206, 0.018) 3px,
+      rgba(77, 208, 206, 0.018) 4px
+    );
+    border-radius: inherit;
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// 6. CHAT HISTORY AREA — holographic panel wrapper
+// ══════════════════════════════════════════════════════════════
+
+.chat-history-panel {
+  position: relative;
+  z-index: 1;
+  margin: 8px 0 4px;
+  border: 1px solid rgba(77, 208, 206, 0.18);
+  border-radius: 8px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(77, 208, 206, 0.04) 0%,
+      rgba(15, 15, 30, 0.6) 100%
+    );
+  box-shadow:
+    0 0 0 1px rgba(77, 208, 206, 0.08),
+    inset 0 1px 0 rgba(77, 208, 206, 0.12),
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    0 0 60px rgba(77, 208, 206, 0.04);
+  // backdrop-filter removed: expensive repaint on every composite frame.
+  // The dark background achieves the same frosted look without the cost.
+  overflow: hidden;
+  // box-shadow keyframe animation replaced with opacity pulse (compositor-only, zero repaint)
+  animation: ai-panel-breathe 5s ease-in-out infinite;
+
+  // Glass top edge highlight
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(77, 208, 206, 0.6),
+      transparent
+    );
+    pointer-events: none;
+  }
+
+  // Subtle corner accent dots
+  &::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: rgba(77, 208, 206, 0.5);
+    box-shadow:
+      -10px 0 0 rgba(77, 208, 206, 0.3),
+      -20px 0 0 rgba(77, 208, 206, 0.15);
+    pointer-events: none;
+  }
+}
+
+// Cheap opacity pulse — runs entirely on compositor, zero repaint
+@keyframes ai-panel-breathe {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.92; }
+}
+
+.chat-history-panel__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px 8px;
+  border-bottom: 1px solid rgba(77, 208, 206, 0.1);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  user-select: none;
+}
+
+.chat-history-panel__indicator {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: $ai-cyan;
+  box-shadow: 0 0 8px $ai-glow-mid;
+  animation: ai-indicator-pulse 2s ease-in-out infinite;
+}
+
+@keyframes ai-indicator-pulse {
+  0%, 100% { opacity: 1; box-shadow: 0 0 8px $ai-glow-mid; }
+  50%       { opacity: 0.4; box-shadow: 0 0 4px $ai-glow-soft; }
+}
+
+.chat-history-panel__title {
+  color: rgba(77, 208, 206, 0.7);
+}
+
+.chat-history-panel__badge {
+  margin-left: auto;
+  background: rgba(77, 208, 206, 0.1);
+  border: 1px solid rgba(77, 208, 206, 0.2);
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 10px;
+  color: rgba(77, 208, 206, 0.6);
+}
+
+.chat-history-panel__body {
+  padding: 12px 16px;
+}
+
+// ══════════════════════════════════════════════════════════════
+// 7. AI REPLY — polished typing lines with glow
+// ══════════════════════════════════════════════════════════════
+
+.chat-reply-line {
+  position: relative;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  border-left: 2px solid rgba(77, 208, 206, 0.35);
+  background: rgba(77, 208, 206, 0.03);
+  border-radius: 0 4px 4px 0;
+
+  &__handle {
+    color: $ai-cyan;
+    text-shadow: 0 0 10px $ai-glow-soft;
+    font-weight: 600;
+    margin-right: 6px;
+  }
+
+  &__text {
+    color: var(--text-heading);
+    line-height: 1.7;
+  }
+
+  &__cursor {
+    display: inline-block;
+    width: 8px;
+    height: 15px;
+    background: $ai-cyan;
+    box-shadow: 0 0 8px $ai-glow-mid;
+    margin-left: 2px;
+    vertical-align: middle;
+    animation: ai-cursor-blink 530ms steps(1) infinite;
+  }
+}
+
+@keyframes ai-cursor-blink {
+  0%, 50%      { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+// ══════════════════════════════════════════════════════════════
+// 8. USER INPUT LINE — in AI mode, left-aligned with prompt
+// ══════════════════════════════════════════════════════════════
+
+.chat-user-input-line {
+  margin-bottom: 6px;
+  color: var(--text-muted);
+  font-size: 13px;
+
+  .prompt-symbol {
+    color: var(--coral);
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// 9. AI MODE PROMPT — replaces the standard `$` prompt in chat mode
+// ══════════════════════════════════════════════════════════════
+
+.ai-prompt-wrapper {
+  position: relative;
+  margin-top: 8px;
+  margin-bottom: 32px;
+  border: 1px solid rgba(77, 208, 206, 0.25);
+  border-radius: 6px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(77, 208, 206, 0.05) 0%,
+      rgba(15, 15, 26, 0.8) 100%
+    );
+  box-shadow:
+    0 0 0 1px rgba(77, 208, 206, 0.06),
+    inset 0 1px 0 rgba(77, 208, 206, 0.1),
+    0 0 24px rgba(77, 208, 206, 0.06);
+  overflow: hidden;
+  transition:
+    border-color 200ms ease,
+    box-shadow 200ms ease;
+
+  &:focus-within {
+    border-color: rgba(77, 208, 206, 0.55);
+    box-shadow:
+      0 0 0 1px rgba(77, 208, 206, 0.15),
+      inset 0 1px 0 rgba(77, 208, 206, 0.18),
+      0 0 32px rgba(77, 208, 206, 0.14),
+      0 0 60px rgba(77, 208, 206, 0.06);
+  }
+
+  // Animated top edge shimmer
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(77, 208, 206, 0.5) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: ai-prompt-shimmer 3s linear infinite;
+    pointer-events: none;
+  }
+}
+
+@keyframes ai-prompt-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+.ai-prompt-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+}
+
+.ai-prompt-symbol {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: $ai-cyan;
+  text-shadow: 0 0 10px $ai-glow-soft;
+  flex-shrink: 0;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+// ══════════════════════════════════════════════════════════════
+// 10. SEND RIPPLE — energy wave on message send
+// ══════════════════════════════════════════════════════════════
+
+.ai-send-ripple {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(77, 208, 206, 0.6);
+    box-shadow:
+      0 0 20px rgba(77, 208, 206, 0.3),
+      inset 0 0 20px rgba(77, 208, 206, 0.1);
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// 11. POWERLINE — AI mode variant
+// ══════════════════════════════════════════════════════════════
+
+.powerline--ai-mode .pl-seg--coral {
+  background: $ai-cyan;
+  color: #060c10;
+  &::after { background: $ai-cyan; }
+}
+
+// ══════════════════════════════════════════════════════════════
+// 12. AI MODE HEADER TINT
+// Row 1 tmux bar gets a subtle blue-cyan wash
+// ══════════════════════════════════════════════════════════════
+
+.trow--tmux.ai-mode-tinted {
+  background: color-mix(in srgb, var(--surface-4) 90%, #38bdf8 10%);
+  transition: background 600ms ease;
+  border-bottom-color: rgba(77, 208, 206, 0.20);
+}
+
+.trow--prompt.ai-mode-tinted {
+  background: color-mix(in srgb, var(--surface-3) 88%, var(--cyan) 12%);
+  transition: background 600ms ease;
+}
+
+.trow--tabs.ai-mode-tinted {
+  background: color-mix(in srgb, var(--surface-3) 88%, var(--cyan) 12%);
+  transition: background 600ms ease;
+  border-bottom-color: rgba(77, 208, 206, 0.18);
+}
+
+// ══════════════════════════════════════════════════════════════
+// 13. SYSTEM ACTIVATION MESSAGES — styled differently in AI mode
+// ══════════════════════════════════════════════════════════════
+
+.tw-system-line.ai-system {
+  color: rgba(77, 208, 206, 0.75) !important;
+  text-shadow: 0 0 8px rgba(77, 208, 206, 0.25);
+  letter-spacing: 0.3px;
+  font-style: italic;
+}
+
+// ══════════════════════════════════════════════════════════════
+// 14. FLOATING PARTICLES — subtle ambient life
+// ══════════════════════════════════════════════════════════════
+
+.ai-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.ai-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: $ai-cyan;
+  opacity: 0;
+  animation: ai-particle-float linear infinite;
+}
+
+@keyframes ai-particle-float {
+  0% {
+    opacity: 0;
+    transform: translateY(100%) scale(0);
+  }
+  10% {
+    opacity: 0.6;
+    transform: translateY(90%) scale(1);
+  }
+  90% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.5);
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// 15. REDUCED MOTION — all AI effects off
+// ══════════════════════════════════════════════════════════════
+
+@media (prefers-reduced-motion: reduce) {
+  .ai-activation-overlay,
+  .ai-send-ripple,
+  .ai-sweep-bar,
+  .ai-particles,
+  .ai-particle { display: none !important; }
+
+  .chat-history-panel { animation: none; }
+  .ai-panel-breathe,
+  .ai-indicator-pulse,
+  .chat-reply-line__cursor { animation: none; }
+  .ai-prompt-wrapper::before { animation: none; }
+  .terminal-body--chat::after { display: none; }
+}
