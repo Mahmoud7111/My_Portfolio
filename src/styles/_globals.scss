@@ -132,3 +132,12 @@ p {
     font-size: clamp(8px, 2vw, 11px) !important;
   }
 }
+
+// AsciiArt component applies this class when hideOnMobile is true (the default).
+// Hides extremely wide ASCII art (e.g. ART.ACHIEVEMENTS ~278 chars wide) that
+// would overflow the narrow mobile terminal body even at smallest font-size.
+.ascii-hide-mobile {
+  @media (max-width: 767px) {
+    display: none;
+  }
+}

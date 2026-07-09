@@ -96,6 +96,14 @@ $mint: #5dfa92;
       letter-spacing: 2px;
       line-height: 1.4;
       user-select: none;
+      overflow-x: auto;
+
+      @include mobile {
+        // Shrink the block-bar on mobile so 30 █ blocks don't
+        // overflow the narrow terminal body width.
+        @include mono(10px, 700);
+        letter-spacing: 1px;
+      }
     }
 
     .achv-bar-bracket {

@@ -10,6 +10,10 @@
   top: 16px;
   right: 16px;
   z-index: 9999;
+  // Pure notification — auto-dismisses after 4.5s. Setting
+  // pointer-events:none means a toast sitting in the top-right
+  // can never swallow taps on the menu button or chrome nearby.
+  pointer-events: none;
   max-width: 340px;
   min-width: 280px;
   padding: 14px 18px;

@@ -162,11 +162,15 @@ export default function TerminalWindow() {
   }, [location.pathname])
 
   // ── Auto-scroll to keep prompt in view after command output ──
+  // Skipped in chat mode: chat replies arrive gradually via the
+  // typewriter hook, and forcing a smooth scrollIntoView on every
+  // history change competes with the user's manual touch scroll,
+  // which on iOS makes subsequent taps feel unresponsive.
   useEffect(() => {
-    if (location.pathname === '/' && inputRef.current) {
-      inputRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
-    }
-  }, [history, location.pathname])
+    if (location.pathname !== '/' || chatMode) return
+    if (!inputRef.current) return
+    inputRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest' })
+  }, [history, location.pathname, chatMode])
 
   // ── Auto-trigger chat from FAB ────────────────────────────────
   useEffect(() => {
@@ -694,7 +698,9 @@ export default function TerminalWindow() {
                           outline: 'none',
                           color: '#e8e8f0',
                           fontFamily: 'var(--font-mono)',
-                          fontSize: 14,
+                          // 16px is the iOS threshold — anything smaller triggers
+                          // the viewport auto-zoom-on-focus behaviour.
+                          fontSize: 16,
                           caretColor: 'var(--cyan)',
                           position: 'relative',
                           zIndex: 1,
@@ -727,7 +733,7 @@ export default function TerminalWindow() {
                         pointerEvents: 'none',
                         color: 'var(--text-muted)',
                         fontFamily: 'var(--font-mono)',
-                        fontSize: 14,
+                        fontSize: 16,
                         whiteSpace: 'pre',
                         opacity: 0.55,
                       }}
@@ -757,7 +763,9 @@ export default function TerminalWindow() {
                         background: 'transparent',
                         color: 'var(--cyan)',
                         fontFamily: 'var(--font-mono)',
-                        fontSize: 14,
+                        // 16px is the iOS threshold — anything smaller triggers
+                        // the viewport auto-zoom-on-focus behaviour.
+                        fontSize: 16,
                         caretColor: 'var(--coral)',
                         position: 'relative',
                         zIndex: 1,

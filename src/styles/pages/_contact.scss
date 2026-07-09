@@ -178,7 +178,7 @@
 
   &__input,
   &__textarea {
-    @include mono(13px);
+    @include mono(16px);
     color: var(--text-body);
     background: var(--surface-3);
     border: 1px solid var(--border);
@@ -186,6 +186,11 @@
     padding: 8px 12px;
     outline: none;
     transition: outline var(--transition-fast), outline-offset var(--transition-fast);
+
+    // 16px keeps iOS from auto-zooming on focus (threshold is < 16px).
+    @include tablet {
+      @include mono(13px);
+    }
 
     &::placeholder {
       color: var(--text-dim);

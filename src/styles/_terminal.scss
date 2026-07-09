@@ -475,6 +475,8 @@
   color: var(--text-body);
   line-height: 1.7;
   overflow-y: auto;
+  overflow-x: hidden;   // prevent invisible horizontal scrollbar (achievements
+                        // progress bar + wide ASCII art can overflow on mobile)
   @include dot-grid(0.035);
 
   // Retro terminal blocky scrollbar styling
