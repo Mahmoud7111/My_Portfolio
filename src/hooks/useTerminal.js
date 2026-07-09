@@ -163,6 +163,7 @@ export function useTerminal() {
     setInput,
     submit,
     chatMode,
+    exitChat,
     runFromClick,
     inputRef,
     pushLine,

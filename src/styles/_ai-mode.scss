@@ -172,6 +172,105 @@ $ai-glow-hard:  rgba(77, 208, 206, 0.70);
 }
 
 // ══════════════════════════════════════════════════════════════
+// 2b. DEACTIVATION OVERLAY — reverse of activation (shutting down)
+// ══════════════════════════════════════════════════════════════
+
+.ai-deactivation-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  overflow: hidden;
+  font-family: var(--font-mono);
+  background: rgba(6, 6, 14, 0.88);
+
+  // Faint scanlines — same as activation but tinted coral
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 3px,
+      rgba(224, 108, 117, 0.02) 3px,
+      rgba(224, 108, 117, 0.02) 4px
+    );
+    pointer-events: none;
+    z-index: 1;
+    animation: ai-scanline-scroll 4s linear infinite;
+  }
+}
+
+// Reverse sweep bar — rises from bottom → top
+.ai-sweep-bar--reverse {
+  top: auto;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(224, 108, 117, 0.7) 30%,
+    #ffffff 50%,
+    rgba(224, 108, 117, 0.7) 70%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 20px 6px rgba(224, 108, 117, 0.4),
+    0 0 60px 20px rgba(224, 108, 117, 0.15);
+  animation: ai-sweep-up 1.2s cubic-bezier(0.4, 0, 0.6, 1) forwards;
+}
+
+@keyframes ai-sweep-up {
+  from { transform: translateY(100%) scaleY(1); }
+  to   { transform: translateY(calc(-100vh - 3px)) scaleY(1); }
+}
+
+// Deactivation status lines — coral accent
+.ai-status-line--deactivation {
+  color: rgba(224, 108, 117, 0.75);
+  letter-spacing: 0.3px;
+  font-style: italic;
+}
+
+.ai-status-line--deactivation-active {
+  color: var(--coral);
+  text-shadow: 0 0 12px var(--coral-glow), 0 0 28px rgba(224, 108, 117, 0.2);
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  font-style: normal;
+}
+
+// Reverse progress bar fill — starts full, drains to 0
+.ai-scan-progress__fill--reverse {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, var(--coral), #fff);
+  box-shadow: 0 0 10px var(--coral-glow);
+  animation: ai-progress-drain 1.6s cubic-bezier(0.4, 0, 0.8, 1) forwards;
+}
+
+// Coral-tinted progress bar container inside the deactivation overlay
+.ai-deactivation-overlay .ai-scan-progress {
+  background: rgba(224, 108, 117, 0.12);
+  border-color: rgba(224, 108, 117, 0.2);
+}
+
+@keyframes ai-progress-drain {
+  from { width: 100%; }
+  to   { width: 0%; }
+}
+
+// ══════════════════════════════════════════════════════════════
 // 3. TERMINAL WINDOW — AI mode state
 // ══════════════════════════════════════════════════════════════
 
@@ -491,6 +590,34 @@ $ai-glow-hard:  rgba(77, 208, 206, 0.70);
   white-space: nowrap;
 }
 
+// Exit button inside the AI prompt — coral pill, terminal aesthetic
+.ai-exit-btn {
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: #fff;
+  background: rgba(224, 108, 117, 0.15);
+  border: 1px solid rgba(224, 108, 117, 0.4);
+  border-radius: 4px;
+  padding: 4px 10px;
+  margin-left: 8px;
+  cursor: pointer;
+  transition: all 150ms ease;
+  white-space: nowrap;
+
+  &:hover {
+    background: var(--coral);
+    border-color: var(--coral);
+    box-shadow: 0 0 12px rgba(224, 108, 117, 0.3);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
 // ══════════════════════════════════════════════════════════════
 // 10. SEND RIPPLE — energy wave on message send
 // ══════════════════════════════════════════════════════════════
@@ -602,6 +729,7 @@ $ai-glow-hard:  rgba(77, 208, 206, 0.70);
 
 @media (prefers-reduced-motion: reduce) {
   .ai-activation-overlay,
+  .ai-deactivation-overlay,
   .ai-send-ripple,
   .ai-sweep-bar,
   .ai-particles,

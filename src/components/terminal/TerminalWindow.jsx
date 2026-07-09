@@ -121,6 +121,7 @@ export default function TerminalWindow() {
   const [menuOpen,    setMenuOpen]    = useState(false)
   const [typingCount, setTypingCount] = useState(0)
   const [aiActivating, setAiActivating] = useState(false) // shows activation overlay
+  const [aiDeactivating, setAiDeactivating] = useState(false) // shows deactivation overlay
   const [aiReady,      setAiReady]      = useState(false)  // AI panel fully visible
   const [showRipple,   setShowRipple]   = useState(false)  // send ripple flash
   const bodyRef = useRef(null)
@@ -130,7 +131,7 @@ export default function TerminalWindow() {
   const startTyping = () => setTypingCount((n) => n + 1)
   const stopTyping  = () => setTypingCount((n) => Math.max(0, n - 1))
 
-  const { history, input, setInput, submit, chatMode, runFromClick, inputRef, pushLine, tabComplete, getCompletion } =
+  const { history, input, setInput, submit, chatMode, exitChat, runFromClick, inputRef, pushLine, tabComplete, getCompletion } =
     useTerminal()
   const { sendMessage, isLoading, clearChat } = useChat()
 
@@ -194,27 +195,36 @@ export default function TerminalWindow() {
     prevWindowState.current = windowState
   }, [windowState, onRestoreFromMinimized])
 
-  // ── AI mode activation sequence ───────────────────────────────
-  // When chatMode flips true → play the activation overlay for ~2.4s,
+  // ── AI mode activation / deactivation sequence ────────────────
+  // When chatMode flips true  → play the activation overlay for ~2.4s,
   // then mark aiReady so the holographic panel appears.
-  // When chatMode flips false → immediately hide everything.
+  // When chatMode flips false → play the deactivation overlay for ~2.2s,
+  // then clear everything and return to normal mode.
+  // aiReady stays true during deactivation so the AI mode terminal
+  // styling persists until the overlay finishes.
   useEffect(() => {
     if (chatMode && !prevChatMode.current) {
       // entering chat mode
       clearChat()
       setAiActivating(true)
       setAiReady(false)
+      setAiDeactivating(false)
       const t1 = setTimeout(() => setAiActivating(false), 2400)
       const t2 = setTimeout(() => setAiReady(true), 2000)
       prevChatMode.current = true
       return () => { clearTimeout(t1); clearTimeout(t2) }
     }
     if (!chatMode && prevChatMode.current) {
-      // leaving chat mode — clear any stuck typewriter state so commands work immediately
-      setAiActivating(false)
-      setAiReady(false)
+      // leaving chat mode — play deactivation overlay, then clean up
       setTypingCount(0)
-      prevChatMode.current = false
+      setAiDeactivating(true)
+      // aiReady stays true so the AI terminal styling persists during overlay
+      const t = setTimeout(() => {
+        setAiReady(false)
+        setAiDeactivating(false)
+        prevChatMode.current = false
+      }, 2200)
+      return () => clearTimeout(t)
     }
   }, [chatMode])
 
@@ -301,6 +311,13 @@ export default function TerminalWindow() {
         )}
       </AnimatePresence>
 
+      {/* ── AI Deactivation Overlay ────────────────────────────── */}
+      <AnimatePresence>
+        {aiDeactivating && (
+          <AiDeactivationOverlay key="ai-deactivation" />
+        )}
+      </AnimatePresence>
+
       {/* ── Send Ripple ────────────────────────────────────────── */}
       <AnimatePresence>
         {showRipple && (
@@ -310,7 +327,7 @@ export default function TerminalWindow() {
 
       {/* ── Global backdrop dim ────────────────────────────────── */}
       <AnimatePresence>
-        {chatMode && (
+        {(chatMode || aiDeactivating) && (
           <motion.div
             key="ai-backdrop"
             className="ai-mode-backdrop"
@@ -325,7 +342,7 @@ export default function TerminalWindow() {
 
       {/* ── Terminal window ─────────────────────────────────────── */}
       <motion.div
-        className={`terminal-window${chatMode ? ' terminal-window--ai-mode' : ''}`}
+        className={`terminal-window${chatMode || aiDeactivating ? ' terminal-window--ai-mode' : ''}`}
         style={{
           position:      'fixed',
           zIndex:        windowState === 'maximized' ? 999 : 100,
@@ -339,7 +356,7 @@ export default function TerminalWindow() {
 
         {/* ── Chat-mode ambient cyan glow (pulse) ─────────────── */}
         <AnimatePresence>
-          {chatMode && (
+          {(chatMode || aiDeactivating) && (
             <motion.div
               key="chat-glow"
               className="terminal-chat-glow"
@@ -690,7 +707,7 @@ export default function TerminalWindow() {
                         autoFocus
                         spellCheck={false}
                         autoComplete="off"
-                        placeholder="Ask me anything — type 'exit' to leave AI mode"
+                        placeholder="Ask me anything"
                         style={{
                           flex: 1,
                           background: 'transparent',
@@ -707,6 +724,18 @@ export default function TerminalWindow() {
                           width: '100%',
                         }}
                       />
+                      <button
+                        type="button"
+                        className="ai-exit-btn"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          e.stopPropagation()
+                          setInput('')
+                          exitChat()
+                        }}
+                      >
+                        exit
+                      </button>
                     </div>
                   </form>
                 </motion.div>
@@ -982,6 +1011,62 @@ function AiActivationOverlay() {
         </div>
         <span className="ai-status-line ai-status-line--label" style={{ opacity: 0.6 }}>
           scanning portfolio data...
+        </span>
+      </div>
+    </motion.div>
+  )
+}
+
+// ── AI Deactivation Overlay — mirrors activation but in reverse ──
+// Bottom→top sweep, coral/amber accent, "shutting down" status lines.
+function AiDeactivationOverlay() {
+  const [phase, setPhase] = useState(0)
+
+  useEffect(() => {
+    const t1 = setTimeout(() => setPhase(1), 800)
+    const t2 = setTimeout(() => setPhase(2), 1600)
+    return () => { clearTimeout(t1); clearTimeout(t2) }
+  }, [])
+
+  const statusLines = [
+    { key: 'clear',  text: 'CLEARING CONVERSATION CONTEXT...', show: phase >= 0 },
+    { key: 'flush',  text: 'FLUSHING SESSION MEMORY...', show: phase >= 1 },
+    { key: 'offline', text: '◈ AI SUBSYSTEM OFFLINE', show: phase >= 2, isActive: true },
+  ]
+
+  return (
+    <motion.div
+      className="ai-deactivation-overlay"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.25 }}
+    >
+      {/* Sweep bar — reverse direction (bottom → top) */}
+      <div className="ai-sweep-bar ai-sweep-bar--reverse" />
+
+      {/* Status messages */}
+      <div className="ai-activation-status">
+        {statusLines.map(({ key, text, show, isActive }) =>
+          show ? (
+            <motion.span
+              key={key}
+              className={`ai-status-line ai-status-line--deactivation${isActive ? ' ai-status-line--deactivation-active' : ''}`}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              {text}
+            </motion.span>
+          ) : null
+        )}
+
+        {/* Progress bar — reverse fill */}
+        <div className="ai-scan-progress">
+          <div className="ai-scan-progress__fill ai-scan-progress__fill--reverse" />
+        </div>
+        <span className="ai-status-line ai-status-line--label" style={{ opacity: 0.6 }}>
+          returning to terminal...
         </span>
       </div>
     </motion.div>
