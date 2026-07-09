@@ -1,23 +1,85 @@
 import { useState, useCallback } from 'react'
 import { me } from '../data/me'
+import { JOURNEY } from '../data/journey'
+import { PROJECTS } from '../data/projects'
+import { getStats } from '../data/stats'
+import { COMMANDS } from '../data/commands'
 
-// Set VITE_GROQ_API_KEY in a .env file at the project root (never commit it).
-const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY
-const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
+// The Groq API key lives server-side only (api/chat.js, read via process.env.GROQ_API_KEY).
+// The browser never sees it — it just calls our own /api/chat route.
+//
+// buildSystemPrompt() pulls from every file in src/data/ EXCEPT unlockables.js:
+// those are visitor-facing gamification secrets (konami code, easter eggs, hidden
+// achievements) and leaking them through the AI would spoil the discovery mechanic.
 
 function buildSystemPrompt() {
+  const projects = PROJECTS.map((p) => ({
+    name: p.name,
+    description: p.desc,
+    tags: p.tags,
+    status: p.status,
+    github: p.github,
+    live: p.live,
+  }))
+
+  const commands = COMMANDS.map((c) => c.id).join(', ')
+
   return `You are 7oka, ${me.name}'s personal AI assistant embedded in their portfolio terminal.
 Answer questions about ${me.name} using ONLY the following facts. Keep replies short (2-4 sentences),
 conversational, and in plain text (no markdown). If asked something not covered below, say you don't
-have that info and suggest checking the relevant terminal command instead.
+have that info and suggest the visitor try the relevant terminal command.
 
-Bio: ${me.bio}
+Identity:
+Name: ${me.name} (handle: ${me.handle})
 Title: ${me.title}
 Location: ${me.location}
-Skills: ${JSON.stringify(me.skills)}
-Experience: ${JSON.stringify(me.experience)}
-Education: ${JSON.stringify(me.education)}
-Links: ${JSON.stringify(me.links)}`
+Status: ${me.status}
+Email: ${me.email}
+Bio: ${me.bio}
+Hobbies: ${me.hobbiesLine}
+
+Currently:
+${me.currently.map((c) => `- ${c}`).join('\n')}
+
+Skills:
+Languages: ${JSON.stringify(me.skills.languages)}
+Frameworks: ${JSON.stringify(me.skills.frameworks)}
+AI Tools: ${JSON.stringify(me.skills.ai_tools)}
+Tools: ${JSON.stringify(me.skills.tools)}
+
+Spoken Languages: ${JSON.stringify(me.languages)}
+
+Experience:
+${JSON.stringify(me.experience)}
+
+Freelance:
+${JSON.stringify(me.freelance)}
+
+Education:
+${JSON.stringify(me.education)}
+
+Courses:
+${JSON.stringify(me.courses)}
+
+Milestones / Awards:
+${JSON.stringify(me.milestones)}
+
+Journey (timeline, most recent first):
+${JSON.stringify(JOURNEY)}
+
+Quick Facts:
+${JSON.stringify(me.quickFacts)}
+
+Projects:
+${JSON.stringify(projects)}
+
+Stats:
+${JSON.stringify(getStats())}
+
+Links:
+${JSON.stringify(me.links)}
+
+Available terminal commands the visitor can run to see more: ${commands}`
 }
 
 export function useChat() {
@@ -30,24 +92,19 @@ export function useChat() {
       const nextMessages = [...messages, { role: 'user', content: userText }]
 
       try {
-        const res = await fetch(GROQ_URL, {
+        const res = await fetch('/api/chat', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${GROQ_API_KEY}`,
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            model: 'llama-3.3-70b-versatile',
-            messages: [{ role: 'system', content: buildSystemPrompt() }, ...nextMessages],
-            temperature: 0.6,
-            max_tokens: 250,
+            messages: nextMessages,
+            systemPrompt: buildSystemPrompt(),
           }),
         })
 
-        if (!res.ok) throw new Error(`Groq API error: ${res.status}`)
+        if (!res.ok) throw new Error(`Chat API error: ${res.status}`)
 
         const data = await res.json()
-        const reply = data.choices?.[0]?.message?.content?.trim() || "(no response)"
+        const reply = data.reply?.trim() || '(no response)'
 
         setMessages([...nextMessages, { role: 'assistant', content: reply }])
         return reply
