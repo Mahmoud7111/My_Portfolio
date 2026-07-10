@@ -11,9 +11,29 @@ import { useResumeAchievement } from '../hooks/useResumeAchievement'
 import { useAchievements } from '../hooks/useAchievements'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 
-const SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID
-const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID
-const PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID
+const TEMPLATE_ID_CONTACT = import.meta.env.VITE_EMAILJS_TEMPLATE_ID_CONTACT
+const TEMPLATE_ID_AUTOREPLY = import.meta.env.VITE_EMAILJS_TEMPLATE_ID_AUTOREPLY
+const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const MAX_MSG = 2000
+
+const ERRORS = {
+  name: 'name is required',
+  email: 'enter a valid email address',
+  message: 'message is required',
+  messageLong: 'message must be under 2000 characters',
+}
+
+function validate({ name, email, message }) {
+  const errors = {}
+  if (!name.trim()) errors.name = ERRORS.name
+  if (!EMAIL_RE.test(email)) errors.email = ERRORS.email
+  if (!message.trim()) errors.message = ERRORS.message
+  else if (message.length > MAX_MSG) errors.message = ERRORS.messageLong
+  return errors
+}
 
 const SOCIAL_ICONS = {
   Github:   GithubIcon,
@@ -38,29 +58,61 @@ const fieldVariant = (i) => ({
 })
 
 export default function ContactContent() {
-  const [form, setForm]     = useState({ name: '', email: '', message: '' })
+  const [form, setForm]     = useState({ name: '', email: '', message: '', website: '' })
   const [status, setStatus] = useState('idle')
+  const [errors, setErrors] = useState({})
   const onResumeClick       = useResumeAchievement()
   const { unlock }          = useAchievements()
   const prefersReduced      = usePrefersReducedMotion()
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value })
+    if (errors[e.target.name]) setErrors({ ...errors, [e.target.name]: undefined })
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    const found = validate(form)
+    if (Object.keys(found).length > 0) {
+      setErrors(found)
+      return
+    }
+
+    // Honeypot: if the hidden field is filled, silently pretend success
+    // without hitting emailjs — wastes the bot's time without tipping it off.
+    if (form.website) {
+      setStatus('sent')
+      setForm({ name: '', email: '', message: '', website: '' })
+      return
+    }
+
+    const payload = { name: form.name, email: form.email, message: form.message }
     setStatus('sending')
     try {
-      await emailjs.send(SERVICE_ID, TEMPLATE_ID, form, PUBLIC_KEY)
-      setStatus('sent')
-      setForm({ name: '', email: '', message: '' })
-      unlock('contact-made')
+      const results = await Promise.allSettled([
+        emailjs.send(SERVICE_ID, TEMPLATE_ID_CONTACT, payload, PUBLIC_KEY),
+        emailjs.send(SERVICE_ID, TEMPLATE_ID_AUTOREPLY, payload, PUBLIC_KEY),
+      ])
+      const contactResult = results[0]
+      if (contactResult.status === 'fulfilled') {
+        setStatus('sent')
+        setForm({ name: '', email: '', message: '', website: '' })
+        unlock('contact-made')
+      } else {
+        console.error('contact send failed:', contactResult.reason)
+        setStatus('error')
+      }
     } catch (err) {
       console.error(err)
       setStatus('error')
     }
   }
 
-  const handleReset = () => setStatus('idle')
+  const handleReset = () => {
+    setStatus('idle')
+    setErrors({})
+  }
 
   const Wrap = prefersReduced ? 'div' : motion.div
 
@@ -151,7 +203,20 @@ export default function ContactContent() {
               </button>
             </motion.div>
           ) : (
-            <form onSubmit={handleSubmit} className="contact-form">
+            <form onSubmit={handleSubmit} className="contact-form" noValidate>
+              <div className="contact-form__honeypot" aria-hidden="true">
+                <label htmlFor="website">website (leave blank)</label>
+                <input
+                  type="text"
+                  id="website"
+                  name="website"
+                  value={form.website}
+                  onChange={handleChange}
+                  tabIndex={-1}
+                  autoComplete="off"
+                />
+              </div>
+
               {/* name */}
               <motion.div
                 className="contact-form__field"
@@ -171,6 +236,9 @@ export default function ContactContent() {
                   placeholder="ada lovelace"
                   required
                 />
+                {errors.name && (
+                  <span className="contact-form__error">{errors.name}</span>
+                )}
               </motion.div>
 
               {/* email */}
@@ -193,6 +261,9 @@ export default function ContactContent() {
                   placeholder="ada@example.dev"
                   required
                 />
+                {errors.email && (
+                  <span className="contact-form__error">{errors.email}</span>
+                )}
               </motion.div>
 
               {/* message */}
@@ -215,6 +286,9 @@ export default function ContactContent() {
                   placeholder="hey, i'm working on ..."
                   required
                 />
+                {errors.message && (
+                  <span className="contact-form__error">{errors.message}</span>
+                )}
               </motion.div>
 
               {/* submit */}
