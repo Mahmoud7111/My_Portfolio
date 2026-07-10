@@ -276,6 +276,47 @@
     margin: 0 0 24px;
   }
 
+  &__spam-note {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    max-width: 460px;
+    margin: 0 auto 24px;
+    padding: 16px 20px;
+    border: 1px solid var(--coral-edge);
+    border-radius: var(--radius-md);
+    background: var(--coral-tint);
+    text-align: left;
+
+    p {
+      @include mono(14px);
+      line-height: 1.6;
+      color: var(--coral);
+      margin: 0;
+
+      strong {
+        color: var(--coral);
+        font-weight: 600;
+      }
+    }
+  }
+
+  &__spam-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border: 1px solid var(--coral);
+    border-radius: 50%;
+    @include mono(15px);
+    color: var(--coral);
+    font-weight: 700;
+    line-height: 1;
+    margin-top: 1px;
+  }
+
   &__btn {
     @include mono(13px);
     color: var(--text-body);

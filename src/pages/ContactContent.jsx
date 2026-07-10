@@ -198,6 +198,13 @@ export default function ContactContent() {
   ✓ delivered to inbox
   ✓ awaiting reply ...`}
               </pre>
+              <div className="contact-success__spam-note">
+                <span className="contact-success__spam-icon">!</span>
+                <p>
+                  didn't get the auto-reply? check your <strong>spam/junk</strong> folder
+                  and mark it as <strong>"not spam"</strong> so future emails land in your inbox.
+                </p>
+              </div>
               <button type="button" className="contact-success__btn" onClick={handleReset}>
                 $ send another
               </button>
