@@ -207,6 +207,35 @@
     min-height: 144px;
   }
 
+  &__error {
+    @include mono(12px);
+    color: var(--coral);
+    margin-top: 6px;
+    line-height: 1.4;
+  }
+
+  // Honeypot: visually hidden but present in DOM.
+  // Off-screen rather than display:none so naive bots that skip
+  // hidden fields still fill it in.
+  &__honeypot {
+    position: absolute;
+    left: -9999px;
+    top: auto;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+
+    label,
+    input {
+      display: block;
+      width: 1px;
+      height: 1px;
+      font-size: 1px;
+    }
+  }
+
   &__actions {
     grid-column: 1 / -1;
     text-align: center;
