@@ -232,14 +232,14 @@ export default function AboutContent() {
       </RevealOnScroll>
 
       {/* ══════════════════════════════════════════════════════════ */}
-      {/* PANEL 3 — stack.json — N entries                          */}
+      {/* PANEL 3 — skills.json — N entries                          */}
       {/* ══════════════════════════════════════════════════════════ */}
       <RevealOnScroll>
       <div className="hc-panel" style={{ marginBottom: 40 }}>
-        <PanelChrome filename="stack.json" subtitle={`${totalSkills} entries`} />
+        <PanelChrome filename="skills.json" subtitle={`${totalSkills} entries`} />
         <div className="hc-panel__body">
-          <TypingLine text="cat stack.json">
-            <CmdLine cmd="cat" arg="stack.json" />
+          <TypingLine text="cat skills.json">
+            <CmdLine cmd="cat" arg="skills.json" />
           </TypingLine>
 
           <div className="ab-stack-header">

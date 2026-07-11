@@ -7,7 +7,7 @@ export default function AsciiArt({
   glow,
   fontSize = 'clamp(9px, 1.8vw, 18px)',
   className = '',
-  hideOnMobile = true,
+  hideOnMobile = false,
 }) {
   return (
     <pre
