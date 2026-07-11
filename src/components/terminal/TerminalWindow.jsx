@@ -362,14 +362,8 @@ export default function TerminalWindow() {
               className="terminal-chat-glow"
               aria-hidden="true"
               initial={{ opacity: 0 }}
-              animate={{ opacity: [0, 0.6, 0.18, 0.5, 0] }}
-              transition={{
-                duration: 4.5,
-                ease: 'easeInOut',
-                repeat: Infinity,
-                repeatType: 'loop',
-                repeatDelay: 0,
-              }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
               exit={{ opacity: 0, transition: { duration: 0.4 } }}
             />
           )}
@@ -803,7 +797,7 @@ export default function TerminalWindow() {
                   </div>
                 </form>
               )}
-              <HomeContent />
+              <HomeContent chatMode={chatMode} />
             </>
           )}
 

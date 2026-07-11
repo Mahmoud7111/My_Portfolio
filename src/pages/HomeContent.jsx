@@ -48,7 +48,7 @@ function SectionComment({ label }) {
   return <div className="hc-section-comment">// section: {label}</div>
 }
 
-export default function HomeContent() {
+export default function HomeContent({ chatMode }) {
   const navigate = useNavigate()
   const onResumeClick = useResumeAchievement()
   const { unlock } = useAchievements()
@@ -124,7 +124,7 @@ export default function HomeContent() {
                 </span>
               </div>
             </div>
-            <LazyPCModel />
+            <LazyPCModel forcePaused={chatMode} />
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 20, flexWrap: 'wrap' }}>

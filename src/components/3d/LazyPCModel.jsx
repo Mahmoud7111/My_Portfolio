@@ -21,7 +21,7 @@ const PCModel = lazy(() => import('./PCModel'))
  * Result: while the visitor is reading Projects, About, etc. the 3D model
  * contributes 0 CPU and 0 GPU.
  */
-export default function LazyPCModel() {
+export default function LazyPCModel({ forcePaused }) {
   const containerRef = useRef(null)
   const [loadReady, setLoadReady] = useState(false)
   const [visible, setVisible] = useState(false)
@@ -61,7 +61,7 @@ export default function LazyPCModel() {
   // Initial state (before intersection observer fires) — render placeholder.
   // Once model has ever been on screen, we know the chunk is loaded, so we
   // toggle between placeholder and Canvas based on `visible`.
-  const showPlaceholder = !loadReady || (hasEverRendered && !visible)
+  const showPlaceholder = forcePaused || !loadReady || (hasEverRendered && !visible)
 
   return (
     <div ref={containerRef} className="hc-model-mount">
@@ -75,7 +75,7 @@ export default function LazyPCModel() {
               <span className="hc-model-placeholder__fill" />
             </div>
             <div className="hc-model-placeholder__hint">
-              {loadReady ? 'paused · scroll to resume' : 'canvas ready · drag to orbit'}
+              {forcePaused ? 'paused · chat mode active' : loadReady ? 'paused · scroll to resume' : 'canvas ready · drag to orbit'}
             </div>
           </div>
         </div>
