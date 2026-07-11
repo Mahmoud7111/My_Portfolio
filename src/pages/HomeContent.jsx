@@ -11,7 +11,7 @@ import { me } from '../data/me'
 import { PROJECTS } from '../data/projects'
 import { getStats } from '../data/stats'
 import { ART } from '../components/ascii/art'
-import PCModel from '../components/3d/PCModel'
+import LazyPCModel from '../components/3d/LazyPCModel'
 import { useResumeAchievement } from '../hooks/useResumeAchievement'
 import { useAchievements } from '../hooks/useAchievements'
 
@@ -124,11 +124,7 @@ export default function HomeContent() {
                 </span>
               </div>
             </div>
-            <div
-              className="hc-model-canvas"
-            >
-              <PCModel />
-            </div>
+            <LazyPCModel />
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 20, flexWrap: 'wrap' }}>

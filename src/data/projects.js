@@ -29,7 +29,7 @@ export const PROJECTS = [
     branch: 'main',
     github: 'https://github.com/Mahmoud7111/Van-Der-Linde-MIU',
     live: 'https://van-der-linde1.vercel.app',
-    image: '/images/van-der-linde.png',
+    image: '/images/van-der-linde.webp',
     updated: '',
   },
   {
@@ -41,7 +41,7 @@ export const PROJECTS = [
     branch: 'main',
     github: 'https://github.com/Mahmoud7111/MIU-Guide',
     live: 'https://miu-guide.vercel.app/',
-    image: '/images/MIU.png',
+    image: '/images/MIU.webp',
     updated: '',
   },
   {
@@ -65,7 +65,7 @@ export const PROJECTS = [
     branch: 'main',
     github: 'https://github.com/Mahmoud7111/Generalized-Tic-Tac-Toe-Solver',
     live: 'https://generalized-tic-tac-toe-solver.vercel.app/',
-    image: '/images/tic-tac-toe.png',
+    image: '/images/tic-tac-toe.webp',
     updated: '',
   },
   {
@@ -77,7 +77,7 @@ export const PROJECTS = [
     branch: 'main',
     github: 'https://github.com/Mahmoud7111/E-Commerce-Application',
     live: null,
-    image: '/images/e-commerce.png',
+    image: '/images/e-commerce.webp',
     updated: '',
   },
   {
@@ -89,7 +89,7 @@ export const PROJECTS = [
     branch: 'main',
     github: 'https://github.com/Habiba-404-11-11/packet-tracer-project',
     live: null,
-    image: '/images/Network.png',
+    image: '/images/Network.webp',
     updated: '',
   },
   {
@@ -101,7 +101,7 @@ export const PROJECTS = [
     branch: 'main',
     github: 'https://github.com/Mahmoud7111/smart-irrigation-assembly-and-arduino',
     live: null,
-    image: '/images/CO.png',
+    image: '/images/CO.webp',
     updated: '',
   },
 ]

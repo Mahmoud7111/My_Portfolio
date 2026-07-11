@@ -91,12 +91,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 34px;
-  padding: 0 12px;
+  flex-wrap: wrap;
+  min-height: 34px;
+  padding: 4px 12px;
   background: var(--surface-4);
   border-bottom: 1px solid var(--border);
   @include mono(12px);
-  gap: 8px;
+  gap: 4px 8px;
 }
 
 .hc-panel__chrome-left {
@@ -104,6 +105,7 @@
   align-items: center;
   gap: 6px;
   min-width: 0;
+  flex-wrap: wrap;
 }
 
 .hc-panel__bar {
@@ -130,12 +132,12 @@
   color: var(--text-dim);
   letter-spacing: 3px;
   flex-shrink: 0;
-  white-space: nowrap;
 
   &--right {
     letter-spacing: 0;
     font-style: italic;
     font-size: 11px;
+    white-space: normal;
   }
 }
 
@@ -152,8 +154,9 @@
 // ── Command line ──────────────────────────────────────────────
 .hc-cmd-line {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
-  gap: 8px;
+  gap: 4px;
   @include mono(13px);
   margin-bottom: 8px;
 }
@@ -311,6 +314,89 @@
   @include mobile {
     width: 100%;
     height: 260px;
+  }
+}
+
+// Lazy-model mount: same dimensions as .hc-model-canvas so the section
+// layout doesn't shift while the Canvas is unmounted (paused).
+.hc-model-mount {
+  width: 450px;
+  height: 320px;
+  flex-shrink: 0;
+  position: relative;
+  cursor: grab;
+  touch-action: none;
+
+  @include mobile {
+    width: 100%;
+    height: 260px;
+  }
+}
+
+// ── Lazy 3D model placeholder (shown until pc.glb loads) ──────
+.hc-model-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.hc-model-placeholder__box {
+  width: 100%;
+  max-width: 320px;
+  padding: 14px 16px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-md);
+  background: rgba(15, 15, 23, 0.4);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hc-model-placeholder__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--cyan);
+  text-shadow: 0 0 8px var(--cyan-glow);
+  letter-spacing: 0.04em;
+}
+
+.hc-model-placeholder__bar {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 6px;
+  background: rgba(77, 208, 206, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.hc-model-placeholder__fill {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  animation: hc-model-skel 1.4s ease-in-out infinite;
+}
+
+.hc-model-placeholder__hint {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+
+@keyframes hc-model-skel {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hc-model-placeholder__fill {
+    animation: none;
+    opacity: 0.5;
   }
 }
 

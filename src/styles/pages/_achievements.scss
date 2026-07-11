@@ -64,7 +64,15 @@ $mint: #5dfa92;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 4px;
       margin-bottom: 8px;
+
+      @include mobile {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+      }
     }
 
     .achv-progress-fraction {
@@ -192,8 +200,15 @@ $mint: #5dfa92;
     transition: all var(--transition-slow);
     overflow: hidden;
 
-    // Glassy card effect
+    // Glassy card effect. Modern browsers handle small bounded blurs cheaply;
+    // falls back to a more opaque background on older engines.
     backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    @supports not (backdrop-filter: blur(6px)) {
+      // Older browsers / low-end GPUs: skip the blur, bump opacity instead.
+      background: linear-gradient(145deg, rgba(22,22,30,0.78), rgba(14,14,20,0.92));
+    }
 
     // Subtle colored border glow for unlocked
     box-shadow: 0 0 0 1px var(--card-border), 0 0 16px -4px var(--card-glow);
@@ -371,8 +386,9 @@ $mint: #5dfa92;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(8, 8, 12, 0.7);
-  backdrop-filter: blur(4px);
+  background: rgba(8, 8, 12, 0.78);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
 }
 
 .confirm-dialog {

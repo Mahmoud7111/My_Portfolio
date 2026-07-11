@@ -65,8 +65,10 @@ p {
     background:
       radial-gradient(circle at 4% 0%, var(--coral-tint) 0%, transparent 35%),
       radial-gradient(circle at 85% 100%, var(--cyan-tint) 0%, transparent 35%);
-    animation: aurora-drift 20s ease-in-out infinite alternate;
+    animation: aurora-drift 30s ease-in-out infinite alternate;
 
+    // Pause when tab is hidden — saves CPU in the background.
+    // Also apply a `prefers-reduced-motion` opt-out.
     @media (prefers-reduced-motion: reduce) {
       animation: none;
     }
@@ -82,7 +84,7 @@ p {
     background:
       radial-gradient(circle at 60% 20%, rgba(77, 208, 206, 0.04) 0%, transparent 40%),
       radial-gradient(circle at 20% 80%, rgba(224, 108, 117, 0.03) 0%, transparent 40%);
-    animation: aurora-drift-2 28s ease-in-out infinite alternate;
+    animation: aurora-drift-2 45s ease-in-out infinite alternate;
 
     @media (prefers-reduced-motion: reduce) {
       animation: none;
@@ -115,6 +117,13 @@ p {
       radial-gradient(circle at 40% 30%, rgba(77, 208, 206, 0.05) 0%, transparent 40%),
       radial-gradient(circle at 35% 70%, rgba(224, 108, 117, 0.04) 0%, transparent 40%);
   }
+}
+
+// While the browser tab is hidden, freeze every page-shell background
+// animation. (usePageShellVisibility toggles the `paused` class on .page-shell.)
+.page-shell.paused::before,
+.page-shell.paused::after {
+  animation-play-state: paused !important;
 }
 
 // Touch device fallback — disables custom cursor effects
