@@ -126,6 +126,8 @@ export default function TerminalWindow() {
   const [showRipple,   setShowRipple]   = useState(false)  // send ripple flash
   const bodyRef = useRef(null)
   const prevChatMode = useRef(false)
+  const chatPromptRef = useRef(null)
+  const scrolledToChat = useRef(false)
 
   const isTyping = typingCount > 0
   const startTyping = () => setTypingCount((n) => n + 1)
@@ -185,6 +187,24 @@ export default function TerminalWindow() {
       navigate(location.pathname, { replace: true })
     }
   }, [location.search, chatMode, runFromClick, location.pathname, navigate])
+
+  // Scroll chat prompt into view once the AI panel mounts.
+  // Only fires on the first aiReady=true of each activation (scrolledToChat guard).
+  useEffect(() => {
+    if (!aiReady) return
+    if (scrolledToChat.current) return
+    scrolledToChat.current = true
+    requestAnimationFrame(() => {
+      if (chatPromptRef.current) {
+        chatPromptRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+      }
+    })
+  }, [aiReady])
+
+  // Reset the scroll guard when chat mode closes so it fires again on next activation.
+  useEffect(() => {
+    if (!chatMode) scrolledToChat.current = false
+  }, [chatMode])
 
   // ── Track minimise→restore cycles for easter egg ────────────
   const prevWindowState = useRef(windowState)
@@ -687,6 +707,7 @@ export default function TerminalWindow() {
                 // AI mode prompt — holographic styled input
                 <motion.div
                   className="ai-prompt-wrapper"
+                  ref={chatPromptRef}
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: aiReady ? 1 : 0, y: aiReady ? 0 : 8 }}
                   transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
@@ -764,7 +785,7 @@ export default function TerminalWindow() {
                       {(() => {
                         const match = getCompletion(input)
                         if (!match) return ''
-                        return match
+                        return <>{match} <span style={{ opacity: 0.7, color: 'var(--cyan)' }}>→</span></>
                       })()}
                     </span>
                     <input
