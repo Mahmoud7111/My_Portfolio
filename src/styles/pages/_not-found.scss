@@ -1,0 +1,187 @@
+@use '../mixins' as *;
+
+// ============================================================
+// NOT FOUND (404) — styled for the terminal aesthetic
+// Renders inside .terminal-body via NotFound.jsx
+// Class prefix: .nf-
+// ============================================================
+
+.nf-root {
+  padding-bottom: 24px;
+}
+
+// ── Banner panel ─────────────────────────────────────────────
+.nf-banner-body {
+  text-align: center;
+  padding: 32px 16px 36px;
+}
+
+.nf-ascii {
+  @include mono(13px);
+  color: var(--coral);
+  text-shadow: 0 0 14px var(--coral-glow);
+  white-space: pre;
+  display: inline-block;
+  text-align: left;
+  margin: 20px auto 24px;
+  line-height: 1.15;
+  font-weight: 700;
+  // Allow horizontal scroll on narrow screens instead of wrapping
+  overflow-x: auto;
+  max-width: 100%;
+  padding: 0 8px;
+
+  @include mobile {
+    font-size: 8px;
+  }
+}
+
+.nf-status {
+  @include mono(13px);
+  color: var(--text-body);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 18px;
+  padding: 6px 14px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-3);
+}
+
+.nf-status__dot {
+  color: var(--coral);
+  text-shadow: 0 0 8px var(--coral-glow);
+  animation: pulse-coral 1.6s ease-in-out infinite;
+}
+
+.nf-status__label {
+  color: var(--coral);
+  font-weight: 600;
+  text-transform: lowercase;
+}
+
+.nf-status__sep {
+  color: var(--text-dim);
+}
+
+.nf-status__msg {
+  color: var(--text-muted);
+}
+
+.nf-hint {
+  @include mono(12px);
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.nf-hint__cmd {
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+.nf-hint__code {
+  @include mono(13px);
+  color: var(--cyan);
+  background: rgba(77, 208, 206, 0.08);
+  border: 1px solid var(--cyan-edge);
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin: 0 4px;
+}
+
+// ── Routes list ───────────────────────────────────────────────
+.nf-routes {
+  list-style: none;
+  padding: 16px 0;
+  margin: 12px 0 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+
+  @include mobile {
+    grid-template-columns: 1fr;
+  }
+}
+
+.nf-route {
+  // Override motion.div default inline-block if any
+  display: block;
+}
+
+.nf-route__link {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--cyan-edge);
+  border-radius: var(--radius-md);
+  background: var(--surface-3);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color var(--transition-base), background var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base);
+
+  &:hover,
+  &:focus-visible {
+    border-color: var(--cyan);
+    border-left-color: var(--cyan);
+    background: var(--surface);
+    transform: translateX(3px);
+    box-shadow: 0 0 14px var(--cyan-tint);
+    outline: none;
+  }
+}
+
+.nf-route__idx {
+  @include mono(10px);
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+
+.nf-route__cmd {
+  @include mono(13px);
+  display: block;
+}
+
+.nf-route__prompt {
+  color: var(--coral);
+  text-shadow: 0 0 8px var(--coral-glow);
+  margin-right: 4px;
+}
+
+.nf-route__path {
+  color: var(--cyan);
+  font-weight: 600;
+}
+
+.nf-route__label {
+  @include sans(13px);
+  color: var(--text-heading);
+  text-transform: lowercase;
+  letter-spacing: 0.3px;
+  margin-top: 4px;
+}
+
+.nf-route__sub {
+  @include sans(12px);
+  color: var(--text-muted);
+}
+
+// ── Centered "back home" CTA inside panel 2 ─────────────────
+.nf-back-home {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 28px;
+  padding-top: 24px;
+  border-top: 1px dashed var(--border-dim);
+}
+
+.nf-back-home__hint {
+  @include mono(11px);
+  color: var(--text-dim);
+  font-style: italic;
+  text-align: center;
+  margin: 0 0 12px;
+}

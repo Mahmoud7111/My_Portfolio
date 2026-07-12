@@ -22,6 +22,7 @@ import ProjectsContent from '../../pages/ProjectsContent'
 import AboutContent from '../../pages/AboutContent'
 import ContactContent from '../../pages/ContactContent'
 import AchievementsContent from '../../pages/AchievementsContent'
+import NotFound from '../../pages/NotFound'
 
 // ── Tab definitions ───────────────────────────────────────────
 const TABS = [
@@ -826,6 +827,10 @@ export default function TerminalWindow() {
           {location.pathname === '/about'        && <AboutContent />}
           {location.pathname === '/contact'      && <ContactContent />}
           {location.pathname === '/achievements' && <AchievementsContent />}
+          {/* Catch-all for any unknown route — render the styled 404 inside the terminal */}
+          {!['/', '/projects', '/about', '/contact', '/achievements'].includes(location.pathname) && (
+            <NotFound />
+          )}
           </motion.div>
           </AnimatePresence>
         </div>

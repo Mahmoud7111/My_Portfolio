@@ -181,4 +181,12 @@ export const UNLOCKABLES = [
     rarity: 'rare',
     icon: '⊞',
   },
+  {
+    id: '404-explorer',
+    name: '???',
+    desc: '// you went somewhere you weren\'t supposed to go.',
+    lockedDesc: 'Stray paths sometimes lead to discoveries',
+    rarity: 'rare',
+    icon: '⛯',
+  },
 ]
