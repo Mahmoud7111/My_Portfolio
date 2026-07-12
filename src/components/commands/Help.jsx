@@ -7,7 +7,7 @@ export default function Help({ onCommandClick }) {
       {COMMANDS.map((c) => (
         <div
           key={c.id}
-          className="cmd-line"
+          className="cmd-line cursor-interactive"
           onClick={() => onCommandClick?.(c.id)}
           style={{ display: 'flex', gap: 16 }}
         >

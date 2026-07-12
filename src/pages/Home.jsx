@@ -159,7 +159,7 @@ export default function Home() {
           {projects
             .filter((p) => p.featured)
             .map((p) => (
-              <div key={p.id} className='project-card'>
+              <div key={p.id} className='project-card cursor-interactive'>
                 <span className='cmd-name'>{p.name}</span>
                 <p style={{ color: 'var(--text-body)', marginTop: 6 }}>
                   {p.description}

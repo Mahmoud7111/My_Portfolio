@@ -18,7 +18,7 @@ export default function Projects() {
         {categories.map((cat) => (
           <button
             key={cat}
-            className={`filter-chip ${filter === cat ? 'active' : ''}`}
+            className={`filter-chip cursor-interactive ${filter === cat ? 'active' : ''}`}
             onClick={() => setFilter(cat)}
           >
             --{cat}
@@ -28,7 +28,7 @@ export default function Projects() {
 
       <div className="projects-grid">
         {filtered.map((p) => (
-          <div key={p.id} className="project-card">
+          <div key={p.id} className="project-card cursor-interactive">
             <span className="cmd-name">{p.name}</span>
             <p style={{ color: 'var(--text-body)', marginTop: 6 }}>{p.description}</p>
             <div style={{ display: 'flex', gap: 6, marginTop: 10, flexWrap: 'wrap' }}>

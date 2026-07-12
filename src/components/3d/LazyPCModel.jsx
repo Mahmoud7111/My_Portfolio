@@ -26,6 +26,13 @@ export default function LazyPCModel({ forcePaused }) {
   const [loadReady, setLoadReady] = useState(false)
   const [visible, setVisible] = useState(false)
   const [hasEverRendered, setHasEverRendered] = useState(false)
+  const [tabHidden, setTabHidden] = useState(document.hidden)
+
+  useEffect(() => {
+    const onVisibility = () => setTabHidden(document.hidden)
+    document.addEventListener('visibilitychange', onVisibility)
+    return () => document.removeEventListener('visibilitychange', onVisibility)
+  }, [])
 
   useEffect(() => {
     if (!('IntersectionObserver' in window)) {
@@ -61,7 +68,7 @@ export default function LazyPCModel({ forcePaused }) {
   // Initial state (before intersection observer fires) — render placeholder.
   // Once model has ever been on screen, we know the chunk is loaded, so we
   // toggle between placeholder and Canvas based on `visible`.
-  const showPlaceholder = forcePaused || !loadReady || (hasEverRendered && !visible)
+  const showPlaceholder = forcePaused || tabHidden || !loadReady || (hasEverRendered && !visible)
 
   return (
     <div ref={containerRef} className="hc-model-mount">
@@ -75,7 +82,7 @@ export default function LazyPCModel({ forcePaused }) {
               <span className="hc-model-placeholder__fill" />
             </div>
             <div className="hc-model-placeholder__hint">
-              {forcePaused ? 'paused · chat mode active' : loadReady ? 'paused · scroll to resume' : 'canvas ready · drag to orbit'}
+              {forcePaused ? 'paused · chat mode active' : tabHidden ? 'paused · tab backgrounded' : loadReady ? 'paused · scroll to resume' : 'canvas ready · drag to orbit'}
             </div>
           </div>
         </div>

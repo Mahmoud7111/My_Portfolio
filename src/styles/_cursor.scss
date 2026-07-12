@@ -5,6 +5,14 @@
 // Disabled automatically on touch devices via _globals.scss
 // ============================================================
 
+// Cursor colour: coral by default, cyan on interactive hover.
+// Controlled via CSS variable so both JS-driven is-hovering and
+// the reduced-motion media query can override it in one place.
+:root {
+  --cursor-color: var(--coral);
+  --cursor-glow: var(--coral-glow);
+}
+
 html {
   cursor: none;
 
@@ -23,22 +31,33 @@ button,
   }
 }
 
+// Slow idle breathing — compositor-friendly CSS keyframe, not JS.
+// Only active when the cursor is in its default state (no hover class).
+@keyframes cursor-breathe {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.65; }
+}
+
 .custom-cursor {
   position: fixed;
   top: 0;
   left: 0;
   width: 9px;
   height: 18px;
-  background: var(--coral);
-  box-shadow: 0 0 10px var(--coral-glow);
+  background: var(--cursor-color);
+  box-shadow: 0 0 10px var(--cursor-glow);
   pointer-events: none;
   z-index: 99999;
   transform: translate(-50%, -50%);
   will-change: transform;
-  animation: cursor-blink var(--cursor-blink-speed) steps(1) infinite;
+  animation:
+    cursor-blink var(--cursor-blink-speed) steps(1) infinite,
+    cursor-breathe 2.5s ease-in-out infinite;
+  transition: background 180ms ease, box-shadow 180ms ease;
 
   @include reduced-motion {
-    animation: none;
+    animation: cursor-blink var(--cursor-blink-speed) steps(1) infinite;
+    transition: none;
   }
 }
 
@@ -49,16 +68,31 @@ button,
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--cyan-glow) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--cursor-glow) 0%, transparent 70%);
   pointer-events: none;
   z-index: 99998;
   transform: translate(-50%, -50%);
   will-change: transform;
-  transition: transform 120ms ease-out;
+  transition: background 180ms ease;
+
+  @include reduced-motion {
+    transition: none;
+  }
 }
 
-// When hovering an interactive element, cursor grows slightly
-.custom-cursor.is-hovering {
+// Hover state: cursor grows and turns cyan.
+// .cursor-interactive class and native interactive elements both qualify.
+.custom-cursor.is-hovering,
+.custom-cursor:where(a:hover, button:hover, [role='button']:hover, .cursor-interactive:hover) {
   width: 14px;
   height: 24px;
+  background: var(--cyan);
+  box-shadow: 0 0 12px var(--cyan-glow);
+  --cursor-color: var(--cyan);
+  --cursor-glow: var(--cyan-glow);
+}
+
+// Trail also turns cyan on hover
+.cursor-trail:where(a:hover, button:hover, [role='button']:hover, .cursor-interactive:hover) {
+  background: radial-gradient(circle, rgba(77, 208, 206, 0.6) 0%, transparent 70%);
 }

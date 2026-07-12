@@ -390,17 +390,17 @@ export default function TerminalWindow() {
         <div className={`trow trow--tmux${chatMode ? ' ai-mode-tinted' : ''}`}>
           <div className="traffic-lights">
               <button
-                className="traffic-light close"
+                className="traffic-light close cursor-interactive"
                 aria-label="Close terminal"
                 onClick={() => { onCloseClick(); setWindowState('closed') }}
               />
             <button
-              className="traffic-light minimize"
+              className="traffic-light minimize cursor-interactive"
               aria-label="Minimize terminal"
               onClick={handleMinimize}
             />
             <button
-              className="traffic-light maximize"
+              className="traffic-light maximize cursor-interactive"
               aria-label={windowState === 'maximized' ? 'Restore' : 'Maximize'}
               onClick={handleMaximize}
             />
