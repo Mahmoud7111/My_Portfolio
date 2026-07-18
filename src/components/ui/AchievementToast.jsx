@@ -31,6 +31,9 @@ export default function AchievementToast({ achievement, onDismiss }) {
           ◈
         </span>
         ACHIEVEMENT UNLOCKED
+        <button className="achv-toast-close" onClick={onDismiss} aria-label="Dismiss">
+          ×
+        </button>
       </div>
       <div className="achv-toast-body">
         <span className="achv-toast-name">{achievement.name}</span>

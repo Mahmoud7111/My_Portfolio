@@ -35,6 +35,24 @@
     margin-bottom: 10px;
   }
 
+  .achv-toast-close {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: #ff6b6b;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0 4px;
+    line-height: 1;
+    pointer-events: all;
+    transition: color 0.15s, text-shadow 0.15s;
+
+    &:hover {
+      color: #ff4757;
+      text-shadow: 0 0 8px #ff4757;
+    }
+  }
+
   .achv-toast-badge {
     font-size: 16px;
     line-height: 1;
