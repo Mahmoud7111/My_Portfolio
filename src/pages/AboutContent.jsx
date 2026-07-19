@@ -15,17 +15,17 @@ import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 const ICONS = { MapPin, Briefcase, Coffee, Music, Layers, Cpu, Code }
 
 const TYPE_STYLES = {
-  experience:    { className: 'ab-type-pill ab-type-pill--cyan',      label: 'Professional experience' },
-  certification: { className: 'ab-type-pill ab-type-pill--neutral',   label: 'Certification' },
-  award:         { className: 'ab-type-pill ab-type-pill--gold',      label: 'Award' },
-  education:     { className: 'ab-type-pill ab-type-pill--coral',     label: 'Education' },
+  experience:  { className: 'ab-type-pill ab-type-pill--cyan',  label: 'Professional experience' },
+  education:   { className: 'ab-type-pill ab-type-pill--coral', label: 'Education' },
+  award:        { className: 'ab-type-pill ab-type-pill--gold',  label: 'my achievements' },
 }
 
 const SKILL_CATEGORIES = [
-  { key: 'languages',  label: 'Languages',  items: me.skills.languages },
-  { key: 'frameworks', label: 'Frameworks', items: me.skills.frameworks },
-  { key: 'ai_tools',   label: 'AI Tools',   items: me.skills.ai_tools },
-  { key: 'tools',      label: 'Tools',      items: me.skills.tools },
+  { key: 'webDevelopment', label: 'Web Development', items: me.skills.webDevelopment },
+  { key: 'languages',      label: 'Languages',        items: me.skills.languages },
+  { key: 'ai',             label: 'AI & Machine Learning', items: me.skills.ai },
+  { key: 'aiTools',        label: 'AI Tools & Agent Systems', items: me.skills.aiTools },
+  { key: 'additional',      label: 'Additional Skills', items: me.skills.additional },
 ]
 
 const totalSkills = SKILL_CATEGORIES.reduce((n, c) => n + c.items.length, 0)
@@ -118,7 +118,7 @@ function TimelineList({ entries }) {
 
 export default function AboutContent() {
   const onResumeClick = useResumeAchievement()
-  const [journeyFilter, setJourneyFilter] = useState(new Set())
+  const [journeyFilter, setJourneyFilter] = useState(new Set(Object.keys(TYPE_STYLES)))
   return (
     <div className="ab-root">
 
@@ -201,7 +201,7 @@ export default function AboutContent() {
           </div>
           <div className="ab-timeline-filters">
             {Object.keys(TYPE_STYLES).map((t) => {
-              const active = journeyFilter.size === 0 || journeyFilter.has(t)
+              const active = journeyFilter.has(t)
               return (
                 <button
                   key={t}

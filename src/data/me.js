@@ -21,8 +21,8 @@ demos that work once.`,
 
   hobbiesLine: `Outside of work I'm drinking Turkish coffee, more Turkish coffee, and then wondering why I can't sleep.`,
 
-  resume: '/My_Resume2.pdf',
-  resumeUrl: '/My_Resume2.pdf',
+  resume: '/My_Resume.pdf',
+  resumeUrl: '/My_Resume.pdf',
 
   currently: [
     'Building this portfolio with React 18',
@@ -45,10 +45,11 @@ demos that work once.`,
   ],
 
   skills: {
-    languages: ['JavaScript', 'Python', 'C++', 'Java', 'SQL', 'HTML5', 'CSS3'],
-    frameworks: ['React', 'Vite', 'Framer Motion', 'Node.js', 'Express.js', 'MongoDB', 'JavaFX', 'Qt'],
-    ai_tools: ['Claude', 'OpenCode', 'Multi-Agent Systems','Skills' ,'Claude Hooks', 'Antigravity'],
-    tools: ['Git', 'GitHub', 'Postman', 'Figma', 'Arduino' ],
+    webDevelopment: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Mongoose', 'Vite', 'Axios', 'React Router', 'Context API', 'Framer Motion', 'MySQL'],
+    languages: ['JavaScript', 'C++', 'Java', 'Python', 'SQL', 'HTML', 'CSS'],
+    ai: ['AI Basics', 'Prompt Engineering', 'NLP Basics', 'LLM API Integration'],
+    aiTools: ['Antigravity', 'Claude', 'Multi-Agent Systems', 'Claude Hooks', 'Skills', 'AI Workflow Orchestration'],
+    additional: ['JavaFX', 'Qt', 'Arduino', 'Git', 'GitHub', 'Jira'],
   },
 
   languages: [
@@ -75,12 +76,20 @@ demos that work once.`,
 
   experience: [
     {
-      role: 'Software Engineer',
-      org: 'Company Name',
-      period: '2024 — Present',
+      role: 'Full Stack Web Developer Intern',
+      org: 'El Zatuna',
+      period: 'Jul. 2026 – Present',
       bullets: [
-        'Replace with a concrete achievement, e.g. "Cut p99 latency 400ms → 38ms".',
-        'Another bullet with a real, measurable outcome.',
+        'Development: Contributing to a MERN-stack platform and helping build core features with the engineering team.',
+      ],
+    },
+    {
+      role: 'Data Science Trainee',
+      org: 'Digital Egypt Pioneers Initiative (DEPI)',
+      period: 'Jul. 2026 – Present',
+      bullets: [
+        'AI & Data Science – Data Scientist Track',
+        '6-month track covering Prompt Engineering, Python, SQL, Data Analysis, Data Visualization, Machine Learning, MLOps, MLflow, and Hugging Face.',
       ],
     },
   ],
