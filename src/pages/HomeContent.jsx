@@ -111,11 +111,11 @@ export default function HomeContent({ chatMode }) {
                   pause={911}
                 />
               </h1>
-              
+
               <p style={{ margin: '0 0 24px', fontSize: 'clamp(14px, 1.5vw, 16px)', lineHeight: 1.8, color: 'var(--text-body)', maxWidth: 520 }}>
                 {me.bio}
               </p>
-              
+
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-muted)' }}>
                 <span>~/{me.location.toLowerCase()}</span>
                 <span>·</span>

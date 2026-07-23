@@ -76,6 +76,7 @@ function TimelineList({ entries }) {
                 <span className={ts.className}>{ts.label}</span>
               </div>
               <h3 className="ab-timeline-title">{entry.title}</h3>
+              {entry.org && <span className="ab-timeline-org">@ {entry.org}</span>}
               <p className="ab-timeline-desc">{entry.description}</p>
               {entry.link && (
                 <a href={entry.link} target="_blank" rel="noreferrer" className="ab-timeline-link">
@@ -103,6 +104,7 @@ function TimelineList({ entries }) {
               <span className={ts.className}>{ts.label}</span>
             </div>
             <h3 className="ab-timeline-title">{entry.title}</h3>
+            {entry.org && <span className="ab-timeline-org">@ {entry.org}</span>}
             <p className="ab-timeline-desc">{entry.description}</p>
             {entry.link && (
               <a href={entry.link} target="_blank" rel="noreferrer" className="ab-timeline-link">

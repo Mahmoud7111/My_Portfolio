@@ -130,12 +130,13 @@ export default function TerminalWindow() {
   const chatPromptRef = useRef(null)
   const scrolledToChat = useRef(false)
 
+  const { history, input, setInput, submit, chatMode, exitChat, runFromClick, inputRef, pushLine, tabComplete, getCompletion } =
+    useTerminal()
+
   const isTyping = typingCount > 0
   const startTyping = () => setTypingCount((n) => n + 1)
   const stopTyping  = () => setTypingCount((n) => Math.max(0, n - 1))
 
-  const { history, input, setInput, submit, chatMode, exitChat, runFromClick, inputRef, pushLine, tabComplete, getCompletion } =
-    useTerminal()
   const { sendMessage, isLoading, clearChat } = useChat()
 
   const { lastUnlocked, clearLastUnlocked, onCloseClick, onMinimizeClick, onMaximizeClick, onRestoreFromMinimized } =
@@ -764,7 +765,6 @@ export default function TerminalWindow() {
                 >
                   <span className="prompt-symbol">$</span>
                   <div className="terminal-input-wrap" style={{ position: 'relative', flex: 1, display: 'flex', alignItems: 'center' }}>
-                    {/* Ghost autocomplete suggestion rendered behind the input */}
                     <span
                       className="terminal-ghost"
                       aria-hidden="true"

@@ -542,6 +542,14 @@
   }
 }
 
+.ab-timeline-org {
+  @include mono(12px);
+  display: block;
+  color: var(--cyan);
+  margin: 0 0 8px;
+  opacity: 0.85;
+}
+
 .ab-timeline-desc {
   @include sans(14px);
   color: var(--text-body);

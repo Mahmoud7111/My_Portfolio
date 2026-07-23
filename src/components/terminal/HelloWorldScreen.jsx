@@ -33,7 +33,7 @@ export default function HelloWorldScreen({ onReady }) {
         </h1>
 
         <p className={`hw-subtitle ${showSubtitle ? 'hw-subtitle--visible' : ''}`}>
-          <span className="hw-prompt">&gt;</span> loading portfolio...
+          <span className="hw-prompt">{'>'}</span> loading portfolio...
         </p>
       </div>
     </div>

@@ -38,8 +38,8 @@ const parseDate = (dateStr) => {
   return { year: 0, month: 0 };
 };
 
-const buildEntry = (date, type, title, description, link = null) => ({
-  date, type, title, description, link,
+const buildEntry = (date, type, title, description, link = null, org = null) => ({
+  date, type, title, description, link, org,
 });
 
 const ALL_JOURNEY = [
@@ -47,7 +47,9 @@ const ALL_JOURNEY = [
     exp.period,
     'experience',
     exp.role,
-    exp.bullets.join(' ')
+    exp.bullets.join(' '),
+    null,
+    exp.org
   )),
   ...me.education.map((edu) => buildEntry(
     edu.year,
