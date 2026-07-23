@@ -2,6 +2,40 @@
 // projects.js — seed projects for the Projects page.
 // ============================================================
 
+// ============================================================
+// TAG_GROUPS — visual taxonomy for the chip-filter groups on
+// the Projects view. Add/edit freely; any tag in ALL_TAGS that
+// isn't claimed by a group automatically lands in "Other".
+// Group `id` is the slug used for the aria-label / data attr;
+// group `label` is what the user sees.
+// ============================================================
+export const TAG_GROUPS = [
+  {
+    id: 'frontend',
+    label: 'Front-End',
+    tags: ['react', 'threejs'],
+  },
+  {
+    id: 'backend',
+    label: 'Back-End',
+    tags: ['node', 'mongodb'],
+  },
+  {
+    id: 'languages',
+    label: 'Languages',
+    tags: ['java', 'cpp', 'assembly'],
+  },
+  {
+    id: 'systems',
+    label: 'Systems & Networking',
+    tags: ['arduino', 'cisco'],
+  },
+  {
+    id: 'type',
+    label: 'Project Type',
+    tags: ['web', 'fullstack', 'desktop', 'algorithms'],
+  },
+]
 export const ALL_TAGS = [
   'all',
   'web',
@@ -125,3 +159,32 @@ export const projects = PROJECTS.map((p) => ({
 }))
 
 export const categories = ['all', 'web', 'desktop', 'algorithms', 'systems']
+
+/**
+ * Resolve TAG_GROUPS into a render-ready structure, preserving the
+ * author-defined order. Any tag in ALL_TAGS not claimed by a named
+ * group falls into the first group whose `tags === []` (i.e. Other).
+ * The synthetic 'all' entry is omitted — it was historically a no-op
+ * filter (matches every project) and is rendered separately.
+ */
+export const TAG_GROUPS_RESOLVED = (() => {
+  const claimed = new Set()
+  for (const g of TAG_GROUPS) {
+    if (g.tags.length === 0) continue // catch-all, skip claim
+    for (const t of g.tags) claimed.add(t)
+  }
+
+  return TAG_GROUPS.map((group) => {
+    if (group.tags.length > 0) return { ...group, tags: [...group.tags] }
+
+    // Catch-all: every tag that wasn't claimed + isn't the synthetic 'all'
+    const leftovers = ALL_TAGS.filter(
+      (t) => t !== 'all' && !claimed.has(t)
+    )
+    return { ...group, tags: leftovers }
+  }).map((g) => ({
+    ...g,
+    // Drop empty groups silently — an empty Other row is worse than no row.
+    tags: g.tags.filter((t) => ALL_TAGS.includes(t)),
+  })).filter((g) => g.tags.length > 0)
+})()

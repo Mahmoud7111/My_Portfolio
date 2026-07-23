@@ -83,9 +83,8 @@
 
 .projects-toolbar {
   display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  align-items: center;
+  flex-direction: column;
+  gap: 10px;
   margin-bottom: 20px;
 }
 
@@ -96,28 +95,92 @@
   align-items: center;
 }
 
-.projects-chip {
-  background: #1a1a22;
-  color: var(--text-body);
-  border: 1px solid #262630;
+/* Grouped variant — all groups in one wrapping row, label inline with chips. */
+.projects-chips--grouped {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 0;
+  align-items: center;
+  width: 100%;
+  padding: 10px 12px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid #2a2a38;
   border-radius: var(--radius-md);
-  padding: 5px 12px;
+}
+
+.projects-chip-group {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  padding: 2px 12px 2px 0;
+
+  // Vertical divider after each group (except last)
+  &:not(:last-child) {
+    border-right: 1px solid #2e2e40;
+    margin-right: 12px;
+  }
+
+  &__label {
+    padding: 0;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: #6a6a88;            // brighter than text-dim, still subdued
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    margin-right: 6px;
+    &::before { display: none !important; }
+    &::after  { display: none !important; }
+    font-style: normal;
+    border: none;
+    background: none;
+  }
+
+  &__items {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+}
+
+/* Chip — visible border by default, active fills with cyan. */
+.projects-chip {
+  background: rgba(255, 255, 255, 0.03);
+  color: #a0a0b8;              // noticeably brighter than before
+  border: 1px solid #353548;
+  border-radius: var(--radius-sm);
+  padding: 3px 9px;
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: 11px;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition:
+    color var(--transition-fast),
+    background var(--transition-fast),
+    border-color var(--transition-fast);
   line-height: 1.5;
+  white-space: nowrap;
 
   &:hover {
+    color: var(--text-body);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: #55556a;
+  }
+
+  &:focus-visible {
+    outline: none;
     border-color: var(--cyan-edge);
-    transform: translateY(-1px);
+    color: var(--text-body);
   }
 }
 
 .projects-chip--active {
-  background: var(--cyan);
-  color: #0c0c10;
-  border-color: var(--cyan);
+  background: var(--cyan-tint);
+  color: var(--cyan);
+  border-color: var(--cyan-edge);
+  font-weight: 500;
 }
 
 .projects-search {
@@ -127,9 +190,8 @@
   background: #1a1a22;
   border: 1px solid #3a3a48;
   border-radius: var(--radius-md);
-  padding: 6px 14px;
-  min-width: 240px;
-  margin-left: auto;
+  padding: 7px 14px;
+  width: 100%;              // full width, sitting below chips naturally
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
   &:focus-within {

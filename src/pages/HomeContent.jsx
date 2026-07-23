@@ -55,8 +55,29 @@ export default function HomeContent({ chatMode }) {
 
   const stats = getStats()
 
+  const skipToAbout = (e) => {
+    e.preventDefault()
+    const target = document.getElementById('hc-about')
+    if (!target) return
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
   return (
     <div className="hc-root">
+
+      {/* Quiet out for people who'd rather scroll than type —
+          not a feature, just permission. */}
+      {!chatMode && (
+        <a
+          href="#hc-about"
+          onClick={skipToAbout}
+          className="hc-skip"
+          aria-label="Skip the terminal intro, scroll to the about section"
+        >
+          <span className="hc-skip__arrow" aria-hidden="true">↓</span>
+          <span>prefer scrolling? skip the terminal</span>
+        </a>
+      )}
 
       {/* ══════════════════════════════════════════════════════ */}
       {/* ABOUT                                                  */}
@@ -64,7 +85,7 @@ export default function HomeContent({ chatMode }) {
       <SectionComment label="about" />
 
       <RevealOnScroll>
-      <div className="hc-panel" style={{ marginBottom: 40, marginTop: 12 }}>
+      <div id="hc-about" className="hc-panel" style={{ marginBottom: 40, marginTop: 12 }}>
         {/* Chrome bar */}
         <div className="hc-panel__chrome">
           <div className="hc-panel__chrome-left">

@@ -4,7 +4,7 @@ import { ExternalLink, Search, Star } from 'lucide-react'
 import { GithubIcon } from '../components/ui/BrandIcons'
 import AsciiArt from '../components/ascii/AsciiArt'
 import { ART } from '../components/ascii/art'
-import { PROJECTS, ALL_TAGS } from '../data/projects'
+import { PROJECTS, TAG_GROUPS_RESOLVED } from '../data/projects'
 import RevealOnScroll from '../components/ui/RevealOnScroll'
 import TypingLine from '../components/ui/TypingLine'
 import { useAchievements } from '../hooks/useAchievements'
@@ -74,17 +74,6 @@ export default function ProjectsContent() {
         <span className="projects-opener__arg">./projects</span>
       </TypingLine>
       <div className="projects-toolbar">
-        <div className="projects-chips">
-          {ALL_TAGS.map((tag) => (
-            <button
-              key={tag}
-              className={`projects-chip${activeFilter === tag ? ' projects-chip--active' : ''}`}
-              onClick={() => setActiveFilter(tag)}
-            >
-              --{tag}
-            </button>
-          ))}
-        </div>
         <div className="projects-search">
           <Search size={14} className="projects-search__icon" />
           <input
@@ -94,6 +83,30 @@ export default function ProjectsContent() {
             onChange={(e) => setQuery(e.target.value)}
             placeholder="grep ..."
           />
+        </div>
+        <div className="projects-chips projects-chips--grouped" data-testid="projects-chips">
+          {TAG_GROUPS_RESOLVED.map((group) => (
+            <div
+              key={group.id}
+              className="projects-chip-group"
+              data-group={group.id}
+            >
+              <span className="projects-chip-group__label">
+                {group.label.toLowerCase()}:
+              </span>
+              <div className="projects-chip-group__items">
+                {group.tags.map((tag) => (
+                  <button
+                    key={tag}
+                    className={`projects-chip${activeFilter === tag ? ' projects-chip--active' : ''}`}
+                    onClick={() => setActiveFilter(activeFilter === tag ? 'all' : tag)}
+                  >
+                    --{tag}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
       </RevealOnScroll>
