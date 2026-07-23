@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
-import { ExternalLink, Search, Star } from 'lucide-react'
+import { ChevronDown, ExternalLink, Search, SlidersHorizontal, Star } from 'lucide-react'
 import { GithubIcon } from '../components/ui/BrandIcons'
 import AsciiArt from '../components/ascii/AsciiArt'
 import { ART } from '../components/ascii/art'
@@ -23,6 +23,8 @@ const TAG_TO_EXT = {
 export default function ProjectsContent() {
   const [activeFilter, setActiveFilter] = useState('all')
   const [query, setQuery] = useState('')
+  const [filtersOpen, setFiltersOpen] = useState(false)
+  const hasActiveFilter = activeFilter !== 'all'
 
   const filtered = PROJECTS.filter((p) => {
     const matchesTag = activeFilter === 'all' || p.tags.includes(activeFilter)
@@ -84,7 +86,25 @@ export default function ProjectsContent() {
             placeholder="grep ..."
           />
         </div>
-        <div className="projects-chips projects-chips--grouped" data-testid="projects-chips">
+
+        {/* Mobile toggle button — hidden on desktop via CSS */}
+        <button
+          className={`projects-filter-toggle${filtersOpen ? ' projects-filter-toggle--open' : ''}${hasActiveFilter ? ' projects-filter-toggle--active' : ''}`}
+          onClick={() => setFiltersOpen((v) => !v)}
+          aria-expanded={filtersOpen}
+          aria-controls="projects-chip-panel"
+        >
+          <SlidersHorizontal size={13} />
+          <span>filter{hasActiveFilter ? `: --${activeFilter}` : 's'}</span>
+          {hasActiveFilter && <span className="projects-filter-toggle__badge" />}
+          <ChevronDown size={12} className="projects-filter-toggle__chevron" />
+        </button>
+
+        <div
+          id="projects-chip-panel"
+          className={`projects-chips projects-chips--grouped${filtersOpen ? ' projects-chips--open' : ''}`}
+          data-testid="projects-chips"
+        >
           {TAG_GROUPS_RESOLVED.map((group) => (
             <div
               key={group.id}
@@ -99,7 +119,10 @@ export default function ProjectsContent() {
                   <button
                     key={tag}
                     className={`projects-chip${activeFilter === tag ? ' projects-chip--active' : ''}`}
-                    onClick={() => setActiveFilter(activeFilter === tag ? 'all' : tag)}
+                    onClick={() => {
+                      setActiveFilter(activeFilter === tag ? 'all' : tag)
+                      setFiltersOpen(false)
+                    }}
                   >
                     --{tag}
                   </button>
