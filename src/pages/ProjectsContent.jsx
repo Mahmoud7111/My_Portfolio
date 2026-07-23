@@ -342,7 +342,7 @@ function ProjectCard({ project, index }) {
                           className="self-popup"
                           initial={{ opacity: 0, y: 8, scale: 0.95 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
-                          exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                          exit={{ opacity: 0, y: -8, scale: 0.95 }}
                           transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
                         >
                           <div className="self-popup__scanlines" />
