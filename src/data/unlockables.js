@@ -189,4 +189,12 @@ export const UNLOCKABLES = [
     rarity: 'rare',
     icon: '⛯',
   },
+  {
+    id: 'already-here',
+    name: 'Already Here',
+    desc: 'Tried to open the portfolio live link... but you\'re already on it!',
+    lockedDesc: 'Find the live link on the my-portfolio project card',
+    rarity: 'rare',
+    icon: '◎',
+  },
 ]

@@ -1,6 +1,6 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { ChevronDown, ExternalLink, Search, SlidersHorizontal, Star } from 'lucide-react'
+import { useState, useRef, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { ChevronDown, ExternalLink, Search, SlidersHorizontal, Star, MapPin } from 'lucide-react'
 import { GithubIcon } from '../components/ui/BrandIcons'
 import AsciiArt from '../components/ascii/AsciiArt'
 import { ART } from '../components/ascii/art'
@@ -202,8 +202,22 @@ function CardList({ filtered }) {
 
 function ProjectCard({ project, index }) {
   const { unlock } = useAchievements()
+  const [selfPopup, setSelfPopup] = useState(false)
+  const popupRef = useRef(null)
   const firstTag = project.tags.find((t) => TAG_TO_EXT[t])
   const ext = firstTag ? TAG_TO_EXT[firstTag] : ''
+
+  // Close popup on outside click
+  useEffect(() => {
+    if (!selfPopup) return
+    const handler = (e) => {
+      if (popupRef.current && !popupRef.current.contains(e.target)) {
+        setSelfPopup(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [selfPopup])
 
   return (
     <article className="project-row-card">
@@ -235,7 +249,7 @@ function ProjectCard({ project, index }) {
             <span className="project-path-prefix">~/projects/</span>
             <span className="project-path-name">{project.name}</span>
             <span className="project-path-meta">
-              {'{'}{project.branch}{'} '}
+              {'{' + project.branch + '} '}
               <span className="project-path-dot" />
               {project.updated && (
                 <span className="project-path-date">· {project.updated}</span>
@@ -288,15 +302,88 @@ function ProjectCard({ project, index }) {
                 </a>
               )}
               {project.live && (
-                <a
-                  href={project.live}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="btn-live"
-                  onClick={() => unlock('demo-explorer')}
-                >
-                  <ExternalLink size={12} /> live
-                </a>
+                <div className="btn-live-wrapper" ref={project.isSelf ? popupRef : null}>
+                  {project.isSelf ? (
+                    <button
+                      className="btn-live btn-live--self"
+                      onClick={() => {
+                        setSelfPopup((v) => !v)
+                        unlock('already-here')
+                      }}
+                      aria-expanded={selfPopup}
+                    >
+                      <MapPin size={12} /> live
+                    </button>
+                  ) : (
+                    <a
+                      href={project.live}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="btn-live"
+                      onClick={() => unlock('demo-explorer')}
+                    >
+                      <ExternalLink size={12} /> live
+                    </a>
+                  )}
+
+                  <AnimatePresence>
+                    {selfPopup && (
+                      <>
+                        {/* Tap-to-close backdrop — mobile only (CSS hides on desktop) */}
+                        <motion.div
+                          className="self-popup__backdrop"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.15 }}
+                          onClick={() => setSelfPopup(false)}
+                        />
+                        <motion.div
+                          className="self-popup"
+                          initial={{ opacity: 0, y: 8, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 8, scale: 0.95 }}
+                          transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                        >
+                          <div className="self-popup__scanlines" />
+                          <div className="self-popup__header">
+                            <span className="self-popup__dot self-popup__dot--red" />
+                            <span className="self-popup__dot self-popup__dot--yellow" />
+                            <span className="self-popup__dot self-popup__dot--green" />
+                            <span className="self-popup__title">locate: live-url</span>
+                            <button
+                              className="self-popup__close"
+                              onClick={() => setSelfPopup(false)}
+                              aria-label="Close"
+                            >✕</button>
+                          </div>
+                          <div className="self-popup__body">
+                            <p className="self-popup__line self-popup__line--cmd">
+                              <span className="self-popup__prompt">$</span>
+                              <span className="self-popup__glitch" data-text="open --url live">open --url live</span>
+                            </p>
+                            <p className="self-popup__line">
+                              <span className="self-popup__label">resolving</span>
+                              <span className="self-popup__value">{window.location.origin}</span>
+                            </p>
+                            <p className="self-popup__line self-popup__line--warn">
+                              <span className="self-popup__icon">◈</span>
+                              <span>location match detected</span>
+                            </p>
+                            <p className="self-popup__line self-popup__line--success">
+                              <span className="self-popup__icon">✓</span>
+                              <span className="self-popup__big">you're already here!</span>
+                            </p>
+                            <p className="self-popup__line self-popup__line--muted">
+                              <span className="self-popup__icon">↳</span>
+                              <span>no redirect needed, enjoy the visit</span>
+                            </p>
+                          </div>
+                        </motion.div>
+                      </>
+                    )}
+                  </AnimatePresence>
+                </div>
               )}
             </div>
           </div>
