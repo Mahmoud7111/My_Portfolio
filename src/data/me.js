@@ -45,10 +45,11 @@ demos that work once.`,
   ],
 
   skills: {
-    webDevelopment: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Mongoose', 'Vite', 'Axios', 'React Router', 'Context API', 'Framer Motion', 'MySQL'],
+    webDevelopment: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Mongoose', 'Vite', 'Axios', 'Context API', 'Framer Motion', 'MySQL'],
     languages: ['JavaScript', 'C++', 'Java', 'Python', 'SQL', 'HTML', 'CSS'],
     ai: ['AI Basics', 'Prompt Engineering', 'NLP Basics', 'LLM API Integration'],
     aiTools: ['Antigravity', 'Claude', 'Multi-Agent Systems', 'Claude Hooks', 'Skills', 'AI Workflow Orchestration'],
+    SoftSkills: ['Problem Solving', 'Teamwork', 'Leadership', 'Communication', 'Time Management', 'Adaptability'],
     additional: ['JavaFX', 'Qt', 'Arduino', 'Git', 'GitHub', 'Jira'],
   },
 

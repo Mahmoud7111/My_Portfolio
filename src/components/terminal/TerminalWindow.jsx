@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { Mail, Download } from 'lucide-react'
+import { GithubIcon, LinkedinIcon } from '../ui/BrandIcons'
 import AsciiArt from '../ascii/AsciiArt'
 import { ART } from '../ascii/art'
 import CommandOutput from '../commands/CommandOutput'
@@ -26,18 +28,18 @@ import NotFound from '../../pages/NotFound'
 
 // ── Tab definitions ───────────────────────────────────────────
 const TABS = [
-  { id: 'terminal',     path: '/',             label: 'terminal' },
-  { id: 'projects',     path: '/projects',     label: 'projects' },
-  { id: 'about',        path: '/about',        label: 'about' },
-  { id: 'contact',      path: '/contact',      label: 'contact' },
+  { id: 'terminal', path: '/', label: 'terminal' },
+  { id: 'projects', path: '/projects', label: 'projects' },
+  { id: 'about', path: '/about', label: 'about' },
+  { id: 'contact', path: '/contact', label: 'contact' },
   { id: 'achievements', path: '/achievements', label: 'your achievements' },
 ]
 
 const PATH_MAP = {
-  '/':             '~/home',
-  '/projects':     '~/projects',
-  '/about':        '~/about',
-  '/contact':      '~/contact',
+  '/': '~/home',
+  '/projects': '~/projects',
+  '/about': '~/about',
+  '/contact': '~/contact',
   '/achievements': '~/achievements',
 }
 
@@ -113,18 +115,18 @@ function buildTarget(state, vp) {
 }
 
 export default function TerminalWindow() {
-  const navigate      = useNavigate()
-  const location      = useLocation()
-  const vp            = useViewport()
+  const navigate = useNavigate()
+  const location = useLocation()
+  const vp = useViewport()
 
   const [windowState, setWindowState] = useState('hello')
-  const [clock,       setClock]       = useState({ long: '', short: '' })
-  const [menuOpen,    setMenuOpen]    = useState(false)
+  const [clock, setClock] = useState({ long: '', short: '' })
+  const [menuOpen, setMenuOpen] = useState(false)
   const [typingCount, setTypingCount] = useState(0)
   const [aiActivating, setAiActivating] = useState(false) // shows activation overlay
   const [aiDeactivating, setAiDeactivating] = useState(false) // shows deactivation overlay
-  const [aiReady,      setAiReady]      = useState(false)  // AI panel fully visible
-  const [showRipple,   setShowRipple]   = useState(false)  // send ripple flash
+  const [aiReady, setAiReady] = useState(false)  // AI panel fully visible
+  const [showRipple, setShowRipple] = useState(false)  // send ripple flash
   const bodyRef = useRef(null)
   const prevChatMode = useRef(false)
   const chatPromptRef = useRef(null)
@@ -135,7 +137,7 @@ export default function TerminalWindow() {
 
   const isTyping = typingCount > 0
   const startTyping = () => setTypingCount((n) => n + 1)
-  const stopTyping  = () => setTypingCount((n) => Math.max(0, n - 1))
+  const stopTyping = () => setTypingCount((n) => Math.max(0, n - 1))
 
   const { sendMessage, isLoading, clearChat } = useChat()
 
@@ -149,7 +151,7 @@ export default function TerminalWindow() {
     const tick = () => {
       const now = new Date()
       setClock({
-        long:  now.toLocaleTimeString('en-GB', { hour12: false }),
+        long: now.toLocaleTimeString('en-GB', { hour12: false }),
         short: now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false }),
       })
     }
@@ -292,11 +294,11 @@ export default function TerminalWindow() {
     return <TerminalClosedScreen onReturn={() => setWindowState('normal')} />
   }
 
-  const currentPath  = PATH_MAP[location.pathname] ?? '~'
+  const currentPath = PATH_MAP[location.pathname] ?? '~'
   const activeTabIdx = TABS.findIndex(t => t.path === location.pathname)
 
   // Framer Motion target + transition for current state
-  const animTarget     = buildTarget(windowState, vp)
+  const animTarget = buildTarget(windowState, vp)
   const animTransition =
     windowState === 'minimized'
       ? { ...SPRING_SNAP, opacity: { duration: 0.15, ease: 'easeOut' } }
@@ -312,8 +314,8 @@ export default function TerminalWindow() {
             className="terminal-dock"
             style={{ position: 'fixed', bottom: 20, left: '50%' }}
             initial={{ x: '-50%', y: 30, opacity: 0 }}
-            animate={{ x: '-50%', y: 0,  opacity: 1 }}
-            exit={{    x: '-50%', y: 30, opacity: 0 }}
+            animate={{ x: '-50%', y: 0, opacity: 1 }}
+            exit={{ x: '-50%', y: 30, opacity: 0 }}
             transition={SPRING_SNAP}
             onClick={() => setWindowState('normal')}
             role="button"
@@ -366,8 +368,8 @@ export default function TerminalWindow() {
       <motion.div
         className={`terminal-window${chatMode || aiDeactivating ? ' terminal-window--ai-mode' : ''}`}
         style={{
-          position:      'fixed',
-          zIndex:        windowState === 'maximized' ? 999 : 100,
+          position: 'fixed',
+          zIndex: windowState === 'maximized' ? 999 : 100,
           pointerEvents: windowState === 'minimized' ? 'none' : 'auto',
         }}
         initial={buildTarget('normal', vp)}
@@ -411,11 +413,11 @@ export default function TerminalWindow() {
         {/* ══ ROW 1 — tmux title bar ══════════════════════════ */}
         <div className={`trow trow--tmux${chatMode ? ' ai-mode-tinted' : ''}`}>
           <div className="traffic-lights">
-              <button
-                className="traffic-light close cursor-interactive"
-                aria-label="Close terminal"
-                onClick={() => { onCloseClick(); setWindowState('closed') }}
-              />
+            <button
+              className="traffic-light close cursor-interactive"
+              aria-label="Close terminal"
+              onClick={() => { onCloseClick(); setWindowState('closed') }}
+            />
             <button
               className="traffic-light minimize cursor-interactive"
               aria-label="Minimize terminal"
@@ -579,259 +581,320 @@ export default function TerminalWindow() {
           ref={bodyRef}
         >
           <AnimatePresence mode="wait">
-          <motion.div
-            key={location.pathname}
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
-          >
-          {location.pathname === '/' && (
-            <>
-              {/* Dim hero ASCII in AI mode */}
-              <motion.div
-                animate={{ opacity: chatMode ? 0.25 : 1, filter: chatMode ? 'blur(1px)' : 'blur(0px)' }}
-                transition={{ duration: 0.6 }}
-              >
-                <AsciiArt
-                  art={ART.HERO}
-                  color="var(--cyan)"
-                  glow="var(--cyan-glow)"
-                  fontSize="clamp(9px, 1.8vw, 18px)"
-                  hideOnMobile={false}
-                />
-              </motion.div>
-
-              {/* Dim intro text in AI mode */}
-              <motion.div
-                animate={{ opacity: chatMode ? 0.3 : 1 }}
-                transition={{ duration: 0.6 }}
-                style={{ marginTop: 16, marginBottom: 16 }}
-              >
-                <p className="hc-intro">Welcome to my interactive portfolio terminal.</p>
-                <p className="hc-intro" style={{ lineHeight: 1.6 }}>
-                  Explore my work and learn more about me by entering <span style={{ color: 'var(--cyan)' }}>terminal commands</span>,
-                  <br />
-                  chatting in <span style={{ color: 'var(--coral)' }}>plain English</span>,
-                  <br />
-                  or selecting a section from the <span style={{ color: 'var(--gold)' }}>navigation menu</span> above.
-                </p>
-                <p className="hc-hint">
-                  Type <span className="hc-key">'help'</span> for commands &nbsp;·&nbsp;{' '}
-                  <span className="hc-key">'chat'</span> to open the AI assistant
-                </p>
-              </motion.div>
-
-              {/* ── History entries ── */}
-              {/* In AI mode, wrap chat-related entries in holographic panel */}
-              {chatMode && aiReady ? (
-                <motion.div
-                  className="chat-history-panel"
-                  initial={{ opacity: 0, y: 12, scale: 0.98 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: 8, scale: 0.98 }}
-                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <div className="chat-history-panel__header">
-                    <span className="chat-history-panel__indicator" aria-hidden="true" />
-                    <span className="chat-history-panel__title">AI ASSISTANT SHELL</span>
-                    <span className="chat-history-panel__badge">◈ model active</span>
-                  </div>
-                  <div className="chat-history-panel__body">
-                    {history.map((entry, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, x: -6 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.25, ease: 'easeOut' }}
-                      >
-                        <HistoryLine
-                          entry={entry}
-                          onCommandClick={runFromClick}
-                          onTypingStart={startTyping}
-                          onTypingDone={stopTyping}
-                          inChatPanel
-                        />
-                      </motion.div>
-                    ))}
-                    {isLoading && (
-                      <p className="chat-thinking" aria-label="AI is thinking">
-                        <span className="chat-thinking-dot" style={{ animationDelay: '0ms' }} />
-                        <span className="chat-thinking-dot" style={{ animationDelay: '220ms' }} />
-                        <span className="chat-thinking-dot" style={{ animationDelay: '440ms' }} />
-                      </p>
-                    )}
-                  </div>
-                </motion.div>
-              ) : !chatMode ? (
-                <div>
-                  {history.map((entry, i) => (
-                    <motion.div
-                      key={i}
-                      initial={{ opacity: 0, y: -4 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.2, ease: 'easeOut' }}
-                    >
-                      <HistoryLine
-                        entry={entry}
-                        onCommandClick={runFromClick}
-                        onTypingStart={startTyping}
-                        onTypingDone={stopTyping}
-                      />
-                    </motion.div>
-                  ))}
-                  {isLoading && (
-                    <p className="chat-thinking" aria-label="AI is thinking">
-                      <span className="chat-thinking-dot" style={{ animationDelay: '0ms' }} />
-                      <span className="chat-thinking-dot" style={{ animationDelay: '220ms' }} />
-                      <span className="chat-thinking-dot" style={{ animationDelay: '440ms' }} />
-                    </p>
-                  )}
-                </div>
-              ) : (
-                // Activation in progress — show history without panel yet
-                <div style={{ opacity: 0.4 }}>
-                  {history.map((entry, i) => (
-                    <motion.div key={i}>
-                      <HistoryLine
-                        entry={entry}
-                        onCommandClick={runFromClick}
-                        onTypingStart={startTyping}
-                        onTypingDone={stopTyping}
-                      />
-                    </motion.div>
-                  ))}
-                </div>
-              )}
-
-              {/* ── Prompt ── */}
-              {chatMode ? (
-                // AI mode prompt — holographic styled input
-                <motion.div
-                  className="ai-prompt-wrapper"
-                  ref={chatPromptRef}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: aiReady ? 1 : 0, y: aiReady ? 0 : 8 }}
-                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                >
-                  <form onSubmit={handleSubmit} className="ai-prompt-inner">
-                    <span className="ai-prompt-symbol">◈ AI&gt;</span>
-                    <div style={{ position: 'relative', flex: 1, display: 'flex', alignItems: 'center' }}>
-                      <input
-                        ref={inputRef}
-                        value={input}
-                        onChange={e => setInput(e.target.value)}
-                        autoFocus
-                        spellCheck={false}
-                        autoComplete="off"
-                        placeholder="Ask me anything"
-                        style={{
-                          flex: 1,
-                          background: 'transparent',
-                          border: 'none',
-                          outline: 'none',
-                          color: '#e8e8f0',
-                          fontFamily: 'var(--font-mono)',
-                          // 16px is the iOS threshold — anything smaller triggers
-                          // the viewport auto-zoom-on-focus behaviour.
-                          fontSize: 16,
-                          caretColor: 'var(--cyan)',
-                          position: 'relative',
-                          zIndex: 1,
-                          width: '100%',
-                        }}
-                      />
-                      <button
-                        type="button"
-                        className="ai-exit-btn"
-                        onClick={(e) => {
-                          e.preventDefault()
-                          e.stopPropagation()
-                          setInput('')
-                          exitChat()
-                        }}
-                      >
-                        exit
-                      </button>
-                    </div>
-                  </form>
-                </motion.div>
-              ) : (
-                // Normal command prompt
-                <form
-                  onSubmit={handleSubmit}
-                  className="terminal-prompt"
-                  style={{ marginTop: 8, marginBottom: 32, position: 'relative' }}
-                >
-                  <span className="prompt-symbol">$</span>
-                  <div className="terminal-input-wrap" style={{ position: 'relative', flex: 1, display: 'flex', alignItems: 'center' }}>
-                    <span
-                      className="terminal-ghost"
-                      aria-hidden="true"
-                      style={{
-                        position: 'absolute',
-                        left: 0,
-                        top: 0,
-                        bottom: 0,
-                        display: 'flex',
-                        alignItems: 'center',
-                        pointerEvents: 'none',
-                        color: 'var(--text-muted)',
-                        fontFamily: 'var(--font-mono)',
-                        fontSize: 16,
-                        whiteSpace: 'pre',
-                        opacity: 0.55,
-                      }}
-                    >
-                      {(() => {
-                        const match = getCompletion(input)
-                        if (!match) return ''
-                        return <>{match} <span style={{ opacity: 0.7, color: 'var(--cyan)' }}>→</span></>
-                      })()}
-                    </span>
-                    <input
-                      ref={inputRef}
-                      value={input}
-                      onChange={e => setInput(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Tab') {
-                          e.preventDefault()
-                          tabComplete()
-                        }
-                      }}
-                      autoFocus
-                      spellCheck={false}
-                      autoComplete="off"
-                      placeholder=""
-                      style={{
-                        flex: 1,
-                        background: 'transparent',
-                        color: 'var(--cyan)',
-                        fontFamily: 'var(--font-mono)',
-                        // 16px is the iOS threshold — anything smaller triggers
-                        // the viewport auto-zoom-on-focus behaviour.
-                        fontSize: 16,
-                        caretColor: 'var(--coral)',
-                        position: 'relative',
-                        zIndex: 1,
-                      }}
+            <motion.div
+              key={location.pathname}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
+            >
+              {location.pathname === '/' && (
+                <>
+                  {/* Dim hero ASCII in AI mode */}
+                  <motion.div
+                    animate={{ opacity: chatMode ? 0.25 : 1, filter: chatMode ? 'blur(1px)' : 'blur(0px)' }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    <AsciiArt
+                      art={ART.HERO}
+                      color="var(--cyan)"
+                      glow="var(--cyan-glow)"
+                      fontSize="clamp(9px, 1.8vw, 18px)"
+                      hideOnMobile={false}
                     />
-                  </div>
-                </form>
-              )}
-              <HomeContent chatMode={chatMode} />
-            </>
-          )}
+                  </motion.div>
 
-          {location.pathname === '/projects'     && <ProjectsContent />}
-          {location.pathname === '/about'        && <AboutContent />}
-          {location.pathname === '/contact'      && <ContactContent />}
-          {location.pathname === '/achievements' && <AchievementsContent />}
-          {/* Catch-all for any unknown route — render the styled 404 inside the terminal */}
-          {!['/', '/projects', '/about', '/contact', '/achievements'].includes(location.pathname) && (
-            <NotFound />
-          )}
-          </motion.div>
+                  <motion.div
+                    animate={{ opacity: chatMode ? 0.3 : 1 }}
+                    transition={{ duration: 0.6 }}
+                    className="hc-hero-intro"
+                  >
+                    {/* Name + role + status */}
+                    <div className="hc-hero-intro__who">
+                      <span className="hc-hero-intro__name">
+                        Mahmoud Sayed
+                        <span className="hc-hero-intro__cursor" aria-hidden="true">█</span>
+                      </span>
+                      <span className="hc-hero-intro__sep">//</span>
+                      <span className="hc-hero-intro__role">Software &amp; AI Engineer</span>
+                      <span className="hc-hero-intro__status">
+                        <span className="hc-hero-intro__status-dot">●</span>
+                        open to work
+                      </span>
+                    </div>
+
+                    {/* One-liner description */}
+                    <p className="hc-hero-intro__desc">
+                      Navigate my portfolio using{' '}
+                      <span className="hc-hero-intro__hl hc-hero-intro__hl--cyan">terminal commands</span>,{' '}
+                      <span className="hc-hero-intro__hl hc-hero-intro__hl--coral">plain English chat</span>,
+                      or click a shortcut below.
+                    </p>
+
+                    {/* Quick command pills */}
+                    <div className="hc-hero-intro__pills-wrap">
+                      <span className="hc-hero-intro__pills-label">$ quick start</span>
+                      <div className="hc-quick-pills">
+                        {[
+                          { id: 'about', label: 'about' },
+                          { id: 'skills', label: 'skills' },
+                          { id: 'experience', label: 'experience' },
+                          { id: 'projects', label: 'projects' },
+                          { id: 'chat', label: 'chat' },
+                          { id: 'help', label: 'help' },
+                        ].map(({ id, label }, i) => (
+                          <motion.button
+                            key={id}
+                            className="hc-quick-pill"
+                            onClick={() => runFromClick(id)}
+                            title={`Run: ${id}`}
+                            initial={{ opacity: 0, y: 4 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.05 * i, duration: 0.25 }}
+                          >
+                            <span className="hc-quick-pill__label">{label}</span>
+                          </motion.button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Social links + resume */}
+                    <div className="hc-hero-links">
+                      {me.links.map(({ label, url, icon }) => {
+                        const Icon = { Github: GithubIcon, Linkedin: LinkedinIcon, Mail }[icon] || GithubIcon
+                        return (
+                          <a
+                            key={label}
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hc-hero-link"
+                          >
+                            <Icon size={12} className="hc-hero-link__icon" />
+                            <span className="hc-hero-link__label">{label}</span>
+                          </a>
+                        )
+                      })}
+                      <a
+                        href={me.resumeUrl}
+                        download
+                        className="hc-hero-link hc-hero-link--resume"
+                      >
+                        <Download size={12} className="hc-hero-link__icon" />
+                        <span className="hc-hero-link__label">Resume</span>
+                      </a>
+                    </div>
+                  </motion.div>
+
+                  {/* ── History entries ── */}
+                  {/* In AI mode, wrap chat-related entries in holographic panel */}
+                  {chatMode && aiReady ? (
+                    <motion.div
+                      className="chat-history-panel"
+                      initial={{ opacity: 0, y: 12, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      <div className="chat-history-panel__header">
+                        <span className="chat-history-panel__indicator" aria-hidden="true" />
+                        <span className="chat-history-panel__title">AI ASSISTANT SHELL</span>
+                        <span className="chat-history-panel__badge">◈ model active</span>
+                      </div>
+                      <div className="chat-history-panel__body">
+                        {history.map((entry, i) => (
+                          <motion.div
+                            key={i}
+                            initial={{ opacity: 0, x: -6 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.25, ease: 'easeOut' }}
+                          >
+                            <HistoryLine
+                              entry={entry}
+                              onCommandClick={runFromClick}
+                              onTypingStart={startTyping}
+                              onTypingDone={stopTyping}
+                              inChatPanel
+                            />
+                          </motion.div>
+                        ))}
+                        {isLoading && (
+                          <p className="chat-thinking" aria-label="AI is thinking">
+                            <span className="chat-thinking-dot" style={{ animationDelay: '0ms' }} />
+                            <span className="chat-thinking-dot" style={{ animationDelay: '220ms' }} />
+                            <span className="chat-thinking-dot" style={{ animationDelay: '440ms' }} />
+                          </p>
+                        )}
+                      </div>
+                    </motion.div>
+                  ) : !chatMode ? (
+                    <div>
+                      {history.map((entry, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0, y: -4 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.2, ease: 'easeOut' }}
+                        >
+                          <HistoryLine
+                            entry={entry}
+                            onCommandClick={runFromClick}
+                            onTypingStart={startTyping}
+                            onTypingDone={stopTyping}
+                          />
+                        </motion.div>
+                      ))}
+                      {isLoading && (
+                        <p className="chat-thinking" aria-label="AI is thinking">
+                          <span className="chat-thinking-dot" style={{ animationDelay: '0ms' }} />
+                          <span className="chat-thinking-dot" style={{ animationDelay: '220ms' }} />
+                          <span className="chat-thinking-dot" style={{ animationDelay: '440ms' }} />
+                        </p>
+                      )}
+                    </div>
+                  ) : (
+                    // Activation in progress — show history without panel yet
+                    <div style={{ opacity: 0.4 }}>
+                      {history.map((entry, i) => (
+                        <motion.div key={i}>
+                          <HistoryLine
+                            entry={entry}
+                            onCommandClick={runFromClick}
+                            onTypingStart={startTyping}
+                            onTypingDone={stopTyping}
+                          />
+                        </motion.div>
+                      ))}
+                    </div>
+                  )}
+
+                  {/* ── Prompt ── */}
+                  {chatMode ? (
+                    // AI mode prompt — holographic styled input
+                    <motion.div
+                      className="ai-prompt-wrapper"
+                      ref={chatPromptRef}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: aiReady ? 1 : 0, y: aiReady ? 0 : 8 }}
+                      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      <form onSubmit={handleSubmit} className="ai-prompt-inner">
+                        <span className="ai-prompt-symbol">◈ AI&gt;</span>
+                        <div style={{ position: 'relative', flex: 1, display: 'flex', alignItems: 'center' }}>
+                          <input
+                            ref={inputRef}
+                            value={input}
+                            onChange={e => setInput(e.target.value)}
+                            autoFocus
+                            spellCheck={false}
+                            autoComplete="off"
+                            placeholder="Ask me anything"
+                            style={{
+                              flex: 1,
+                              background: 'transparent',
+                              border: 'none',
+                              outline: 'none',
+                              color: '#e8e8f0',
+                              fontFamily: 'var(--font-mono)',
+                              // 16px is the iOS threshold — anything smaller triggers
+                              // the viewport auto-zoom-on-focus behaviour.
+                              fontSize: 16,
+                              caretColor: 'var(--cyan)',
+                              position: 'relative',
+                              zIndex: 1,
+                              width: '100%',
+                            }}
+                          />
+                          <button
+                            type="button"
+                            className="ai-exit-btn"
+                            onClick={(e) => {
+                              e.preventDefault()
+                              e.stopPropagation()
+                              setInput('')
+                              exitChat()
+                            }}
+                          >
+                            exit
+                          </button>
+                        </div>
+                      </form>
+                    </motion.div>
+                  ) : (
+                    // Normal command prompt — clean, minimal & visible
+                    <form
+                      onSubmit={handleSubmit}
+                      className="terminal-prompt"
+                      style={{ marginTop: 12, marginBottom: 28, position: 'relative' }}
+                    >
+                      <span className={`prompt-symbol${!input ? ' prompt-symbol--pulse' : ''}`}>$</span>
+                      <div className="terminal-input-wrap" style={{ position: 'relative', flex: 1, display: 'flex', alignItems: 'center' }}>
+                        <span
+                          className="terminal-ghost"
+                          aria-hidden="true"
+                          style={{
+                            position: 'absolute',
+                            left: 0,
+                            top: 0,
+                            bottom: 0,
+                            display: 'flex',
+                            alignItems: 'center',
+                            pointerEvents: 'none',
+                            color: 'var(--text-muted)',
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: 16,
+                            whiteSpace: 'pre',
+                            opacity: 0.55,
+                          }}
+                        >
+                          {(() => {
+                            const match = getCompletion(input)
+                            if (!match) return ''
+                            return <>{match} <span style={{ opacity: 0.7, color: 'var(--cyan)' }}>→</span></>
+                          })()}
+                        </span>
+                        <input
+                          ref={inputRef}
+                          value={input}
+                          onChange={e => setInput(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Tab') {
+                              e.preventDefault()
+                              tabComplete()
+                            }
+                          }}
+                          autoFocus
+                          spellCheck={false}
+                          autoComplete="off"
+                          placeholder="type 'help' or any command..."
+                          style={{
+                            flex: 1,
+                            background: 'transparent',
+                            color: 'var(--cyan)',
+                            textShadow: '0 0 6px rgba(77, 208, 206, 0.4)',
+                            fontFamily: 'var(--font-mono)',
+                            fontSize: 16,
+                            caretColor: 'var(--coral)',
+                            position: 'relative',
+                            zIndex: 1,
+                          }}
+                        />
+                      </div>
+                    </form>
+                  )}
+                  <HomeContent chatMode={chatMode} runFromClick={runFromClick} />
+                </>
+              )}
+
+              {location.pathname === '/projects' && <ProjectsContent />}
+              {location.pathname === '/about' && <AboutContent />}
+              {location.pathname === '/contact' && <ContactContent />}
+              {location.pathname === '/achievements' && <AchievementsContent />}
+              {/* Catch-all for any unknown route — render the styled 404 inside the terminal */}
+              {!['/', '/projects', '/about', '/contact', '/achievements'].includes(location.pathname) && (
+                <NotFound />
+              )}
+            </motion.div>
           </AnimatePresence>
         </div>
 
@@ -855,7 +918,7 @@ export default function TerminalWindow() {
 function PowerlineFooter({ currentPath, shortTime, chatMode }) {
   return (
     <div className={`powerline${chatMode ? ' powerline--ai-mode' : ''}`} aria-hidden="true">
-      <Seg variant="coral"    dir="right" z={3}>{chatMode ? 'AI-SHELL' : 'NORMAL'}</Seg>
+      <Seg variant="coral" dir="right" z={3}>{chatMode ? 'AI-SHELL' : 'NORMAL'}</Seg>
       <Seg variant="surface3" dir="right" z={2}>{chatMode ? 'llm:active' : 'main ±0'}</Seg>
       <Seg variant="surface2" dir="right" z={1}>{chatMode ? '~/ai-shell' : currentPath}</Seg>
 
@@ -863,19 +926,19 @@ function PowerlineFooter({ currentPath, shortTime, chatMode }) {
         <span className="pl-hints">
           {chatMode ? (
             <><span className="pl-hint-key">exit</span> return to terminal{'  '}
-            <span className="pl-hint-key">◈ llm</span> ai active</>  
+              <span className="pl-hint-key">◈ llm</span> ai active</>
           ) : (
             <><span className="pl-hint-key">^C</span> exit
-            {'  '}<span className="pl-hint-key">^D</span> logout
-            {'  '}<span className="pl-hint-key">^L</span> clear
-            {'  '}<span className="pl-hint-key">tab</span> autocomplete</>
+              {'  '}<span className="pl-hint-key">^D</span> logout
+              {'  '}<span className="pl-hint-key">^L</span> clear
+              {'  '}<span className="pl-hint-key">tab</span> autocomplete</>
           )}
         </span>
       </div>
 
       <Seg variant="surface2" dir="left" z={1}>{chatMode ? 'model │ ai' : 'utf-8 │ lf'}</Seg>
       <Seg variant="surface3" dir="left" z={2}>{chatMode ? '◈ online' : '● 100%'}</Seg>
-      <Seg variant="cyan"     dir="left" z={3}>{shortTime}</Seg>
+      <Seg variant="cyan" dir="left" z={3}>{shortTime}</Seg>
     </div>
   )
 }
@@ -991,10 +1054,10 @@ function AiActivationOverlay() {
   }, [])
 
   const statusLines = [
-    { key: 'init',    text: 'INITIALIZING AI SUBSYSTEM...', show: phase >= 0 },
-    { key: 'model',   text: 'LOADING LLM: neural inference engine', show: phase >= 0 },
-    { key: 'ctx',     text: 'BUILDING CONTEXT FROM me.js...', show: phase >= 1 },
-    { key: 'ready',   text: '◈ ASSISTANT SHELL READY', show: phase >= 2, isActive: true },
+    { key: 'init', text: 'INITIALIZING AI SUBSYSTEM...', show: phase >= 0 },
+    { key: 'model', text: 'LOADING LLM: neural inference engine', show: phase >= 0 },
+    { key: 'ctx', text: 'BUILDING CONTEXT FROM me.js...', show: phase >= 1 },
+    { key: 'ready', text: '◈ ASSISTANT SHELL READY', show: phase >= 2, isActive: true },
   ]
 
   return (
@@ -1049,8 +1112,8 @@ function AiDeactivationOverlay() {
   }, [])
 
   const statusLines = [
-    { key: 'clear',  text: 'CLEARING CONVERSATION CONTEXT...', show: phase >= 0 },
-    { key: 'flush',  text: 'FLUSHING SESSION MEMORY...', show: phase >= 1 },
+    { key: 'clear', text: 'CLEARING CONVERSATION CONTEXT...', show: phase >= 0 },
+    { key: 'flush', text: 'FLUSHING SESSION MEMORY...', show: phase >= 1 },
     { key: 'offline', text: '◈ AI SUBSYSTEM OFFLINE', show: phase >= 2, isActive: true },
   ]
 
@@ -1118,14 +1181,14 @@ function AiSendRipple() {
 
 // ── Ambient particles ────────────────────────────────────────
 const PARTICLE_DEFS = [
-  { left: '8%',  size: 2, dur: '8s',  delay: '0s'    },
-  { left: '22%', size: 1, dur: '11s', delay: '2s'    },
-  { left: '40%', size: 2, dur: '9s',  delay: '1s'    },
-  { left: '58%', size: 1, dur: '13s', delay: '3.5s'  },
-  { left: '72%', size: 2, dur: '7s',  delay: '0.5s'  },
-  { left: '88%', size: 1, dur: '10s', delay: '4s'    },
-  { left: '15%', size: 1, dur: '14s', delay: '6s'    },
-  { left: '50%', size: 2, dur: '6s',  delay: '2.5s'  },
+  { left: '8%', size: 2, dur: '8s', delay: '0s' },
+  { left: '22%', size: 1, dur: '11s', delay: '2s' },
+  { left: '40%', size: 2, dur: '9s', delay: '1s' },
+  { left: '58%', size: 1, dur: '13s', delay: '3.5s' },
+  { left: '72%', size: 2, dur: '7s', delay: '0.5s' },
+  { left: '88%', size: 1, dur: '10s', delay: '4s' },
+  { left: '15%', size: 1, dur: '14s', delay: '6s' },
+  { left: '50%', size: 2, dur: '6s', delay: '2.5s' },
 ]
 
 function AiParticles() {

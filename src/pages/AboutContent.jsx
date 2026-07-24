@@ -10,7 +10,9 @@ import StaggerReveal, { StaggerItem } from '../components/ui/StaggerReveal'
 import TypingLine from '../components/ui/TypingLine'
 import TypewriterLoop from '../components/ui/TypewriterLoop'
 import { useResumeAchievement } from '../hooks/useResumeAchievement'
+import { useTypewriter } from '../hooks/useTypewriter'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
+import { SkillPill } from '../components/ui/SkillPill'
 
 const ICONS = { MapPin, Briefcase, Coffee, Music, Layers, Cpu, Code }
 
@@ -25,6 +27,7 @@ const SKILL_CATEGORIES = [
   { key: 'languages',      label: 'Languages',        items: me.skills.languages },
   { key: 'ai',             label: 'AI & Machine Learning', items: me.skills.ai },
   { key: 'aiTools',        label: 'AI Tools & Agent Systems', items: me.skills.aiTools },
+  { key: 'softSkills',     label: 'Soft Skills',      items: me.skills.SoftSkills },
   { key: 'additional',      label: 'Additional Skills', items: me.skills.additional },
 ]
 
@@ -253,6 +256,19 @@ export default function AboutContent() {
             <span>◆ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─</span>
           </div>
 
+          <div style={{
+            marginBottom: 20,
+            padding: '8px 14px',
+            background: 'rgba(77, 208, 206, 0.06)',
+            borderLeft: '2px solid var(--cyan)',
+            borderRadius: '0 4px 4px 0',
+            display: 'inline-block'
+          }}>
+            <span style={{ color: 'var(--cyan)', fontSize: 12, fontFamily: 'var(--font-mono)' }}>
+              // tip: hover over any technical skill to see what it means
+            </span>
+          </div>
+
           <StaggerReveal className="ab-skills-grid" stagger={0.06} delay={0.05}>
             {SKILL_CATEGORIES.map((cat) => (
               <StaggerItem key={cat.key} className="ab-skill-category">
@@ -263,7 +279,7 @@ export default function AboutContent() {
                 </div>
                 <div className="ab-skill-pills">
                   {cat.items.map((s) => (
-                    <span key={s} className="pill-neutral-inline">{s}</span>
+                    <SkillPill key={s} skill={s} />
                   ))}
                 </div>
               </StaggerItem>
