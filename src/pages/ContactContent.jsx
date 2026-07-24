@@ -240,7 +240,7 @@ export default function ContactContent() {
                   name="name"
                   value={form.name}
                   onChange={handleChange}
-                  placeholder="ada lovelace"
+                  placeholder="your name"
                   required
                 />
                 {errors.name && (
@@ -265,7 +265,7 @@ export default function ContactContent() {
                   name="email"
                   value={form.email}
                   onChange={handleChange}
-                  placeholder="ada@example.dev"
+                  placeholder="your@email.com"
                   required
                 />
                 {errors.email && (
