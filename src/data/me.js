@@ -94,6 +94,7 @@ demos that work once.`,
     },
   ],
 
+  //* Freelance projects, consulting, or contract work. Optional.
   freelance: [
     {
       name: 'Project Name',
@@ -103,6 +104,7 @@ demos that work once.`,
     },
   ],
 
+  //* Achievements, awards, certifications, publications, etc.
   milestones: [
     { title: 'TOP 3 MSP Software Hackathon', org: 'MSP Tech Club', year: '2025', type: 'award' },
     //{ title: '[PLACEHOLDER]', org: '[PLACEHOLDER]', year: '2024', type: 'certification' },

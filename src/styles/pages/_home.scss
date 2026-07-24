@@ -28,33 +28,49 @@
 }
 
 // ── "Skip the terminal" link ────────────────────────────────
-// Quiet give-permission for visitors who'd rather scroll than
-// type. No button chrome — reads like a meta side-note, not a
-// feature. Persistent (not one-time) by design: the option to
-// leave the metaphor is the whole point.
+// Visible give-permission for visitors who'd rather scroll than
+// type. Pill-shaped with real button chrome so non-technical
+// visitors register it as actionable (not as a system comment).
+// Persistent (not one-time) by design: the option to leave the
+// metaphor is the whole point.
 .hc-skip {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   margin: 18px 0 4px;
-  @include mono(12px);
-  color: var(--text-dim);
+  padding: 8px 14px;
+  @include mono(13px);
+  font-weight: 500;
+  color: var(--cyan);
   text-decoration: none;
   letter-spacing: 0.3px;
-  border-bottom: 1px dashed transparent;
+  background: rgba(77, 208, 206, 0.06);
+  border: 1px solid rgba(77, 208, 206, 0.35);
+  border-radius: 999px;
+  cursor: pointer;
   transition:
-    color var(--transition-fast),
-    border-color var(--transition-fast);
+    background-color var(--transition-fast),
+    border-color    var(--transition-fast),
+    color           var(--transition-fast),
+    transform       var(--transition-fast),
+    box-shadow      var(--transition-fast);
 
   &:hover {
-    color: var(--text-muted);
-    border-bottom-color: var(--border);
+    color: #b6f0ee;
+    background: rgba(77, 208, 206, 0.13);
+    border-color: var(--cyan);
+    transform: translateY(-1px);
+    box-shadow: 0 0 14px var(--cyan-glow);
   }
 
   &:focus-visible {
-    outline: 1px dashed var(--border);
-    outline-offset: 4px;
-    color: var(--text-muted);
+    outline: none;
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 2px var(--cyan-glow);
+  }
+
+  @include reduced-motion {
+    &:hover { transform: none; }
   }
 }
 

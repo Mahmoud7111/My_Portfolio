@@ -1,10 +1,11 @@
 import { me } from '../../data/me'
 
 const GROUPS = [
+  { key: 'webDevelopment', label: 'web development' },
   { key: 'languages', label: 'languages' },
-  { key: 'frameworks', label: 'frameworks' },
-  { key: 'ai_tools', label: 'ai tools' },
-  { key: 'tools', label: 'tools' },
+  { key: 'ai', label: 'ai' },
+  { key: 'aiTools', label: 'ai tools' },
+  { key: 'additional', label: 'additional' },
 ]
 
 export default function Skills() {

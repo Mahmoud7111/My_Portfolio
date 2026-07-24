@@ -1,13 +1,19 @@
 import { me } from '../../data/me'
 
+const TYPE_COLOR = {
+  award: 'var(--coral)',
+  certification: 'var(--cyan)',
+  publication: 'var(--cyan)',
+}
+
 export default function Achievements() {
   return (
     <div className="cmd-output">
-      {me.achievements.map((a, i) => (
+      {me.milestones.map((m, i) => (
         <p key={i}>
-          <span style={{ color: 'var(--gold)' }}>★</span> {a.title}{' '}
+          <span style={{ color: TYPE_COLOR[m.type] || 'var(--gold)' }}>★</span> {m.title}{' '}
           <span style={{ color: 'var(--text-muted)' }}>
-            — {a.org} · {a.year}
+            — {m.org} · {m.year}
           </span>
         </p>
       ))}

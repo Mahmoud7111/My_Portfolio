@@ -559,10 +559,52 @@
 .cmd-name { color: var(--cyan); }
 .cmd-desc  { color: var(--text-muted); }
 
+// .cmd-line — clickable command row (used by Help).
+// Hover paints the WHOLE row, not just the command name, so the
+// affordance is obvious to non-technical visitors (they don't know
+// terminal text is selectable but they do know highlighted rows
+// are clickable).
 .cmd-line {
   cursor: pointer;
-  transition: color var(--transition-fast);
-  &:hover .cmd-name { text-shadow: 0 0 8px var(--cyan-glow); }
+  padding: 5px 10px;
+  margin: 2px 0;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  background: transparent;
+  transition:
+    background-color var(--transition-fast),
+    border-color    var(--transition-fast),
+    color           var(--transition-fast),
+    transform       var(--transition-fast);
+
+  .cmd-name {
+    transition: text-shadow var(--transition-fast), color var(--transition-fast);
+  }
+
+  .cmd-desc {
+    transition: color var(--transition-fast);
+  }
+
+  &:hover {
+    background: rgba(77, 208, 206, 0.07);
+    border-color: rgba(77, 208, 206, 0.35);
+    transform: translateX(2px);
+
+    .cmd-name {
+      color: #b6f0ee;
+      text-shadow: 0 0 10px var(--cyan-glow);
+    }
+
+    .cmd-desc {
+      color: var(--text-body);
+    }
+  }
+
+  &:focus-visible {
+    outline: none;
+    background: rgba(77, 208, 206, 0.07);
+    border-color: var(--cyan);
+  }
 }
 
 .pill-neutral-inline { @include pill-neutral(); }
