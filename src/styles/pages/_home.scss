@@ -67,8 +67,15 @@
 }
 
 @keyframes hc-cursor-blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
 }
 
 .hc-hero-intro__sep {
@@ -110,8 +117,17 @@
 }
 
 @keyframes hc-status-pulse {
-  0%, 100% { opacity: 1;   transform: scale(1); }
-  50%       { opacity: 0.3; transform: scale(0.7); }
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.3;
+    transform: scale(0.7);
+  }
 }
 
 // ── Description ──────────────────────────────────────────────
@@ -126,8 +142,16 @@
 
 .hc-hero-intro__hl {
   font-weight: 600;
-  &--cyan  { color: var(--cyan);  opacity: 1; }
-  &--coral { color: var(--coral); opacity: 1; }
+
+  &--cyan {
+    color: var(--cyan);
+    opacity: 1;
+  }
+
+  &--coral {
+    color: var(--coral);
+    opacity: 1;
+  }
 }
 
 // ── Quick command pills ──────────────────────────────────────
@@ -136,7 +160,7 @@
   flex-direction: column;
   gap: 8px;
   padding-top: 12px;
-  border-top: 1px solid rgba(255,255,255,0.055);
+  border-top: 1px solid rgba(255, 255, 255, 0.055);
   margin-bottom: 12px;
 }
 
@@ -157,7 +181,7 @@
   flex-wrap: wrap;
   gap: 6px;
   padding-top: 10px;
-  border-top: 1px solid rgba(255,255,255,0.055);
+  border-top: 1px solid rgba(255, 255, 255, 0.055);
 }
 
 .hc-hero-link {
@@ -168,7 +192,7 @@
   font-family: var(--font-mono);
   font-size: 11px;
   color: var(--text-dim);
-  border: 1px solid rgba(255,255,255,0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 3px;
   text-decoration: none;
   transition: color 150ms ease, border-color 150ms ease, background 150ms ease;
@@ -182,12 +206,13 @@
   }
 
   &--resume {
-    color: rgba(255,108,96,0.7);
-    border-color: rgba(255,108,96,0.2);
+    color: rgba(255, 108, 96, 0.7);
+    border-color: rgba(255, 108, 96, 0.2);
+
     &:hover {
       color: var(--coral);
       border-color: var(--coral);
-      background: rgba(255,108,96,0.06);
+      background: rgba(255, 108, 96, 0.06);
     }
   }
 }
@@ -198,7 +223,9 @@
 
 // ── Skill jargon tooltip ─────────────────────────────────────────
 .skill-pill {
-  &--has-tip { cursor: help; }
+  &--has-tip {
+    cursor: help;
+  }
 }
 
 .skill-pill__dot {
@@ -235,7 +262,7 @@
   color: var(--text-body);
   line-height: 1.5;
   text-align: center;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   pointer-events: none;
   white-space: normal;
 
@@ -276,7 +303,9 @@
   z-index: 2;
 
   // Hide on small screens where it would overlap content
-  @media (max-width: 600px) { display: none; }
+  @media (max-width: 600px) {
+    display: none;
+  }
 }
 
 .hc-vert-banner__item {
@@ -355,7 +384,9 @@
   color: var(--cyan);
   opacity: 0.7;
 
-  @include reduced-motion { animation: none; }
+  @include reduced-motion {
+    animation: none;
+  }
 }
 
 .hc-scroll-hint__label {
@@ -364,8 +395,15 @@
 }
 
 @keyframes hc-hint-bob {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(4px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(4px);
+  }
 }
 
 // ── Quick Commands grid ───────────────────────────────────────────
@@ -399,6 +437,7 @@
   @media (max-width: 640px) {
     grid-template-columns: repeat(2, 1fr);
   }
+
   @media (max-width: 380px) {
     grid-template-columns: 1fr 1fr;
   }
@@ -410,16 +449,16 @@
   align-items: flex-start;
   gap: 2px;
   padding: 12px 14px;
-  background: var(--surface-3, rgba(255,255,255,0.03));
+  background: var(--surface-3, rgba(255, 255, 255, 0.03));
   border: 1px solid var(--border);
   border-radius: var(--radius-md, 8px);
   cursor: pointer;
   text-align: left;
   transition:
     border-color 200ms ease,
-    background   200ms ease,
-    box-shadow   200ms ease,
-    transform    200ms ease;
+    background 200ms ease,
+    box-shadow 200ms ease,
+    transform 200ms ease;
 
   &:hover {
     border-color: var(--cyan-edge);
@@ -433,7 +472,9 @@
   }
 
   @include reduced-motion {
-    &:hover { transform: none; }
+    &:hover {
+      transform: none;
+    }
   }
 }
 
@@ -506,13 +547,11 @@
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      var(--coral-edge) 30%,
-      var(--cyan-edge) 70%,
-      transparent 100%
-    );
+    background: linear-gradient(90deg,
+        transparent 0%,
+        var(--coral-edge) 30%,
+        var(--cyan-edge) 70%,
+        transparent 100%);
     opacity: 0.6;
     pointer-events: none;
     z-index: 1;
@@ -694,14 +733,29 @@
 
 // ── Typewriter loop (homepage headline) ──────────────────────
 @keyframes twl-gradient-shift {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes twl-pulse-glow {
-  0%, 100% { text-shadow: 0 0 8px var(--coral-glow), 0 0 20px rgba(224, 108, 117, 0.15); }
-  50%      { text-shadow: 0 0 12px var(--cyan-glow), 0 0 28px rgba(77, 208, 206, 0.18); }
+
+  0%,
+  100% {
+    text-shadow: 0 0 8px var(--coral-glow), 0 0 20px rgba(224, 108, 117, 0.15);
+  }
+
+  50% {
+    text-shadow: 0 0 12px var(--cyan-glow), 0 0 28px rgba(77, 208, 206, 0.18);
+  }
 }
 
 .twl-text {
@@ -827,8 +881,13 @@
 }
 
 @keyframes hc-model-skel {
-  0%   { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1003,13 +1062,23 @@
 }
 
 @keyframes hc-marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
 }
 
 @keyframes hc-marquee-rev {
-  from { transform: translateX(-50%); }
-  to   { transform: translateX(0); }
+  from {
+    transform: translateX(-50%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
 }
 
 // ── Projects ASCII heading ────────────────────────────────────
@@ -1131,13 +1200,20 @@
 
 .hc-status-pill__dot {
   font-size: 8px;
-  color: #4ade80;  // green dot — availability indicator
+  color: #4ade80; // green dot — availability indicator
   animation: hc-dot-pulse 2s ease-in-out infinite;
 }
 
 @keyframes hc-dot-pulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.4; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
 }
 
 .hc-rocket {
@@ -1226,8 +1302,15 @@
 }
 
 @keyframes hc-pills-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .hc-quick-pill {
@@ -1241,10 +1324,10 @@
   border-radius: 3px;
   cursor: pointer;
   transition:
-    background     150ms ease,
-    border-color   150ms ease,
-    box-shadow     150ms ease,
-    transform      150ms ease;
+    background 150ms ease,
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 150ms ease;
   user-select: none;
 
   &::before {
@@ -1264,7 +1347,9 @@
     box-shadow: 0 0 12px rgba(77, 208, 206, 0.12);
     transform: translateY(-1px);
 
-    &::before { opacity: 0.9; }
+    &::before {
+      opacity: 0.9;
+    }
   }
 
   &:active {

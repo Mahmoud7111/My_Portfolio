@@ -89,12 +89,26 @@
     filter var(--transition-fast),
     transform var(--transition-fast);
 
-  &:hover  { filter: brightness(1.35); transform: scale(1.15); }
-  &:active { transform: scale(0.85); }
+  &:hover {
+    filter: brightness(1.35);
+    transform: scale(1.15);
+  }
 
-  &.close    { background: #ff5f57; }
-  &.minimize { background: var(--gold); }
-  &.maximize { background: #28c840; }
+  &:active {
+    transform: scale(0.85);
+  }
+
+  &.close {
+    background: #ff5f57;
+  }
+
+  &.minimize {
+    background: var(--gold);
+  }
+
+  &.maximize {
+    background: #28c840;
+  }
 }
 
 // tmux session label — centered absolutely like the real tmux
@@ -121,8 +135,14 @@
   }
 }
 
-.tmux-dim  { color: var(--text-dim); }
-.tmux-name { color: var(--text-heading); font-weight: 600; }
+.tmux-dim {
+  color: var(--text-dim);
+}
+
+.tmux-name {
+  color: var(--text-heading);
+  font-weight: 600;
+}
 
 // Right-side fake chrome
 .tmux-right {
@@ -137,17 +157,36 @@
   }
 }
 
-.tmux-load { color: var(--text-dim); @include mobile { display: none; } }
-.tmux-load-val { color: #4ec94e; }
+.tmux-load {
+  color: var(--text-dim);
 
-.tmux-net { color: var(--text-dim); font-size: 11px; @include mobile { display: none; } }
+  @include mobile {
+    display: none;
+  }
+}
+
+.tmux-load-val {
+  color: #4ec94e;
+}
+
+.tmux-net {
+  color: var(--text-dim);
+  font-size: 11px;
+
+  @include mobile {
+    display: none;
+  }
+}
 
 .tmux-rec {
   display: flex;
   align-items: center;
   gap: 4px;
   color: var(--text-dim);
-  @include mobile { display: none; }
+
+  @include mobile {
+    display: none;
+  }
 }
 
 .tmux-rec-dot {
@@ -157,8 +196,15 @@
 }
 
 @keyframes rec-pulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.2; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.2;
+  }
 }
 
 .tbar-lang-btn {
@@ -184,15 +230,47 @@
   overflow: hidden;
 }
 
-.sh-time    { color: var(--text-dim);    margin-right: 6px; }
-.sh-user    { color: #4ec94e;            font-weight: 600; }
-.sh-dim     { color: var(--text-dim); }
-.sh-host    { color: var(--cyan); }
-.sh-path    { color: var(--cyan);        font-weight: 600; }
-.sh-git     { color: var(--text-dim);    margin-left: 4px; }
-.sh-branch  { color: var(--coral); }
-.sh-chevron { color: #4ec94e;            font-weight: 700; }
-.sh-cmd     { color: var(--text-body);   margin-left: 4px; }
+.sh-time {
+  color: var(--text-dim);
+  margin-right: 6px;
+}
+
+.sh-user {
+  color: #4ec94e;
+  font-weight: 600;
+}
+
+.sh-dim {
+  color: var(--text-dim);
+}
+
+.sh-host {
+  color: var(--cyan);
+}
+
+.sh-path {
+  color: var(--cyan);
+  font-weight: 600;
+}
+
+.sh-git {
+  color: var(--text-dim);
+  margin-left: 4px;
+}
+
+.sh-branch {
+  color: var(--coral);
+}
+
+.sh-chevron {
+  color: #4ec94e;
+  font-weight: 700;
+}
+
+.sh-cmd {
+  color: var(--text-body);
+  margin-left: 4px;
+}
 
 // Block cursor — blinking █
 .sh-cursor {
@@ -204,7 +282,10 @@
   vertical-align: middle;
   animation: cursor-blink var(--cursor-blink-speed) steps(1) infinite;
 
-  @include reduced-motion { animation: none; opacity: 1; }
+  @include reduced-motion {
+    animation: none;
+    opacity: 1;
+  }
 }
 
 // ══ ROW 3 — tmux windows tab bar ═════════════════════════════
@@ -225,7 +306,9 @@
   font-size: 11px;
   flex-shrink: 0;
 
-  @include mobile { display: none; }
+  @include mobile {
+    display: none;
+  }
 }
 
 // Each tab like "[2:projects*]" or "[3:about-]"
@@ -244,7 +327,7 @@
 
   &:hover {
     color: var(--text-muted);
-    background: rgba(255,255,255,0.03);
+    background: rgba(255, 255, 255, 0.03);
   }
 
   // Active tab: cyan highlight
@@ -254,7 +337,9 @@
     font-weight: 600;
   }
 
-  @include mobile { display: none; }
+  @include mobile {
+    display: none;
+  }
 }
 
 .tmux-tab-num {
@@ -282,7 +367,10 @@
   color: var(--border-dim);
   padding: 0 4px;
   user-select: none;
-  @include mobile { display: none; }
+
+  @include mobile {
+    display: none;
+  }
 }
 
 .tmux-tab--right {
@@ -325,7 +413,9 @@
     box-shadow: 0 0 18px -2px rgba(224, 108, 117, 0.5);
   }
 
-  @include mobile { display: none; }
+  @include mobile {
+    display: none;
+  }
 }
 
 .tmux-download-icon {
@@ -357,12 +447,15 @@
     background var(--transition-fast),
     border-color var(--transition-fast);
 
-  &:hover, &[aria-expanded="true"] {
+  &:hover,
+  &[aria-expanded="true"] {
     background: rgba(77, 208, 206, 0.15);
     border-color: var(--cyan);
   }
 
-  @include mobile { display: flex; }
+  @include mobile {
+    display: flex;
+  }
 }
 
 // The ☰ glyph inside the button
@@ -379,7 +472,9 @@
   flex-shrink: 0;
   padding-left: 4px;
 
-  @include mobile { display: block; }
+  @include mobile {
+    display: block;
+  }
 }
 
 .tmux-mobile-dropdown {
@@ -393,7 +488,7 @@
   border-top: none;
   overflow: hidden;
   transform-origin: top center;
-  box-shadow: 4px 8px 24px rgba(0,0,0,0.5);
+  box-shadow: 4px 8px 24px rgba(0, 0, 0, 0.5);
 }
 
 .tmux-mobile-tab {
@@ -468,36 +563,38 @@
 // ══ Body ═════════════════════════════════════════════════════
 .terminal-body {
   position: relative;
-  flex: 1;              // fills all space between header rows and footer
-  min-height: 0;        // required for flex children to shrink below content size
+  flex: 1; // fills all space between header rows and footer
+  min-height: 0; // required for flex children to shrink below content size
   padding: 24px 32px;
   @include mono(14px);
   color: var(--text-body);
   line-height: 1.7;
   overflow-y: auto;
-  overflow-x: hidden;   // prevent invisible horizontal scrollbar (achievements
-                        // progress bar + wide ASCII art can overflow on mobile)
+  overflow-x: hidden; // prevent invisible horizontal scrollbar (achievements
+  // progress bar + wide ASCII art can overflow on mobile)
   @include dot-grid(0.035);
 
   // Retro terminal blocky scrollbar styling
   scrollbar-width: auto;
   scrollbar-color: var(--cyan) var(--surface-1);
-  
-  &::-webkit-scrollbar { 
-    width: 14px; 
+
+  &::-webkit-scrollbar {
+    width: 14px;
     display: block;
   }
-  &::-webkit-scrollbar-track { 
+
+  &::-webkit-scrollbar-track {
     background: var(--surface-1);
     border-left: 1px solid var(--border);
   }
+
   &::-webkit-scrollbar-thumb {
     background: var(--cyan-tint);
     border: 1px solid var(--cyan);
     border-radius: 0; // Sharp edges for terminal look
-    
-    &:hover { 
-      background: var(--cyan); 
+
+    &:hover {
+      background: var(--cyan);
       box-shadow: 0 0 10px var(--cyan-glow);
     }
   }
@@ -519,14 +616,18 @@
 .terminal-prompt {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
-  padding-bottom: 8px;
-  border-bottom: 1px dashed rgba(77, 208, 206, 0.2);
-  transition: border-color 0.2s ease;
+  padding: 6px 0 6px 12px;
+  border-left: 2px solid var(--cyan);
+  box-shadow: -3px 0 10px rgba(77, 208, 206, 0.15);
+  background: transparent;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 
-  &:focus-within, &:hover {
-    border-color: rgba(77, 208, 206, 0.5);
+  &:focus-within,
+  &:hover {
+    border-left-color: var(--coral);
+    box-shadow: -3px 0 12px rgba(224, 108, 117, 0.25);
   }
 
   input {
@@ -539,11 +640,25 @@
     -webkit-appearance: none;
 
     &::placeholder {
-      color: rgba(77, 208, 206, 0.55);
+      color: var(--text-muted);
       font-style: italic;
-      font-size: 13px;
+      font-size: 14px;
+      opacity: 0.75;
     }
   }
+}
+
+.prompt-host {
+  color: var(--cyan);
+  font-weight: 600;
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.prompt-path {
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 14px;
 }
 
 .prompt-symbol {
@@ -557,9 +672,30 @@
   }
 }
 
+.tab-hint-pill {
+  font-size: 10px;
+  color: var(--cyan);
+  background: rgba(77, 208, 206, 0.1);
+  border: 1px solid rgba(77, 208, 206, 0.3);
+  border-radius: 3px;
+  padding: 1px 5px;
+  margin-left: 6px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
 @keyframes prompt-pulse {
-  0%, 100% { opacity: 1; text-shadow: 0 0 10px var(--coral-glow); }
-  50% { opacity: 0.4; text-shadow: 0 0 2px var(--coral-glow); }
+
+  0%,
+  100% {
+    opacity: 1;
+    text-shadow: 0 0 10px var(--coral-glow);
+  }
+
+  50% {
+    opacity: 0.4;
+    text-shadow: 0 0 2px var(--coral-glow);
+  }
 }
 
 .terminal-cursor {
@@ -570,17 +706,33 @@
   box-shadow: 0 0 8px var(--coral-glow);
   animation: cursor-blink var(--cursor-blink-speed) steps(1) infinite;
 
-  @include reduced-motion { animation: none; opacity: 1; }
+  @include reduced-motion {
+    animation: none;
+    opacity: 1;
+  }
 }
 
 @keyframes cursor-blink {
-  0%, 50%      { opacity: 1; }
-  50.01%, 100% { opacity: 0; }
+
+  0%,
+  50% {
+    opacity: 1;
+  }
+
+  50.01%,
+  100% {
+    opacity: 0;
+  }
 }
 
 // ── Misc helpers used inside tab content ─────────────────────
-.cmd-name { color: var(--cyan); }
-.cmd-desc  { color: var(--text-muted); }
+.cmd-name {
+  color: var(--cyan);
+}
+
+.cmd-desc {
+  color: var(--text-muted);
+}
 
 // .cmd-line — clickable command row (used by Help).
 // Hover paints the WHOLE row, not just the command name, so the
@@ -589,49 +741,82 @@
 // are clickable).
 .cmd-line {
   cursor: pointer;
-  padding: 5px 10px;
+  padding: 6px 12px;
   margin: 2px 0;
-  border-radius: var(--radius-md);
-  border: 1px solid transparent;
+  border-radius: 4px;
+  border-left: 2px solid transparent;
   background: transparent;
-  transition:
-    background-color var(--transition-fast),
-    border-color    var(--transition-fast),
-    color           var(--transition-fast),
-    transform       var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+  .cmd-dollar {
+    color: var(--coral);
+    font-weight: 700;
+    margin-right: 2px;
+  }
 
   .cmd-name {
-    transition: text-shadow var(--transition-fast), color var(--transition-fast);
+    min-width: 140px;
+    font-weight: 600;
+    color: var(--cyan);
+    transition: text-shadow 0.2s ease, color 0.2s ease;
   }
 
   .cmd-desc {
-    transition: color var(--transition-fast);
+    flex: 1;
+    color: var(--text-body);
+    transition: color 0.2s ease;
+  }
+
+  .cmd-run-badge {
+    opacity: 0;
+    transform: translateX(-6px);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--cyan);
+    background: rgba(77, 208, 206, 0.12);
+    border: 1px solid rgba(77, 208, 206, 0.3);
+    padding: 2px 7px;
+    border-radius: 4px;
+    transition: opacity 0.2s ease, transform 0.2s ease;
   }
 
   &:hover {
     background: rgba(77, 208, 206, 0.07);
-    border-color: rgba(77, 208, 206, 0.35);
-    transform: translateX(2px);
+    border-left-color: var(--cyan);
+    transform: translateX(4px);
 
     .cmd-name {
-      color: #b6f0ee;
+      color: #fff;
       text-shadow: 0 0 10px var(--cyan-glow);
     }
 
     .cmd-desc {
-      color: var(--text-body);
+      color: var(--text-heading);
+    }
+
+    .cmd-run-badge {
+      opacity: 1;
+      transform: translateX(0);
     }
   }
 
   &:focus-visible {
     outline: none;
-    background: rgba(77, 208, 206, 0.07);
-    border-color: var(--cyan);
+    background: rgba(77, 208, 206, 0.08);
+    border-left-color: var(--coral);
   }
 }
 
-.pill-neutral-inline { @include pill-neutral(); }
-.pill-coral-inline   { @include pill-coral(); }
+.pill-neutral-inline {
+  @include pill-neutral();
+}
+
+.pill-coral-inline {
+  @include pill-coral();
+}
 
 .btn-outline {
   display: inline-flex;
@@ -715,7 +900,9 @@ $ch-w: 10px;
   letter-spacing: 0.3px;
   white-space: nowrap;
 
-  @include mobile { display: none; }
+  @include mobile {
+    display: none;
+  }
 }
 
 .pl-hint-key {
@@ -734,31 +921,33 @@ $ch-w: 10px;
 
   // ── Right-flowing: arrow overlaps the NEXT segment's left edge ──
   &--right {
+
     // No margin — the ::after arrow must sit on top of the next segment
     &::after {
       content: '';
       position: absolute;
-      right: -$ch-w;   // extends beyond segment boundary into next segment
+      right: -$ch-w; // extends beyond segment boundary into next segment
       top: 0;
       width: $ch-w;
       height: $pl-h;
       clip-path: polygon(0 0, 100% 50%, 0 100%);
-      z-index: 2;       // above the adjacent segment body
+      z-index: 2; // above the adjacent segment body
     }
   }
 
   // ── Left-flowing: arrow overlaps the PREV segment's right edge ──
   &--left {
+
     // No margin — the ::before arrow must sit on top of the previous segment
     &::before {
       content: '';
       position: absolute;
-      left: -$ch-w;    // extends beyond segment boundary into previous segment
+      left: -$ch-w; // extends beyond segment boundary into previous segment
       top: 0;
       width: $ch-w;
       height: $pl-h;
       clip-path: polygon(100% 0, 0 50%, 100% 100%);
-      z-index: 2;       // above the adjacent segment body
+      z-index: 2; // above the adjacent segment body
     }
   }
 }
@@ -771,23 +960,38 @@ $ch-w: 10px;
   color: #1a0a0b;
   font-weight: 700;
   letter-spacing: 0.6px;
-  &::after  { background: var(--coral); }
+
+  &::after {
+    background: var(--coral);
+  }
 }
 
 // surface3 = dark, cyan text (matches image 1: "main ±0")
 .pl-seg--surface3 {
   background: var(--surface-3);
   color: var(--cyan);
-  &::after  { background: var(--surface-3); }
-  &::before { background: var(--surface-3); }
+
+  &::after {
+    background: var(--surface-3);
+  }
+
+  &::before {
+    background: var(--surface-3);
+  }
 }
 
 // surface2 = slightly lighter dark, cyan text (matches image 1: "~/projects")
 .pl-seg--surface2 {
   background: var(--surface-2);
   color: var(--cyan);
-  &::after  { background: var(--surface-2); }
-  &::before { background: var(--surface-2); }
+
+  &::after {
+    background: var(--surface-2);
+  }
+
+  &::before {
+    background: var(--surface-2);
+  }
 }
 
 // right-side surface2 — muted text for utf-8/lf
@@ -804,7 +1008,10 @@ $ch-w: 10px;
   background: var(--cyan);
   color: #0c0c10;
   font-weight: 700;
-  &::before { background: var(--cyan); }
+
+  &::before {
+    background: var(--cyan);
+  }
 }
 
 // ══ Minimized dock pill — visual styles only (animation via Framer Motion) ═
@@ -825,7 +1032,10 @@ $ch-w: 10px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   // No CSS transition — Framer Motion AnimatePresence handles mount/unmount
 
-  &:hover { border-color: var(--cyan-edge); color: var(--text-heading); }
+  &:hover {
+    border-color: var(--cyan-edge);
+    color: var(--text-heading);
+  }
 }
 
 .dock-dot {
@@ -834,8 +1044,15 @@ $ch-w: 10px;
 }
 
 @keyframes dock-pulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.3; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
 }
 
 // ══ Hello World Intro Screen ═══════════════════════════════════
@@ -856,13 +1073,11 @@ $ch-w: 10px;
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: repeating-linear-gradient(
-      to bottom,
-      transparent 0px,
-      transparent 2px,
-      rgba(77, 208, 206, 0.012) 2px,
-      rgba(77, 208, 206, 0.012) 4px
-    );
+    background: repeating-linear-gradient(to bottom,
+        transparent 0px,
+        transparent 2px,
+        rgba(77, 208, 206, 0.012) 2px,
+        rgba(77, 208, 206, 0.012) 4px);
     z-index: 1;
   }
 
@@ -871,7 +1086,9 @@ $ch-w: 10px;
   }
 }
 
-.hw-scanlines { display: none; }
+.hw-scanlines {
+  display: none;
+}
 
 .hw-content {
   position: relative;
@@ -959,18 +1176,20 @@ $ch-w: 10px;
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: repeating-linear-gradient(
-      to bottom,
-      transparent 0px,
-      transparent 2px,
-      rgba(77, 208, 206, 0.012) 2px,  // --cyan at very low opacity
-      rgba(77, 208, 206, 0.012) 4px
-    );
+    background: repeating-linear-gradient(to bottom,
+        transparent 0px,
+        transparent 2px,
+        rgba(77, 208, 206, 0.012) 2px, // --cyan at very low opacity
+        rgba(77, 208, 206, 0.012) 4px);
     z-index: 1;
   }
 }
 
-.tc-scanlines { display: none; } // replaced by ::before above
+.tc-scanlines {
+  display: none;
+}
+
+// replaced by ::before above
 
 .tc-content {
   position: relative;
@@ -1002,8 +1221,16 @@ $ch-w: 10px;
 }
 
 @keyframes tc-blink {
-  0%, 50%      { opacity: 1; }
-  50.01%, 100% { opacity: 0; }
+
+  0%,
+  50% {
+    opacity: 1;
+  }
+
+  50.01%,
+  100% {
+    opacity: 0;
+  }
 }
 
 .typing-cursor {
@@ -1015,7 +1242,11 @@ $ch-w: 10px;
   opacity: 0;
   transform: translateY(12px);
   transition: opacity 0.5s ease, transform 0.5s ease;
-  &.tc-body--visible { opacity: 1; transform: translateY(0); }
+
+  &.tc-body--visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .tc-line {
@@ -1023,7 +1254,12 @@ $ch-w: 10px;
   color: var(--text-body);
   line-height: 1.8;
   margin: 0;
-  &.tc-line--dim { color: var(--text-muted); margin-top: 4px; margin-bottom: 28px; }
+
+  &.tc-line--dim {
+    color: var(--text-muted);
+    margin-top: 4px;
+    margin-bottom: 28px;
+  }
 }
 
 // Joke card styled like a terminal output box
@@ -1087,7 +1323,9 @@ $ch-w: 10px;
     transform: translateY(-2px);
   }
 
-  &:active { transform: translateY(0); }
+  &:active {
+    transform: translateY(0);
+  }
 }
 
 // ═══════════════════════════════════════════════════════════════
@@ -1104,12 +1342,10 @@ $ch-w: 10px;
   pointer-events: none;
   z-index: 0;
   border-radius: inherit;
-  background: radial-gradient(
-    ellipse at 50% 0%,
-    rgba(77, 208, 206, 0.16) 0%,
-    rgba(77, 208, 206, 0.05) 45%,
-    transparent 75%
-  );
+  background: radial-gradient(ellipse at 50% 0%,
+      rgba(77, 208, 206, 0.16) 0%,
+      rgba(77, 208, 206, 0.05) 45%,
+      transparent 75%);
   box-shadow:
     inset 0 0 0 1px rgba(77, 208, 206, 0.22),
     inset 0 0 60px rgba(77, 208, 206, 0.07);
@@ -1118,11 +1354,27 @@ $ch-w: 10px;
 }
 
 @keyframes glow-breathe {
-  0%, 100% { opacity: 0; }
-  15%      { opacity: 0.6; }
-  30%      { opacity: 0.18; }
-  55%      { opacity: 0.5; }
-  70%      { opacity: 0; }
+
+  0%,
+  100% {
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 0.6;
+  }
+
+  30% {
+    opacity: 0.18;
+  }
+
+  55% {
+    opacity: 0.5;
+  }
+
+  70% {
+    opacity: 0;
+  }
 }
 
 // Hue-shift the terminal body slightly cooler/cyan-tinted while in chat
@@ -1153,13 +1405,28 @@ $ch-w: 10px;
 }
 
 @keyframes chat-thinking-pulse {
-  0%, 100% { opacity: 0.25; transform: translateY(0) scale(0.85); }
-  50%      { opacity: 1;    transform: translateY(-2px) scale(1.1); }
+
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0) scale(0.85);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(-2px) scale(1.1);
+  }
 }
 
 // Respect reduced-motion: kill the pulse + breathing glow so it doesn't
 // disorient users who asked for less motion.
 @media (prefers-reduced-motion: reduce) {
-  .chat-thinking-dot { animation: none; opacity: 0.7; }
-  .terminal-chat-glow { display: none; }
+  .chat-thinking-dot {
+    animation: none;
+    opacity: 0.7;
+  }
+
+  .terminal-chat-glow {
+    display: none;
+  }
 }

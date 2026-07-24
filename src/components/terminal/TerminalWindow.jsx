@@ -163,18 +163,15 @@ export default function TerminalWindow() {
   // ── Scroll to top + close mobile menu on route change ───────
   useEffect(() => {
     setMenuOpen(false)
+    window.scrollTo(0, 0)
     if (bodyRef.current) {
       bodyRef.current.scrollTop = 0
     }
   }, [location.pathname])
 
   // ── Auto-scroll to keep prompt in view after command output ──
-  // Skipped in chat mode: chat replies arrive gradually via the
-  // typewriter hook, and forcing a smooth scrollIntoView on every
-  // history change competes with the user's manual touch scroll,
-  // which on iOS makes subsequent taps feel unresponsive.
   useEffect(() => {
-    if (location.pathname !== '/' || chatMode) return
+    if (location.pathname !== '/' || chatMode || history.length === 0) return
     if (!inputRef.current) return
     inputRef.current.scrollIntoView({ block: 'nearest', inline: 'nearest' })
   }, [history, location.pathname, chatMode])
@@ -827,6 +824,8 @@ export default function TerminalWindow() {
                       className="terminal-prompt"
                       style={{ marginTop: 12, marginBottom: 28, position: 'relative' }}
                     >
+                      <span className="prompt-host">mahmoud@dev</span>
+                      <span className="prompt-path">:~/</span>
                       <span className={`prompt-symbol${!input ? ' prompt-symbol--pulse' : ''}`}>$</span>
                       <div className="terminal-input-wrap" style={{ position: 'relative', flex: 1, display: 'flex', alignItems: 'center' }}>
                         <span
@@ -850,7 +849,12 @@ export default function TerminalWindow() {
                           {(() => {
                             const match = getCompletion(input)
                             if (!match) return ''
-                            return <>{match} <span style={{ opacity: 0.7, color: 'var(--cyan)' }}>→</span></>
+                            return (
+                              <>
+                                {match}
+                                <span className="tab-hint-pill">Tab ↹</span>
+                              </>
+                            )
                           })()}
                         </span>
                         <input
@@ -863,7 +867,7 @@ export default function TerminalWindow() {
                               tabComplete()
                             }
                           }}
-                          autoFocus
+                          autoFocus={typeof window !== 'undefined' && window.innerWidth > 768}
                           spellCheck={false}
                           autoComplete="off"
                           placeholder="type 'help' or any command..."
