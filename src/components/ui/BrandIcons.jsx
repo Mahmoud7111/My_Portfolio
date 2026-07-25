@@ -1,4 +1,4 @@
-// lucide-react removed brand/trademark icons (Github, Linkedin, Twitter) in
+// lucide-react removed brand/trademark icons (Github, Linkedin) in
 // this version. These are minimal inline replacements, single-path,
 // currentColor fill so they inherit theme color like any lucide icon.
 
@@ -11,11 +11,5 @@ export const GithubIcon = ({ size = 14, ...props }) => (
 export const LinkedinIcon = ({ size = 14, ...props }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" {...props}>
     <path d="M20.45 20.45h-3.56v-5.58c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.68H9.34V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.27 2.38 4.27 5.47v6.27ZM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13ZM7.12 20.45H3.56V9h3.56v11.45ZM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0Z" />
-  </svg>
-)
-
-export const TwitterIcon = ({ size = 14, ...props }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" {...props}>
-    <path d="M23.95 4.57a9.83 9.83 0 0 1-2.83.78 4.96 4.96 0 0 0 2.17-2.72 9.9 9.9 0 0 1-3.13 1.2 4.92 4.92 0 0 0-8.39 4.49A13.98 13.98 0 0 1 1.64 3.15a4.92 4.92 0 0 0 1.52 6.57 4.9 4.9 0 0 1-2.23-.62v.06a4.92 4.92 0 0 0 3.95 4.83 4.94 4.94 0 0 1-2.22.08 4.93 4.93 0 0 0 4.6 3.42A9.87 9.87 0 0 1 0 19.54a13.94 13.94 0 0 0 7.55 2.21c9.06 0 14.01-7.5 14.01-14.01 0-.21 0-.42-.02-.63a10.01 10.01 0 0 0 2.46-2.54Z" />
   </svg>
 )

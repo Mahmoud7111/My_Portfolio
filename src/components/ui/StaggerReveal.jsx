@@ -1,16 +1,6 @@
 import { motion } from 'framer-motion'
 import { usePrefersReducedMotion } from '../../hooks/usePrefersReducedMotion'
 
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      staggerChildren: 0.08,
-      delayChildren: 0.1,
-    },
-  },
-}
-
 const itemVariants = {
   hidden: { opacity: 0, y: 32, filter: 'blur(4px)' },
   visible: {

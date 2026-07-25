@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react'
 
@@ -9,7 +9,6 @@ import { useState, useEffect } from 'react'
  */
 export default function ChatFAB({ chatMode }) {
   const navigate  = useNavigate()
-  const location  = useLocation()
   const [hovered, setHovered] = useState(false)
   const [visible, setVisible] = useState(false)
 

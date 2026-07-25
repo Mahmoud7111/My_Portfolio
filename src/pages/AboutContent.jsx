@@ -10,7 +10,6 @@ import StaggerReveal, { StaggerItem } from '../components/ui/StaggerReveal'
 import TypingLine from '../components/ui/TypingLine'
 import TypewriterLoop from '../components/ui/TypewriterLoop'
 import { useResumeAchievement } from '../hooks/useResumeAchievement'
-import { useTypewriter } from '../hooks/useTypewriter'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 import { SkillPill } from '../components/ui/SkillPill'
 

@@ -2,14 +2,11 @@
 // projects.js — seed projects for the Projects page.
 // ============================================================
 
-// ============================================================
-// TAG_GROUPS — visual taxonomy for the chip-filter groups on
-// the Projects view. Add/edit freely; any tag in ALL_TAGS that
-// isn't claimed by a group automatically lands in "Other".
-// Group `id` is the slug used for the aria-label / data attr;
+// TAG_GROUPS — internal taxonomy consumed only inside this file.
+// Any tag in ALL_TAGS that isn't claimed by a group auto-lands in "Other".
+// Group `id` is the slug for the aria-label / data attr;
 // group `label` is what the user sees.
-// ============================================================
-export const TAG_GROUPS = [
+const TAG_GROUPS = [
   {
     id: 'frontend',
     label: 'Front-End',
@@ -36,7 +33,7 @@ export const TAG_GROUPS = [
     tags: ['web', 'fullstack', 'desktop', 'algorithms'],
   },
 ]
-export const ALL_TAGS = [
+const ALL_TAGS = [
   'all',
   'web',
   'fullstack',
@@ -133,26 +130,6 @@ export const PROJECTS = [
     updated: '',
   },
 ]
-
-// Backwards-compatible exports for HomeContent.jsx
-export const projects = PROJECTS.map((p) => ({
-  id: p.name,
-  name: p.name,
-  description: p.desc,
-  tags: p.tags,
-  category: p.tags.includes('fullstack') || p.tags.includes('web')
-    ? 'web'
-    : p.tags.includes('java') || p.tags.includes('desktop')
-      ? 'desktop'
-      : p.tags.includes('cpp') || p.tags.includes('algorithms')
-        ? 'algorithms'
-        : 'systems',
-  github: p.github,
-  live: p.live,
-  featured: true,
-}))
-
-export const categories = ['all', 'web', 'desktop', 'algorithms', 'systems']
 
 /**
  * Resolve TAG_GROUPS into a render-ready structure, preserving the

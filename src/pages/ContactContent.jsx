@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Mail, Download } from 'lucide-react'
 import emailjs from '@emailjs/browser'
-import { GithubIcon, LinkedinIcon, TwitterIcon } from '../components/ui/BrandIcons'
+import { GithubIcon, LinkedinIcon } from '../components/ui/BrandIcons'
 import { ART } from '../components/ascii/art'
 import { me } from '../data/me'
 import RevealOnScroll from '../components/ui/RevealOnScroll'
@@ -38,16 +38,10 @@ function validate({ name, email, message }) {
 const SOCIAL_ICONS = {
   Github:   GithubIcon,
   Linkedin: LinkedinIcon,
-  Twitter:  TwitterIcon,
   Mail:     Mail,
 }
 
 // Shared motion variants
-const fadeUp = {
-  hidden:  { opacity: 0, y: 20, filter: 'blur(4px)' },
-  visible: { opacity: 1, y: 0,  filter: 'blur(0px)' },
-}
-
 const fieldVariant = (i) => ({
   hidden:  { opacity: 0, x: -12 },
   visible: {

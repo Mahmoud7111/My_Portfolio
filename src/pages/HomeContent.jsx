@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { ExternalLink, Star, Download } from 'lucide-react'
+import { ExternalLink, Star } from 'lucide-react'
 import { GithubIcon } from '../components/ui/BrandIcons'
 import RevealOnScroll from '../components/ui/RevealOnScroll'
 import StaggerReveal, { StaggerItem } from '../components/ui/StaggerReveal'
@@ -12,7 +12,6 @@ import { PROJECTS } from '../data/projects'
 import { getStats } from '../data/stats'
 import { ART } from '../components/ascii/art'
 import LazyPCModel from '../components/3d/LazyPCModel'
-import { useResumeAchievement } from '../hooks/useResumeAchievement'
 import { useAchievements } from '../hooks/useAchievements'
 
 const allSkills = Object.values(me.skills).flat()
@@ -48,9 +47,8 @@ function SectionComment({ label }) {
   return <div className="hc-section-comment">// section: {label}</div>
 }
 
-export default function HomeContent({ chatMode, runFromClick }) {
+export default function HomeContent({ chatMode }) {
   const navigate = useNavigate()
-  const onResumeClick = useResumeAchievement()
   const { unlock } = useAchievements()
 
   const stats = getStats()
