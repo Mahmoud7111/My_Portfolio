@@ -53,10 +53,12 @@ Currently:
 ${me.currently.map((c) => `- ${c}`).join('\n')}
 
 Skills:
+Web Development: ${JSON.stringify(me.skills.webDevelopment)}
 Languages: ${JSON.stringify(me.skills.languages)}
-Frameworks: ${JSON.stringify(me.skills.frameworks)}
-AI Tools: ${JSON.stringify(me.skills.ai_tools)}
-Tools: ${JSON.stringify(me.skills.tools)}
+AI & Machine Learning: ${JSON.stringify(me.skills.ai)}
+AI Tools & Agent Systems: ${JSON.stringify(me.skills.aiTools)}
+Soft Skills: ${JSON.stringify(me.skills.SoftSkills)}
+Additional Skills: ${JSON.stringify(me.skills.additional)}
 
 Spoken Languages: ${JSON.stringify(me.languages)}
 
