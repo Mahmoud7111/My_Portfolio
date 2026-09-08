@@ -424,11 +424,12 @@ export default function TerminalWindow() {
             />
           </div>
 
-          <span className="tmux-session ">
-            <span className="tmux-dim">[tmux]</span>
-            <span className="tmux-dim"> session </span>
-            <span className="tmux-name">{chatMode ? 'ai-shell' : 'portfolio'}</span>
-            <span className="tmux-dim"> · pane {activeTabIdx + 1}/{TABS.length}</span>
+          <span className="tmux-session">
+            <span className="tmux-prompt-user">{chatMode ? 'ai-shell' : 'portfolio'}</span>
+            <span className="tmux-prompt-at">@</span>
+            <span className="tmux-prompt-host">Mahmoud</span>
+            <span className="tmux-prompt-sep">:</span>
+            <span className="tmux-prompt-path">~</span>
           </span>
 
           <div className="tmux-right ">
@@ -855,10 +856,10 @@ export default function TerminalWindow() {
 
         {/* ══ Terminal footer ════════════════════════════════ */}
         <TerminalFooter chatMode={chatMode} />
-      </motion.div>
 
-      {/* Floating action button for AI chat — fixed in viewport corner */}
-      <ChatFAB chatMode={chatMode} />
+        {/* Floating action button for AI chat — positioned inside the terminal window */}
+        <ChatFAB chatMode={chatMode} />
+      </motion.div>
 
       <AnimatePresence>
         {lastUnlocked && (

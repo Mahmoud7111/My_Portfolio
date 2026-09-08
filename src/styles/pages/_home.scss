@@ -731,6 +731,35 @@
   min-width: 0;
 }
 
+.hc-bio-p {
+  margin: 0 0 20px;
+  font-size: clamp(14px, 1.5vw, 16px);
+  line-height: 1.8;
+  color: var(--text-body);
+  max-width: 520px;
+}
+
+.hc-bio-toggle {
+  display: inline-flex;
+  align-items: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color var(--transition-fast), text-shadow var(--transition-fast);
+
+  &:hover {
+    color: var(--text-heading);
+    text-shadow: 0 0 8px var(--cyan-glow);
+  }
+}
+
 // ── Typewriter loop (homepage headline) ──────────────────────
 @keyframes twl-gradient-shift {
   0% {
@@ -1014,10 +1043,10 @@
   display: flex;
   gap: 8px;
   width: max-content;
-  animation: hc-marquee 28s linear infinite;
+  animation: hc-marquee 55s linear infinite;
 
   &--rev {
-    animation: hc-marquee-rev 32s linear infinite;
+    animation: hc-marquee-rev 60s linear infinite;
   }
 
   @include reduced-motion {

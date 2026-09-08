@@ -145,6 +145,32 @@
   font-weight: 600;
 }
 
+.tmux-prompt-user {
+  color: var(--cyan);
+  font-weight: 600;
+  text-shadow: 0 0 10px var(--cyan-glow);
+}
+
+.tmux-prompt-at {
+  color: var(--text-dim);
+  margin: 0 1px;
+}
+
+.tmux-prompt-host {
+  color: var(--text-heading);
+  font-weight: 600;
+}
+
+.tmux-prompt-sep {
+  color: var(--text-dim);
+}
+
+.tmux-prompt-path {
+  color: var(--coral);
+  font-weight: 600;
+  text-shadow: 0 0 8px var(--coral-glow);
+}
+
 // Right-side fake chrome
 .tmux-right {
   margin-left: auto;

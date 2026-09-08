@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ExternalLink, Star } from 'lucide-react'
@@ -48,6 +49,7 @@ function SectionComment({ label }) {
 }
 
 export default function HomeContent({ chatMode }) {
+  const [isBioExpanded, setIsBioExpanded] = useState(false)
   const navigate = useNavigate()
   const { unlock } = useAchievements()
 
@@ -110,8 +112,28 @@ export default function HomeContent({ chatMode }) {
                   />
                 </h1>
 
-                <p style={{ margin: '0 0 24px', fontSize: 'clamp(14px, 1.5vw, 16px)', lineHeight: 1.8, color: 'var(--text-body)', maxWidth: 520 }}>
-                  {me.bio}
+                <p className="hc-bio-p">
+                  I build full-stack platforms with React 18, Node.js, Express, and MongoDB, thinking through architecture as much as code — how data flows, where state lives, what breaks at scale.{' '}
+                  {isBioExpanded ? (
+                    <>
+                      I&apos;m also expanding into Python and the ML stack as part of my AI degree. I care about code that holds up under a real team and a real deadline, not just demos that work once.{' '}
+                      <button
+                        type="button"
+                        className="hc-bio-toggle"
+                        onClick={() => setIsBioExpanded(false)}
+                      >
+                        view less ↑
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      type="button"
+                      className="hc-bio-toggle"
+                      onClick={() => setIsBioExpanded(true)}
+                    >
+                      ... view more ↓
+                    </button>
+                  )}
                 </p>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-muted)' }}>
