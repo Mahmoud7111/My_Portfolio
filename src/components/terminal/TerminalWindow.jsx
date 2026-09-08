@@ -58,60 +58,91 @@ const SPRING_SNAP = {
 }
 
 // ── Track live viewport size ─────────────────────────────────
+// Uses the Visual Viewport API when available to correctly ignore virtual keyboard
+// resizes on mobile. The layout viewport height (window.innerHeight before keyboard)
+// is stored as the "stable" height so Framer Motion targets never shrink due to IME.
 function useViewport() {
-  const [vp, setVp] = useState(() => {
+  const getStableSize = () => {
     if (typeof window === 'undefined') return { w: 1024, h: 768 }
-    return {
-      w: window.innerWidth,
-      h: window.innerHeight,
-    }
-  })
+    return { w: window.innerWidth, h: window.innerHeight }
+  }
 
-  // Ref to track max height per orientation/width on mobile to avoid keyboard-resize shrink
-  const baseHeightRef = useRef(typeof window !== 'undefined' ? window.innerHeight : 768)
-  const lastWidthRef = useRef(typeof window !== 'undefined' ? window.innerWidth : 1024)
+  const [vp, setVp] = useState(getStableSize)
+
+  // Store the last "full" height before any keyboard resize
+  const stableHRef = useRef(typeof window !== 'undefined' ? window.innerHeight : 768)
+  const stableWRef = useRef(typeof window !== 'undefined' ? window.innerWidth : 1024)
 
   useEffect(() => {
-    const handler = () => {
+    // ── Visual Viewport path (Chrome/Safari iOS 13+) ─────────────
+    // visualViewport shrinks when keyboard opens but window.innerHeight stays stable.
+    // We simply always report innerHeight so the terminal never shrinks.
+    const vv = window.visualViewport
+
+    const onResize = () => {
       const curW = window.innerWidth
       const curH = window.innerHeight
       const isMobile = curW < 768
 
       if (isMobile) {
-        // If width changed significantly, this is an actual orientation change (device rotate)
-        if (Math.abs(curW - lastWidthRef.current) > 20) {
-          lastWidthRef.current = curW
-          baseHeightRef.current = curH
+        // Orientation change: width changed significantly
+        const widthChanged = Math.abs(curW - stableWRef.current) > 30
+        if (widthChanged) {
+          stableWRef.current = curW
+          stableHRef.current = curH
           setVp({ w: curW, h: curH })
           return
         }
 
-        // Width did not change: if height grew, update base height
-        if (curH > baseHeightRef.current) {
-          baseHeightRef.current = curH
+        // On mobile, innerHeight can still shrink on some browsers even with
+        // interactive-widget=overlays-content. Use the stored stable height.
+        // Only update stable height if it grew (i.e. keyboard closed and height restored).
+        if (curH > stableHRef.current) {
+          stableHRef.current = curH
         }
 
-        // Check if an input or textarea is currently focused or height shrank significantly (virtual keyboard opened)
-        const isInputFocused = ['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)
-        const heightShrank = curH < baseHeightRef.current * 0.88
-
-        if (isInputFocused || heightShrank) {
-          // Virtual keyboard opened — keep base height so terminal window doesn't squish!
-          setVp({ w: curW, h: baseHeightRef.current })
+        // If there's a significant shrink (>10%), keyboard is likely open — keep stable height
+        const shrinkRatio = stableHRef.current > 0 ? curH / stableHRef.current : 1
+        if (shrinkRatio < 0.9) {
+          // Keyboard open — report stable height, do NOT update stable
+          setVp({ w: curW, h: stableHRef.current })
         } else {
-          baseHeightRef.current = curH
+          // Normal resize or keyboard fully closed
+          stableHRef.current = curH
           setVp({ w: curW, h: curH })
         }
       } else {
-        // Desktop / tablet: standard resize
-        lastWidthRef.current = curW
-        baseHeightRef.current = curH
+        // Desktop/tablet — always take live dimensions
+        stableWRef.current = curW
+        stableHRef.current = curH
         setVp({ w: curW, h: curH })
       }
     }
 
-    window.addEventListener('resize', handler, { passive: true })
-    return () => window.removeEventListener('resize', handler)
+    // ── visualViewport resize: fires when keyboard opens/closes ──
+    // We intentionally do NOT update `vp` on visualViewport resize — the
+    // terminal should stay the same size regardless of keyboard state.
+    // We only listen on it so we can update stableH when keyboard closes.
+    const onVvResize = () => {
+      if (!vv) return
+      const isMobile = window.innerWidth < 768
+      if (!isMobile) return
+
+      const curH = window.innerHeight
+      // If innerHeight restored (keyboard closed), snap back to full size
+      if (curH >= stableHRef.current) {
+        stableHRef.current = curH
+        setVp({ w: window.innerWidth, h: curH })
+      }
+    }
+
+    window.addEventListener('resize', onResize, { passive: true })
+    if (vv) vv.addEventListener('resize', onVvResize, { passive: true })
+
+    return () => {
+      window.removeEventListener('resize', onResize)
+      if (vv) vv.removeEventListener('resize', onVvResize)
+    }
   }, [])
 
   return vp
