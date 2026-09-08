@@ -12,18 +12,23 @@
 
 .ab-bio-grid {
   display: grid;
-  grid-template-columns: 1fr 240px;
-  gap: 32px;
+  grid-template-columns: 1fr 290px;
+  gap: 36px;
   align-items: start;
-  margin-top: 12px;
+  margin-top: 14px;
 
   @include mobile {
     grid-template-columns: 1fr;
+    gap: 24px;
   }
 }
 
 .ab-bio-main {
   min-width: 0;
+
+  .ascii-art {
+    margin-bottom: 20px !important;
+  }
 }
 
 .ab-bio-heading {
@@ -60,12 +65,124 @@
   box-shadow: 0 0 18px rgba(224, 108, 117, 0.15);
   cursor: pointer;
   text-decoration: none;
-  transition: background var(--transition-fast);
+  transition: background var(--transition-fast), transform var(--transition-fast), box-shadow var(--transition-fast);
 
   &:hover {
     background: rgba(224, 108, 117, 0.18);
     box-shadow: 0 0 24px rgba(224, 108, 117, 0.25);
     transform: translateY(-1px);
+  }
+}
+
+/* ── Right sidebar column — wraps profile card ───────────────── */
+
+.ab-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  @include mobile {
+    max-width: 320px;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+/* ── Profile photo card ─────────────────────────────────────── */
+
+.ab-profile-card {
+  @include mono(12px);
+  border: 1px solid var(--border-dim);
+  border-radius: var(--radius-md);
+  overflow: hidden;          // clip the chrome strip to the card's corners
+  background: var(--surface-3);
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+
+  &:hover {
+    border-color: var(--cyan-edge);
+    box-shadow: 0 0 24px rgba(77, 208, 206, 0.14), 0 8px 30px rgba(0, 0, 0, 0.35);
+    transform: translateY(-2px);
+  }
+
+  // ── Panel-chrome header strip (matches hc-panel__chrome) ──
+  &__chrome {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 12px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border-dim);
+  }
+
+  &__chrome-bar {
+    color: var(--coral);
+    font-size: 14px;
+    line-height: 1;
+    flex-shrink: 0;
+    text-shadow: 0 0 8px var(--coral-glow);
+  }
+
+  &__chrome-name {
+    @include mono(11.5px);
+    color: var(--text-body);
+    font-weight: 500;
+  }
+
+  &__chrome-sep {
+    @include mono(11.5px);
+    color: var(--text-dim);
+  }
+
+  &__chrome-sub {
+    @include mono(11.5px);
+    color: var(--text-muted);
+  }
+
+  &__avatar-wrap {
+    display: flex;
+    justify-content: center;
+    padding: 24px 20px 16px;
+  }
+
+  &__avatar {
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: top center;
+    border: 2.5px solid var(--cyan);
+    box-shadow:
+      0 0 0 6px rgba(77, 208, 206, 0.08),
+      0 0 32px rgba(77, 208, 206, 0.28);
+    display: block;
+    transition: transform 300ms ease, box-shadow 300ms ease;
+  }
+
+  &:hover &__avatar {
+    transform: scale(1.02);
+    box-shadow:
+      0 0 0 7px rgba(77, 208, 206, 0.14),
+      0 0 40px rgba(77, 208, 206, 0.38);
+  }
+
+  &__name {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-heading);
+    margin: 0 0 4px;
+    padding: 0 16px;
+    letter-spacing: -0.01em;
+  }
+
+  &__title {
+    @include mono(12px);
+    color: var(--cyan);
+    margin: 0 0 20px;
+    padding: 0 16px;
+    line-height: 1.4;
   }
 }
 
@@ -77,10 +194,6 @@
   border-radius: var(--radius-md);
   padding: 16px;
   background: var(--surface-3);
-
-  @include mobile {
-    display: none;
-  }
 }
 
 .ab-currently-header {

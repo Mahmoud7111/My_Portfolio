@@ -372,8 +372,6 @@ export default function TerminalWindow() {
         animate={animTarget}
         transition={animTransition}
       >
-        <ChatFAB chatMode={chatMode} />
-
         {/* ── Chat-mode ambient cyan glow (pulse) ─────────────── */}
         <AnimatePresence>
           {(chatMode || aiDeactivating) && (
@@ -858,6 +856,9 @@ export default function TerminalWindow() {
         {/* ══ Terminal footer ════════════════════════════════ */}
         <TerminalFooter chatMode={chatMode} />
       </motion.div>
+
+      {/* Floating action button for AI chat — fixed in viewport corner */}
+      <ChatFAB chatMode={chatMode} />
 
       <AnimatePresence>
         {lastUnlocked && (

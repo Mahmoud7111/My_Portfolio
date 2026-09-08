@@ -137,10 +137,10 @@ export default function AboutContent() {
             <span className="hc-var">My story</span>
           </TypingLine>
 
-          <AsciiArt art={ART.ABOUT_ME} color="var(--cyan)" glow="var(--cyan-glow)" />
-
           <div className="ab-bio-grid">
             <div className="ab-bio-main">
+              <AsciiArt art={ART.ABOUT_ME} color="var(--cyan)" glow="var(--cyan-glow)" fontSize="clamp(7px, 1.15vw, 13px)" />
+
               <h1 className="ab-bio-heading">
                 <span className="ab-bio-prefix">Hi, I&apos;m{' '}</span>
                 <TypewriterLoop
@@ -168,18 +168,26 @@ export default function AboutContent() {
               </a>
             </div>
 
-            <div className="ab-currently-box">
-              <div className="ab-currently-header">
-                <span className="ab-currently-dot">●</span>
-                <span className="ab-currently-label">Currently working on</span>
+            <div className="ab-sidebar">
+              {/* Profile photo card */}
+              <div className="ab-profile-card">
+                {/* Panel-chrome style header strip */}
+                <div className="ab-profile-card__chrome">
+                  <span className="ab-profile-card__chrome-bar">▍</span>
+                  <span className="ab-profile-card__chrome-name">profile.jpg</span>
+                  <span className="ab-profile-card__chrome-sep">—</span>
+                  <span className="ab-profile-card__chrome-sub">about me</span>
+                </div>
+                <div className="ab-profile-card__avatar-wrap">
+                  <img
+                    src={me.avatarUrl}
+                    alt={me.name}
+                    className="ab-profile-card__avatar"
+                  />
+                </div>
+                <p className="ab-profile-card__name">{me.name}</p>
+                <p className="ab-profile-card__title">{me.title}</p>
               </div>
-              <ul className="ab-currently-list">
-                {me.currently.map((line, i) => (
-                  <li key={i} className="ab-currently-item">
-                    <span className="ab-currently-prefix">&gt;</span> {line}
-                  </li>
-                ))}
-              </ul>
             </div>
           </div>
         </div>

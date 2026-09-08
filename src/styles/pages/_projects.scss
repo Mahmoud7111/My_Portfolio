@@ -8,75 +8,14 @@
   padding: 0 0 96px;
 }
 
-/* ── Shell opener ───────────────────────────────────────────── */
-
-.projects-opener {
-  margin-top: 24px;
-  margin-bottom: 20px;
-  line-height: 1.5;
-
-  .hc-prompt {
-    font-weight: 400;
-    text-shadow: none;
-  }
-}
-
-.projects-opener__prompt {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  color: var(--coral);
-}
-
-.projects-opener__cmd {
+/* ── Projects subtext directly under ASCII banner ───────────── */
+.projects-subtext {
   font-family: var(--font-mono);
   font-size: 13px;
   color: var(--text-muted);
-}
-
-.projects-opener__arg {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  color: var(--cyan);
-}
-
-.projects-opener__comment {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  color: var(--text-dim);
-  margin-left: 10px;
-}
-
-/* ── ASCII folder + scanning log ────────────────────────────── */
-
-.projects-header {
-  display: flex;
-  gap: 32px;
-  flex-wrap: wrap;
-  margin-bottom: 24px;
-}
-
-.projects-folder {
-  color: #888899;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  line-height: 1.6;
-  margin: 0;
-}
-
-.projects-scan {
-  color: var(--text-dim);
-  font-family: var(--font-mono);
-  font-size: 12px;
-  line-height: 1.6;
-  margin: 0;
-  flex: 1;
-}
-
-/* ── ASCII rule ─────────────────────────────────────────────── */
-
-.projects-rule {
-  border-top: 1px solid #262630;
-  margin-bottom: 16px;
+  margin: 16px 0 24px;
+  line-height: 1.5;
+  letter-spacing: 0.2px;
 }
 
 /* ── Filter chips + grep search ─────────────────────────────── */

@@ -4,10 +4,10 @@
 // ============================================================
 
 .chat-fab {
-  position: absolute;
-  bottom: 56px;
-  right: 40px; // Increased to clear the scrollbar track
-  z-index: 95;
+  position: fixed;
+  bottom: 24px;
+  right: 28px;
+  z-index: 10000;
 
   display: flex;
   align-items: center;
@@ -156,7 +156,7 @@
 @media (pointer: coarse) {
   .chat-fab {
     cursor: pointer;
-    bottom: 56px;
-    right: 32px;
+    bottom: 20px;
+    right: 20px;
   }
 }

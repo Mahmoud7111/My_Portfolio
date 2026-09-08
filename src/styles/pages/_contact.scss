@@ -1,85 +1,22 @@
 @use '../mixins' as *;
 
-.contact-page {
-  max-width: 560px;
+/* ═══════════════════════════════════════════════════════════════
+   CONTACT PAGE — layout from the reference design,
+   colours / fonts from the site design system (no hard-coded hex)
+   ═══════════════════════════════════════════════════════════════ */
+
+// ── Page wrapper ─────────────────────────────────────────────────
+.ct-wrap {
+  max-width: 960px;
   margin: 0 auto;
-  padding: 40px 20px;
-}
+  padding: 0 4px 48px;
 
-.compose-panel {
-  position: relative;
-  max-width: 640px;
-  margin: 0 auto;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  background: var(--surface);
-  box-shadow: 0 0 0 1px rgba(77, 208, 206, 0.05);
-
-  // Subtle gradient accent at the very top edge
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(
-      90deg,
-      transparent 0%,
-      var(--coral-edge) 30%,
-      var(--cyan-edge) 70%,
-      transparent 100%
-    );
-    opacity: 0.6;
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  &__chrome {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 34px;
-    padding: 0 14px;
-    background: var(--surface-3);
-    border-bottom: 1px solid var(--border);
-    @include mono(12px);
-    user-select: none;
-  }
-
-  &__chrome-left {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  &__bar {
-    color: var(--coral);
-  }
-
-  &__filename {
-    color: var(--text-heading);
-    font-weight: 500;
-  }
-
-  &__sep {
-    color: var(--text-dim);
-  }
-
-  &__subtitle {
-    color: var(--text-muted);
-  }
-
-  &__controls {
-    color: var(--text-dim);
-  }
-
-  &__body {
-    padding: 24px;
+  @include mobile {
+    padding: 0 0 32px;
   }
 }
 
+// ── ASCII banner (same as before) ────────────────────────────────
 .contact-banner {
   font-family: var(--font-mono);
   font-size: clamp(7px, 1.4vw, 14px);
@@ -88,135 +25,153 @@
   text-shadow: 0 0 12px var(--coral-glow);
   white-space: pre;
   overflow-x: auto;
-  margin: 0 0 20px;
+  margin: 0 0 24px;
 }
 
-.opener {
-  @include mono(18px);
-  margin-bottom: 24px;
-  line-height: 1.5;
-
-  .hc-prompt {
-    font-weight: 400;
-    text-shadow: none;
-  }
-
-  &__cmd {
-    color: var(--text-muted);
-  }
-
-  &__target {
-    color: var(--cyan);
-  }
-}
-
-.status-strip {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
-  @include mono(11.5px);
-  padding-bottom: 16px;
-  border-bottom: 1px dashed var(--border);
-  margin-bottom: 24px;
-
-  &__divider {
-    color: var(--text-dim);
-  }
-}
-
-.status-item {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-
-  &__dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--cyan);
-    box-shadow: 0 0 6px var(--cyan-glow);
-    flex-shrink: 0;
-  }
-
-  &__label {
-    color: var(--text-muted);
-  }
-
-  &__value {
-    color: var(--text-body);
-  }
-}
-
-.contact-form {
+// ── 2-column grid ────────────────────────────────────────────────
+.ct-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 24px;
+  align-items: stretch;
 
   @include mobile {
     grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+// ── Shared dark card ─────────────────────────────────────────────
+.ct-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+
+  &:hover {
+    border-color: var(--cyan-edge);
+    box-shadow: 0 0 24px rgba(77, 208, 206, 0.06);
+  }
+
+  @include mobile {
+    padding: 18px 16px;
+  }
+
+  &--form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &--info {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &--links {
+    display: flex;
+    flex-direction: column;
+  }
+
+  // Eyebrow heading (card title)
+  &__eyebrow {
+    @include mono(13px);
+    font-weight: 600;
+    color: var(--cyan);
+    margin: 0 0 6px;
+    letter-spacing: 0.02em;
+  }
+
+  // Optional subtitle under eyebrow
+  &__sub {
+    @include mono(12.5px);
+    color: var(--text-muted);
+    margin: 0 0 22px;
+    line-height: 1.55;
+  }
+}
+
+// ── Form ─────────────────────────────────────────────────────────
+.ct-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+
+  &__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+
+    @include mobile {
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
   }
 
   &__field {
     display: flex;
     flex-direction: column;
+    gap: 5px;
 
     &--full {
-      grid-column: 1 / -1;
+      width: 100%;
     }
   }
 
   &__label {
     @include mono(12px);
     color: var(--text-muted);
-    margin-bottom: 6px;
-  }
-
-  &__label-prefix {
-    color: var(--coral);
   }
 
   &__input,
   &__textarea {
-    @include mono(16px);
+    @include mono(14px);
     color: var(--text-body);
     background: var(--surface-3);
     border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    padding: 9px 12px;
+    width: 100%;
+    box-sizing: border-box;
     outline: none;
-    transition: outline var(--transition-fast), outline-offset var(--transition-fast);
-
-    // 16px keeps iOS from auto-zooming on focus (threshold is < 16px).
-    @include tablet {
-      @include mono(13px);
-    }
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 
     &::placeholder {
       color: var(--text-dim);
     }
 
     &:focus {
-      outline: 2px solid var(--cyan);
-      outline-offset: 2px;
+      border-color: var(--cyan-edge);
+      box-shadow: 0 0 0 2px rgba(77, 208, 206, 0.15);
+    }
+
+    &--err {
+      border-color: var(--coral-edge) !important;
+      box-shadow: 0 0 0 1px var(--coral-edge) !important;
     }
   }
 
   &__textarea {
     resize: vertical;
-    min-height: 144px;
+    min-height: 152px;
   }
 
   &__error {
-    @include mono(12px);
+    @include mono(11.5px);
     color: var(--coral);
-    margin-top: 6px;
+    margin-top: 3px;
     line-height: 1.4;
   }
 
-  // Honeypot: visually hidden but present in DOM.
-  // Off-screen rather than display:none so naive bots that skip
-  // hidden fields still fill it in.
+  &__actions {
+    margin-top: auto;
+    padding-top: 12px;
+    display: flex;
+    justify-content: flex-start;
+  }
+
+  // Off-screen honeypot
   &__honeypot {
     position: absolute;
     left: -9999px;
@@ -227,34 +182,35 @@
     overflow: hidden;
     pointer-events: none;
 
-    label,
-    input {
-      display: block;
-      width: 1px;
-      height: 1px;
-      font-size: 1px;
-    }
+    label, input { display: block; width: 1px; height: 1px; font-size: 1px; }
   }
+}
 
-  &__actions {
-    grid-column: 1 / -1;
-    text-align: center;
-  }
+// ── Buttons ──────────────────────────────────────────────────────
+.ct-btn {
+  @include mono(13px);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: all var(--transition-fast);
 
-  &__submit {
-    @include mono(13px);
-    color: var(--coral);
-    background: var(--coral-tint);
-    border: 1px solid var(--coral);
-    border-radius: 6px;
-    padding: 10px 20px;
-    width: 100%;
-    box-shadow: 0 0 18px rgba(224, 108, 117, 0.15);
-    cursor: pointer;
-    transition: background var(--transition-fast);
+  // Primary: Send Message
+  &--send {
+    color: #000;
+    background: var(--cyan);
+    border: 1px solid var(--cyan);
+    font-weight: 600;
+    padding: 10px 24px;
+    box-shadow: 0 0 16px var(--cyan-glow);
 
-    &:hover {
-      background: rgba(224, 108, 117, 0.18);
+    &:hover:not(:disabled) {
+      background: var(--cyan-edge);
+      border-color: var(--cyan-edge);
+      box-shadow: 0 0 24px rgba(77, 208, 206, 0.4);
+      transform: translateY(-1px);
     }
 
     &:disabled {
@@ -262,11 +218,20 @@
       cursor: not-allowed;
     }
   }
+
+  // Download CV (styled like ab-download-btn from About page)
+  &--cv {
+    width: 100%;
+    margin-top: 20px;
+    justify-content: center;
+    box-sizing: border-box;
+  }
 }
 
+// ── Success state ─────────────────────────────────────────────────
 .contact-success {
   text-align: center;
-  padding: 40px 0;
+  padding: 32px 0;
 
   &__pre {
     @include mono(14px);
@@ -282,22 +247,19 @@
     gap: 14px;
     max-width: 460px;
     margin: 0 auto 24px;
-    padding: 16px 20px;
+    padding: 14px 18px;
     border: 1px solid var(--coral-edge);
     border-radius: var(--radius-md);
     background: var(--coral-tint);
     text-align: left;
 
     p {
-      @include mono(14px);
+      @include mono(13px);
       line-height: 1.6;
       color: var(--coral);
       margin: 0;
 
-      strong {
-        color: var(--coral);
-        font-weight: 600;
-      }
+      strong { color: var(--coral); font-weight: 600; }
     }
   }
 
@@ -306,11 +268,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 26px;
-    height: 26px;
+    width: 24px;
+    height: 24px;
     border: 1px solid var(--coral);
     border-radius: 50%;
-    @include mono(15px);
+    @include mono(14px);
     color: var(--coral);
     font-weight: 700;
     line-height: 1;
@@ -338,107 +300,91 @@
   text-align: center;
   color: var(--coral);
   @include mono(13px);
-  padding: 20px 0;
+  padding: 12px 0 4px;
 }
 
-.contact-footer {
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px dashed var(--border);
+// ── Right-side column (stacked cards) ────────────────────────────
+.ct-side {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  flex-direction: column;
   gap: 20px;
+  height: 100%;
+}
 
-  @include mobile {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
+// ── Info list rows (email / phone / location) ─────────────────────
+.ct-info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 16px 0 0;
+}
 
-  &__left {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
+.ct-info-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  transition: color var(--transition-fast);
 
-  &__prompt {
-    @include mono(11px);
-
-    .hc-prompt {
-      font-weight: 400;
-      text-shadow: none;
-    }
-  }
-
-  &__prompt-dollar {
-    color: var(--coral);
-  }
-
-  &__prompt-cmd {
+  &__icon {
+    flex-shrink: 0;
     color: var(--cyan);
   }
 
-  &__prompt-path {
-    color: var(--text-muted);
-  }
+  &__text {
+    @include mono(13px);
+    color: var(--text-body);
+    word-break: break-all;
+    transition: color var(--transition-fast);
 
-  &__heading {
-    font-family: var(--font-sans);
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--text-heading);
-    margin: 0;
-  }
-
-  &__socials {
-    display: flex;
-    gap: 8px;
-  }
-
-  &__icon-btn {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--surface-3);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast), transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
-    text-decoration: none;
-
-    &:hover {
-      border-color: var(--cyan);
+    &--link {
       color: var(--cyan);
-      box-shadow: 0 0 15px var(--cyan-glow);
+      text-decoration: underline;
+      text-underline-offset: 3px;
     }
+  }
+
+  &:hover .ct-info-row__text--link {
+    color: var(--text-heading);
   }
 }
 
-.contact-download {
-  margin-top: 20px;
-  text-align: center;
+// ── Social icon buttons row ───────────────────────────────────────
+.ct-links-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+  margin-top: auto;
+  padding-top: 16px;
+}
 
-  &__btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    @include mono(13px);
+.ct-icon-btn {
+  width: 48px;
+  height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  color: #ffffff;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color var(--transition-fast), color var(--transition-fast),
+              box-shadow var(--transition-fast), transform 220ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  &:hover {
+    border-color: var(--cyan-edge);
     color: var(--cyan);
-    background: var(--cyan-tint);
-    border: 1px solid var(--cyan-edge);
-    border-radius: var(--radius-md);
-    padding: 10px 20px;
-    text-decoration: none;
-    cursor: pointer;
-    transition: background var(--transition-fast), box-shadow var(--transition-fast);
+    box-shadow: 0 0 16px var(--cyan-glow);
+    transform: translateY(-2px);
+  }
 
-    &:hover {
-      background: rgba(77, 208, 206, 0.12);
-      box-shadow: 0 0 18px var(--cyan-glow);
-    }
+  &:first-child {
+    justify-self: start;
+  }
+
+  &:nth-child(2) {
+    justify-self: center;
   }
 }

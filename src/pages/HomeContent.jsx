@@ -380,19 +380,21 @@ export default function HomeContent({ chatMode }) {
 
               {/* Social icon buttons */}
               <div className="hc-cta-icons">
-                {me.links.map((l) => (
-                  <a
-                    key={l.label}
-                    href={l.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hc-icon-btn"
-                    aria-label={l.label}
-                    title={l.label}
-                  >
-                    {ICONS[l.icon] ?? l.label[0]}
-                  </a>
-                ))}
+                {me.links
+                  .filter((l) => l.label.toLowerCase() !== 'credly')
+                  .map((l) => (
+                    <a
+                      key={l.label}
+                      href={l.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="hc-icon-btn"
+                      aria-label={l.label}
+                      title={l.label}
+                    >
+                      {ICONS[l.icon] ?? l.label[0]}
+                    </a>
+                  ))}
               </div>
               <button onClick={() => navigate('/contact')} className="btn-outline btn-outline--nav" style={{ marginTop: 16 }}>
                 Get in touch →

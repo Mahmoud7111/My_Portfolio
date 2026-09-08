@@ -6,7 +6,6 @@ import AsciiArt from '../components/ascii/AsciiArt'
 import { ART } from '../components/ascii/art'
 import { PROJECTS, TAG_GROUPS_RESOLVED } from '../data/projects'
 import RevealOnScroll from '../components/ui/RevealOnScroll'
-import TypingLine from '../components/ui/TypingLine'
 import { useAchievements } from '../hooks/useAchievements'
 import { usePrefersReducedMotion } from '../hooks/usePrefersReducedMotion'
 
@@ -40,39 +39,13 @@ export default function ProjectsContent() {
     <div className="projects-page">
       <AsciiArt art={ART.PROJECTS} color="var(--coral)" glow="var(--coral-glow)" />
 
-      {/* ── Shell opener ───────────────────────── */}
-      <TypingLine noPrompt text="-> All my projects" wrapperClassName="projects-opener">
-        <span className="projects-opener__arg">All my projects</span>
-      </TypingLine>
-      <span className="projects-opener__comment">{PROJECTS.length} projects</span>
+      {/* ── Subtext ────────────────────────────── */}
+      <p className="projects-subtext">
+        {PROJECTS.length} projects — filter by category or search below.
+      </p>
 
-      {/* ── ASCII folder + scanning log ────────── */}
-      <div className="projects-header">
-        <pre className="projects-folder">
-{`┌──────┐
-│      └────────────────┐
-│   My Projects          │
-│                       │
-│   ▸ ${PROJECTS[0]?.name ?? '...'}
-│   ▸ ${PROJECTS[1]?.name ?? '...'}
-│   ▸ ...
-└───────────────────────┘`}
-        </pre>
-        <pre className="projects-scan">
-{`-> Explore my work
--> ${PROJECTS.length} projects available
--> Filter by category or search below`}
-        </pre>
-      </div>
-
-      {/* ── ASCII rule ─────────────────────────── */}
-      <div className="projects-rule" />
-
-      {/* ── Filter chips + grep ────────────────── */}
+      {/* ── Filter chips + search ──────────────── */}
       <RevealOnScroll>
-      <TypingLine noPrompt text="-> Filter by technology" wrapperClassName="projects-opener">
-        <span className="projects-opener__arg">Filter by technology</span>
-      </TypingLine>
       <div className="projects-toolbar">
         <div className="projects-search">
           <Search size={14} className="projects-search__icon" />

@@ -11,6 +11,7 @@ export const me = {
   location: 'Cairo, Egypt',
   status: 'available', // 'available' | 'busy' | 'open-to-work'
   email: 'mahmoudsyd24@gmail.com',
+  phone: '+20 1110333933',
 
   bio: `I build full-stack platforms with React 18, Node.js, Express, and
 MongoDB, thinking through architecture as much as code — how data
@@ -21,8 +22,9 @@ demos that work once.`,
 
   hobbiesLine: `Outside of work I'm drinking Turkish coffee, more Turkish coffee, and then wondering why I can't sleep.`,
 
-  resume: '/My_Resume.pdf',
-  resumeUrl: '/My_Resume.pdf',
+  resume: '/M_Resume.pdf',
+  resumeUrl: '/M_Resume.pdf',
+  avatarUrl: '/images/Me1.jpeg',
 
   currently: [
     'Building this portfolio with React 18',
@@ -31,7 +33,7 @@ demos that work once.`,
   ],
 
   quickFacts: [
-    { icon: 'MapPin',     label: 'Location',      sublabel: 'Cairo, Egypt — remote-friendly' },
+    { icon: 'MapPin',     label: 'Location',      sublabel: 'New Cairo, Egypt — remote-friendly' },
     { icon: 'Briefcase',  label: 'Availability',   sublabel: 'Open to full-time & contract' },
     { icon: 'Coffee',     label: 'Daily fuel',     sublabel: 'x43 pour-over — 2 cups/day' },
     { icon: 'Code',       label: 'Passion',      sublabel: 'Building scalable systems' },    { icon: 'Layers',     label: 'Current focus',  sublabel: 'designing data-intensive apps' },
@@ -41,6 +43,7 @@ demos that work once.`,
   links: [
     { label: 'GitHub', url: 'https://github.com/Mahmoud7111', icon: 'Github' },
     { label: 'LinkedIn', url: 'https://www.linkedin.com/in/mahmoud7111/', icon: 'Linkedin' },
+    { label: 'Credly', url: 'https://www.credly.com/users/mahmoud-sayed', icon: 'Credly' },
     { label: 'Email', url: 'mailto:mahmoudsyd24@gmail.com', icon: 'Mail' },
   ],
 
