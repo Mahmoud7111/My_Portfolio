@@ -131,10 +131,10 @@ export default function AboutContent() {
       {/* ══════════════════════════════════════════════════════════ */}
       <RevealOnScroll>
       <div className="hc-panel" style={{ marginBottom: 40 }}>
-        <PanelChrome filename="about.md" subtitle="bio" />
+        <PanelChrome filename="About Me" subtitle="background & story" />
         <div className="hc-panel__body">
-          <TypingLine text="cat about.md">
-            <CmdLine cmd="cat" arg="about.md" />
+          <TypingLine noPrompt text="-> My story">
+            <span className="hc-var">My story</span>
           </TypingLine>
 
           <AsciiArt art={ART.ABOUT_ME} color="var(--cyan)" glow="var(--cyan-glow)" />
@@ -164,14 +164,14 @@ export default function AboutContent() {
                 onClick={onResumeClick}
               >
                 <Download size={14} />
-                <span>$ download resume.pdf</span>
+                <span>Download Resume</span>
               </a>
             </div>
 
             <div className="ab-currently-box">
               <div className="ab-currently-header">
                 <span className="ab-currently-dot">●</span>
-                <span className="ab-currently-label">ps aux — currently</span>
+                <span className="ab-currently-label">Currently working on</span>
               </div>
               <ul className="ab-currently-list">
                 {me.currently.map((line, i) => (
@@ -192,12 +192,12 @@ export default function AboutContent() {
       <RevealOnScroll>
       <div className="hc-panel" style={{ marginBottom: 40 }}>
         <PanelChrome
-          filename="journey.log"
-          subtitle={`${JOURNEY.length} entries`}
+          filename="My Journey"
+          subtitle={`${JOURNEY.length} milestones`}
         />
         <div className="hc-panel__body">
-          <TypingLine text="git log --all --oneline">
-            <CmdLine cmd="git log --all" arg="--oneline" />
+          <TypingLine noPrompt text="-> My journey so far">
+            <span className="hc-var">My journey so far</span>
           </TypingLine>
           <div className="ab-timeline-filter-label">
             <Filter size={12} />
@@ -222,7 +222,7 @@ export default function AboutContent() {
                     })
                   }}
                 >
-                  <span className="ab-timeline-filter__check">{active ? '[✓]' : '[ ]'}</span>
+                  <span className="ab-timeline-filter__check">{active ? '✓' : '○'}</span>
                   {TYPE_STYLES[t].label}
                 </button>
               )
@@ -240,10 +240,10 @@ export default function AboutContent() {
       {/* ══════════════════════════════════════════════════════════ */}
       <RevealOnScroll>
       <div className="hc-panel" style={{ marginBottom: 40 }}>
-        <PanelChrome filename="skills.json" subtitle={`${totalSkills} entries`} />
+        <PanelChrome filename="My Skills" subtitle={`${totalSkills} skills`} />
         <div className="hc-panel__body">
-          <TypingLine text="cat skills.json">
-            <CmdLine cmd="cat" arg="skills.json" />
+          <TypingLine noPrompt text="-> My skills & expertise">
+            <span className="hc-var">My skills & expertise</span>
           </TypingLine>
 
           <div className="ab-stack-header">
@@ -264,7 +264,7 @@ export default function AboutContent() {
             display: 'inline-block'
           }}>
             <span style={{ color: 'var(--cyan)', fontSize: 12, fontFamily: 'var(--font-mono)' }}>
-              // tip: hover over any technical skill to see what it means
+              Hover over any skill to learn more
             </span>
           </div>
 
@@ -274,7 +274,7 @@ export default function AboutContent() {
                 <div className="ab-skill-header">
                   <span className="ab-skill-triangle">▸</span>
                   <span className="ab-skill-name">{cat.label}</span>
-                  <span className="ab-skill-count">// {cat.items.length} entries</span>
+                  <span className="ab-skill-count">({cat.items.length} skills)</span>
                 </div>
                 <div className="ab-skill-pills">
                   {cat.items.map((s) => (
@@ -293,15 +293,10 @@ export default function AboutContent() {
       {/* ══════════════════════════════════════════════════════════ */}
       <RevealOnScroll>
       <div className="hc-panel" style={{ marginBottom: 40 }}>
-        <PanelChrome filename="milestones.log" subtitle={`${me.milestones.length} entries`} />
+        <PanelChrome filename="Achievements" subtitle={`${me.milestones.length} awards`} />
         <div className="hc-panel__body">
-          <TypingLine text="ls ./achievements && ls ./publications && ls ./certs">
-            <span className="hc-cmd">ls </span>
-            <span className="hc-var">./achievements</span>
-            <span className="hc-cmd"> && ls </span>
-            <span className="hc-var">./publications</span>
-            <span className="hc-cmd"> && ls </span>
-            <span className="hc-var">./certs</span>
+          <TypingLine noPrompt text="-> Awards & certifications">
+            <span className="hc-var">Awards & certifications</span>
           </TypingLine>
           <div className="achv-banner">
             <AsciiArt art={ART.ACHIEVED} color="var(--coral)" glow="var(--coral-glow)" />
@@ -318,7 +313,7 @@ export default function AboutContent() {
                     <div className={`ab-icon-sq ab-icon-sq--${typeColor}`}>
                       <Icon size={16} />
                     </div>
-                    <span className={`ab-milestone-type ab-milestone-type--${typeColor}`}>// {ms.type}</span>
+                    <span className={`ab-milestone-type ab-milestone-type--${typeColor}`}>{ms.type}</span>
                   </div>
                   <span className="ab-milestone-title">◈ {ms.title}</span>
                   <span className="ab-milestone-org">{ms.org}</span>
@@ -336,10 +331,10 @@ export default function AboutContent() {
       {/* ══════════════════════════════════════════════════════════ */}
       <RevealOnScroll>
       <div className="hc-panel" style={{ marginBottom: 40 }}>
-        <PanelChrome filename="education.md" subtitle="uni + courses" />
+        <PanelChrome filename="Education" subtitle="degree & courses" />
         <div className="hc-panel__body">
-          <TypingLine text="cat education.md">
-            <CmdLine cmd="cat" arg="education.md" />
+          <TypingLine noPrompt text="-> Education">
+            <span className="hc-var">Education</span>
           </TypingLine>
           <div className="ab-edu-grid">
             <div className="ab-edu-degree">
@@ -355,10 +350,8 @@ export default function AboutContent() {
             </div>
             <div className="ab-edu-courses">
               <div className="ab-courses-header">
-                <span className="ab-courses-prompt">$</span>
-                <span className="ab-courses-cmd">ls</span>
-                <span className="hc-var">./courses</span>
-                <span className="ab-courses-count">// {me.courses.length} items</span>
+                <span className="ab-courses-cmd">Courses & Certifications</span>
+                <span className="ab-courses-count">({me.courses.length} completed)</span>
               </div>
               <div className="ab-courses-list">
                 {me.courses.map((c) => (
@@ -376,10 +369,10 @@ export default function AboutContent() {
       {/* ══════════════════════════════════════════════════════════ */}
       <RevealOnScroll>
       <div className="hc-panel" style={{ marginBottom: 40 }}>
-        <PanelChrome filename="whoami.yaml" subtitle="quick facts" />
+        <PanelChrome filename="Quick Facts" subtitle="a little more about me" />
         <div className="hc-panel__body">
-          <TypingLine text="cat whoami.yaml">
-            <CmdLine cmd="cat" arg="whoami.yaml" />
+          <TypingLine noPrompt text="-> Quick facts">
+            <span className="hc-var">Quick facts</span>
           </TypingLine>
           <StaggerReveal className="ab-facts-grid" stagger={0.06} delay={0.05}>
             {me.quickFacts.map((fact, i) => {
@@ -407,10 +400,10 @@ export default function AboutContent() {
       {/* ══════════════════════════════════════════════════════════ */}
       <RevealOnScroll>
       <div className="hc-panel" style={{ marginBottom: 24 }}>
-        <PanelChrome filename="languages.i18n" subtitle="spoken" />
+        <PanelChrome filename="Languages" subtitle="spoken & written" />
         <div className="hc-panel__body">
-          <TypingLine text="locale -a">
-            <CmdLine cmd="locale" arg="-a" />
+          <TypingLine noPrompt text="-> Languages I speak">
+            <span className="hc-var">Languages I speak</span>
           </TypingLine>
           <StaggerReveal className="ab-langs-grid" stagger={0.08} delay={0.05}>
             {me.languages.map((lang, i) => {

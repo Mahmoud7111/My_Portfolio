@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useNavigate, useLocation } from 'react-router-dom'
-import { Mail, Download } from 'lucide-react'
 import { GithubIcon, LinkedinIcon } from '../ui/BrandIcons'
 import AsciiArt from '../ascii/AsciiArt'
 import { ART } from '../ascii/art'
@@ -456,25 +455,6 @@ export default function TerminalWindow() {
           </div>
         </div>
 
-        {/* ══ ROW 2 — shell prompt ════════════════════════════ */}
-        <div className={`trow trow--prompt${chatMode ? ' ai-mode-tinted' : ''}`}>
-          <span className="sh-time">[ {clock.long} ]</span>
-          <span className="sh-user"> mahmoud</span>
-          <span className="sh-dim"> @ </span>
-          <span className="sh-host" style={chatMode ? { color: 'var(--cyan)', textShadow: '0 0 10px rgba(77,208,206,0.4)' } : undefined}>portfolio.dev</span>
-          <span className="sh-dim"> : </span>
-          <span className="sh-path">{chatMode ? '~/ai-shell' : currentPath}</span>
-          {chatMode ? (
-            <span style={{ color: 'var(--text-dim)', marginLeft: 6, fontSize: 11 }}>mode:assistant</span>
-          ) : (
-            <span className="sh-git">
-              {' '}git:<span className="sh-branch">(main)</span>
-            </span>
-          )}
-          <span className="sh-chevron"> &gt;</span>
-          <span className="sh-cmd">{chatMode ? ' chat' : ' ls'}</span>
-        </div>
-
         {/* ══ ROW 3 — tmux windows tab bar ════════════════════ */}
         <div className={`trow trow--tabs${chatMode ? ' ai-mode-tinted' : ''}`} style={{ position: 'relative' }}>
           <span className="tmux-windows-label">windows:</span>
@@ -653,33 +633,6 @@ export default function TerminalWindow() {
                           </motion.button>
                         ))}
                       </div>
-                    </div>
-
-                    {/* Social links + resume */}
-                    <div className="hc-hero-links">
-                      {me.links.map(({ label, url, icon }) => {
-                        const Icon = { Github: GithubIcon, Linkedin: LinkedinIcon, Mail }[icon] || GithubIcon
-                        return (
-                          <a
-                            key={label}
-                            href={url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hc-hero-link"
-                          >
-                            <Icon size={12} className="hc-hero-link__icon" />
-                            <span className="hc-hero-link__label">{label}</span>
-                          </a>
-                        )
-                      })}
-                      <a
-                        href={me.resumeUrl}
-                        download
-                        className="hc-hero-link hc-hero-link--resume"
-                      >
-                        <Download size={12} className="hc-hero-link__icon" />
-                        <span className="hc-hero-link__label">Resume</span>
-                      </a>
                     </div>
                   </motion.div>
 
@@ -902,8 +855,8 @@ export default function TerminalWindow() {
           </AnimatePresence>
         </div>
 
-        {/* ══ Powerline footer ════════════════════════════════ */}
-        <PowerlineFooter currentPath={currentPath} shortTime={clock.short} chatMode={chatMode} />
+        {/* ══ Terminal footer ════════════════════════════════ */}
+        <TerminalFooter chatMode={chatMode} />
       </motion.div>
 
       <AnimatePresence>
@@ -918,43 +871,47 @@ export default function TerminalWindow() {
   )
 }
 
-// ── Powerline footer ─────────────────────────────────────────
-function PowerlineFooter({ currentPath, shortTime, chatMode }) {
-  return (
-    <div className={`powerline${chatMode ? ' powerline--ai-mode' : ''}`} aria-hidden="true">
-      <Seg variant="coral" dir="right" z={3}>{chatMode ? 'AI-SHELL' : 'NORMAL'}</Seg>
-      <Seg variant="surface3" dir="right" z={2}>{chatMode ? 'llm:active' : 'main ±0'}</Seg>
-      <Seg variant="surface2" dir="right" z={1}>{chatMode ? '~/ai-shell' : currentPath}</Seg>
+// ── Terminal footer ─────────────────────────────────────────
+function TerminalFooter({ chatMode }) {
+  const year = new Date().getFullYear()
+  const githubUrl = me.links.find(l => l.label.toLowerCase() === 'github')?.url || 'https://github.com/Mahmoud7111'
+  const linkedinUrl = me.links.find(l => l.label.toLowerCase() === 'linkedin')?.url || 'https://www.linkedin.com/in/mahmoud7111/'
 
-      <div className="powerline-spacer">
-        <span className="pl-hints">
-          {chatMode ? (
-            <><span className="pl-hint-key">exit</span> return to terminal{'  '}
-              <span className="pl-hint-key">◈ llm</span> ai active</>
-          ) : (
-            <><span className="pl-hint-key">^C</span> exit
-              {'  '}<span className="pl-hint-key">^D</span> logout
-              {'  '}<span className="pl-hint-key">^L</span> clear
-              {'  '}<span className="pl-hint-key">tab</span> autocomplete</>
-          )}
+  return (
+    <footer className={`terminal-footer${chatMode ? ' ai-mode-tinted' : ''}`}>
+      <div className="terminal-footer__left">
+        <span className="terminal-footer__prompt">$</span>
+        <span className="terminal-footer__text">
+          made by <span className="terminal-footer__name">{me.name}</span>
         </span>
       </div>
 
-      <Seg variant="surface2" dir="left" z={1}>{chatMode ? 'model │ ai' : 'utf-8 │ lf'}</Seg>
-      <Seg variant="surface3" dir="left" z={2}>{chatMode ? '◈ online' : '● 100%'}</Seg>
-      <Seg variant="cyan" dir="left" z={3}>{shortTime}</Seg>
-    </div>
-  )
-}
-
-function Seg({ children, variant, dir, z = 1 }) {
-  return (
-    <span
-      className={`pl-seg pl-seg--${variant} pl-seg--${dir}`}
-      style={{ zIndex: z }}
-    >
-      {children}
-    </span>
+      <div className="terminal-footer__right">
+        <a
+          href={githubUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="terminal-footer__link"
+          title="GitHub Profile"
+        >
+          <GithubIcon size={13} className="terminal-footer__icon" />
+          <span>github</span>
+        </a>
+        <span className="terminal-footer__sep" aria-hidden="true">·</span>
+        <a
+          href={linkedinUrl}
+          target="_blank"
+          rel="noreferrer"
+          className="terminal-footer__link"
+          title="LinkedIn Profile"
+        >
+          <LinkedinIcon size={13} className="terminal-footer__icon" />
+          <span>linkedin</span>
+        </a>
+        <span className="terminal-footer__sep" aria-hidden="true">·</span>
+        <span className="terminal-footer__copy">© {year}</span>
+      </div>
+    </footer>
   )
 }
 

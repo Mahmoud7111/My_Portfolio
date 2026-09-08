@@ -14,7 +14,7 @@ function extractText(children) {
     .join('')
 }
 
-export default function TypingLine({ children, text, wrapperClassName }) {
+export default function TypingLine({ children, text, wrapperClassName, noPrompt }) {
   const [typed, setTyped] = useState('')
   const [done, setDone] = useState(false)
   const indexRef = useRef(0)
@@ -40,14 +40,45 @@ export default function TypingLine({ children, text, wrapperClassName }) {
     return () => clearInterval(id)
   }, [fullText, isInView])
 
+  const isArrowLine = noPrompt && (/^(->|→|\u2192)/.test(fullText))
+  const childClassName = children?.props?.className || 'hc-var'
+
+  const arrowGlowStyle = {
+    color: 'var(--coral)',
+    textShadow: '0 0 8px var(--coral-glow), 0 0 16px var(--coral-glow)',
+    fontWeight: 600,
+  }
+
+  const restText = (str) => str.replace(/^(->|→|\u2192)\s*/, '')
+
   return (
     <div ref={ref} className={wrapperClassName || 'hc-cmd-line'}>
-      <span className="hc-prompt">$ </span>
+      {!noPrompt && <span className="hc-prompt">$ </span>}
       {done ? (
-        children
+        isArrowLine ? (
+          <>
+            <span style={arrowGlowStyle}>-&gt;</span>
+            <span className={childClassName}>{' ' + restText(fullText)}</span>
+          </>
+        ) : children
       ) : (
         <span>
-          {isInView ? (typed || '\u00A0') : '\u00A0'}
+          {isInView ? (
+            isArrowLine && typed.length > 0 ? (
+              <>
+                <span style={arrowGlowStyle}>
+                  {typed.startsWith('->')
+                    ? '->'
+                    : (typed.startsWith('-') ? '-' : '->')}
+                </span>
+                <span className={childClassName}>
+                  {typed.startsWith('->')
+                    ? typed.slice(2)
+                    : (typed.startsWith('→') || typed.startsWith('\u2192') ? typed.slice(1) : '')}
+                </span>
+              </>
+            ) : (typed || '\u00A0')
+          ) : '\u00A0'}
           {isInView && !done && (
             <span className="typing-cursor">_</span>
           )}

@@ -67,9 +67,9 @@ export default function HomeContent({ chatMode }) {
           <div className="hc-panel__chrome">
             <div className="hc-panel__chrome-left">
               <span className="hc-panel__bar">▍</span>
-              <span className="hc-panel__filename">about.md</span>
+              <span className="hc-panel__filename">About Me</span>
               <span className="hc-panel__sep">—</span>
-              <span className="hc-panel__subtitle">bio + setup</span>
+              <span className="hc-panel__subtitle">who I am</span>
             </div>
             <span className="hc-panel__controls">⌃ ⌄ ×</span>
           </div>
@@ -92,8 +92,8 @@ export default function HomeContent({ chatMode }) {
 
             <div className="hc-about-3d-split">
               <div className="hc-about-left">
-                <TypingLine text="whoami">
-                  <span className="hc-var">whoami</span>
+                <TypingLine noPrompt text="-> Hi, I'm Mahmoud">
+                  <span className="hc-var">Hi, I'm Mahmoud</span>
                 </TypingLine>
 
                 <h1 className="hc-typewriter-h1" style={{ margin: '0 0 4px', fontWeight: 700 }}>
@@ -115,10 +115,10 @@ export default function HomeContent({ chatMode }) {
                 </p>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-muted)' }}>
-                  <span>~/{me.location.toLowerCase()}</span>
+                  <span>📍 {me.location}</span>
                   <span>·</span>
                   <span style={{ color: me.status === 'available' ? 'var(--cyan)' : 'var(--text-muted)' }}>
-                    {me.status === 'available' ? 'open to work' : me.status}
+                    {me.status === 'available' ? '✦ Available for projects' : me.status}
                   </span>
                 </div>
               </div>
@@ -127,7 +127,7 @@ export default function HomeContent({ chatMode }) {
 
             <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 20, flexWrap: 'wrap' }}>
               <button onClick={() => navigate('/about')} className="btn-outline btn-outline--nav">
-                learn more → about
+                Learn more about me →
               </button>
             </div>
           </div>
@@ -144,19 +144,15 @@ export default function HomeContent({ chatMode }) {
           <div className="hc-panel__chrome">
             <div className="hc-panel__chrome-left">
               <span className="hc-panel__bar">▍</span>
-              <span className="hc-panel__filename">stats.tsv</span>
+              <span className="hc-panel__filename">My Numbers</span>
               <span className="hc-panel__sep">—</span>
-              <span className="hc-panel__subtitle">by the numbers</span>
+              <span className="hc-panel__subtitle">at a glance</span>
             </div>
             <span className="hc-panel__controls">⌃ ⌄ ×</span>
           </div>
           <div className="hc-panel__body">
-            <TypingLine text="awk '{ print $value }' stats.tsv">
-              <span className="hc-cmd">
-                awk '&#123; print{' '}
-                <span className="hc-var">$value</span> &#125;'{' '}
-              </span>
-              <span className="hc-var">stats.tsv</span>
+            <TypingLine noPrompt text="-> Here's what I've accomplished">
+              <span className="hc-var">Here's what I've accomplished</span>
             </TypingLine>
             <StaggerReveal className="hc-stat-grid">
               {stats.map((s) => (
@@ -190,24 +186,22 @@ export default function HomeContent({ chatMode }) {
           <div className="hc-panel__chrome">
             <div className="hc-panel__chrome-left">
               <span className="hc-panel__bar">▍</span>
-              <span className="hc-panel__filename">tech-feed.log</span>
+              <span className="hc-panel__filename">My Skills</span>
               <span className="hc-panel__sep">—</span>
-              <span className="hc-panel__subtitle">real-time</span>
+              <span className="hc-panel__subtitle">technologies I work with</span>
             </div>
             <span className="hc-panel__controls hc-panel__controls--right">
-            // auto-refresh · {allSkills.length} signals
+              {allSkills.length} skills
             </span>
           </div>
           <div className="hc-panel__body hc-panel__body--no-pad-v">
-            <TypingLine text="watch -n 1 tech-feed">
-              <span className="hc-cmd">watch -n 1 </span>
-              <span className="hc-var">tech-feed</span>
+            <TypingLine noPrompt text="-> Technologies I work with">
+              <span className="hc-var">Technologies I work with</span>
             </TypingLine>
             <div className="hc-feed-marquee">
               <div className="hc-feed-marquee__track">
                 {[...allSkills, ...allSkills].map((skill, i) => (
                   <span key={i} className="hc-feed-pill">
-                    <span className="hc-feed-pill__dollar">$</span>
                     {skill}
                   </span>
                 ))}
@@ -217,7 +211,6 @@ export default function HomeContent({ chatMode }) {
               <div className="hc-feed-marquee__track hc-feed-marquee__track--rev">
                 {[...allSkills, ...allSkills].reverse().map((skill, i) => (
                   <span key={i} className="hc-feed-pill">
-                    <span className="hc-feed-pill__dollar">$</span>
                     {skill}
                   </span>
                 ))}
@@ -237,16 +230,15 @@ export default function HomeContent({ chatMode }) {
           <div className="hc-panel__chrome">
             <div className="hc-panel__chrome-left">
               <span className="hc-panel__bar">▍</span>
-              <span className="hc-panel__filename">featured-projects.sh</span>
+              <span className="hc-panel__filename">Featured Work</span>
               <span className="hc-panel__sep">—</span>
-              <span className="hc-panel__subtitle">2 pinned</span>
+              <span className="hc-panel__subtitle">selected projects</span>
             </div>
             <span className="hc-panel__controls">⌃ ⌄ ×</span>
           </div>
           <div className="hc-panel__body">
-            <TypingLine text="ls ~/projects/featured">
-              <span className="hc-cmd">ls </span>
-              <span className="hc-var">~/projects/featured</span>
+            <TypingLine noPrompt text="-> Recent selected projects">
+              <span className="hc-var">Recent selected projects</span>
             </TypingLine>
 
             {/* Big PROJECTS heading */}
@@ -342,7 +334,7 @@ export default function HomeContent({ chatMode }) {
             {/* View all button */}
             <div style={{ textAlign: 'center', marginTop: 20 }}>
               <button onClick={() => navigate('/projects')} className="btn-outline btn-outline--nav">
-                view all --projects
+                View all projects →
               </button>
             </div>
           </div>
@@ -359,16 +351,15 @@ export default function HomeContent({ chatMode }) {
           <div className="hc-panel__chrome">
             <div className="hc-panel__chrome-left">
               <span className="hc-panel__bar">▍</span>
-              <span className="hc-panel__filename">cta.sh</span>
+              <span className="hc-panel__filename">Let's Connect</span>
               <span className="hc-panel__sep">—</span>
-              <span className="hc-panel__subtitle">contact</span>
+              <span className="hc-panel__subtitle">get in touch</span>
             </div>
             <span className="hc-panel__controls">⌃ ⌄ ×</span>
           </div>
           <div className="hc-panel__body hc-cta-body">
-            <TypingLine text="echo --build-something">
-              <span className="hc-cmd">echo </span>
-              <span className="hc-var">--build-something</span>
+            <TypingLine noPrompt text="-> Let's build something together">
+              <span className="hc-var">Let's build something together</span>
             </TypingLine>
 
             <div className="hc-cta-center">
@@ -404,7 +395,7 @@ export default function HomeContent({ chatMode }) {
                 ))}
               </div>
               <button onClick={() => navigate('/contact')} className="btn-outline btn-outline--nav" style={{ marginTop: 16 }}>
-                connect → contact
+                Get in touch →
               </button>
             </div>
           </div>

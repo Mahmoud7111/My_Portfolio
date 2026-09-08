@@ -59,12 +59,13 @@
 
 // ══ ROW 1 — tmux title bar ═══════════════════════════════════
 .trow--tmux {
-  height: 36px;
+  height: 42px;
   background: var(--surface-4);
-  gap: 10px;
+  gap: 12px;
   position: relative;
 
   @include mobile {
+    height: 38px;
     gap: 6px;
     padding: 0 10px;
   }
@@ -73,14 +74,14 @@
 // Traffic lights
 .traffic-lights {
   display: flex;
-  gap: 7px;
+  gap: 8px;
   flex-shrink: 0;
   align-items: center;
 }
 
 .traffic-light {
-  width: 12px;
-  height: 12px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
   border: none;
   cursor: pointer;
@@ -288,22 +289,27 @@
   }
 }
 
-// ══ ROW 3 — tmux windows tab bar ═════════════════════════════
+// ══ ROW 2 — tmux windows tab bar ═════════════════════════════
 .trow--tabs {
-  height: 30px;
+  height: 42px;
   background: var(--surface-2);
   gap: 0;
-  padding: 0 8px;
+  padding: 0 10px;
   // overflow:visible so the absolute dropdown can escape the row bounds.
   // Horizontal scroll is handled on desktop via the inner tabs themselves.
   overflow: visible;
   position: relative; // needed for dropdown z-index stacking
+
+  @include mobile {
+    height: 38px;
+    padding: 0 8px;
+  }
 }
 
 .tmux-windows-label {
   color: var(--text-dim);
-  margin-right: 8px;
-  font-size: 11px;
+  margin-right: 10px;
+  font-size: 12px;
   flex-shrink: 0;
 
   @include mobile {
@@ -315,9 +321,9 @@
 .tmux-tab {
   display: inline-flex;
   align-items: center;
-  @include mono(11px);
+  @include mono(12px);
   color: var(--text-dim);
-  padding: 0 8px;
+  padding: 0 10px;
   height: 100%;
   white-space: nowrap;
   cursor: pointer;
@@ -865,152 +871,108 @@
   }
 }
 
-// ══ Powerline footer ═════════════════════════════════════════
-//  █ NORMAL █▶ main±0 █▶ ~/path  ^C exit…  utf-8│lf ◀█ ●100% ◀█ HH:MM █
-// Chevron trick: clip-path on ::after / ::before
-
-$pl-h: 26px;
-$ch-w: 10px;
-
-.powerline {
-  height: $pl-h;
-  background: var(--surface-5);
-  display: flex;
-  align-items: stretch;
-  overflow: hidden;
-  flex-shrink: 0;
-  @include mono(11px, 600);
-  user-select: none;
-}
-
-// Spacer holding the keybind hints
-.powerline-spacer {
-  flex: 1;
+// ══ Terminal Footer (Split Status Bar) ═══════════════════════
+// Left: $ made by Mahmoud Sayed  ·  Right: [icon] github · [icon] linkedin · © 2026
+.terminal-footer {
+  height: 38px;
+  background: var(--surface-4);
+  border-top: 1px solid var(--border);
   display: flex;
   align-items: center;
-  justify-content: center;
-  background: var(--surface-5);
-  overflow: hidden;
-}
-
-.pl-hints {
-  color: var(--text-dim);
-  font-size: 10px;
-  font-weight: 400;
-  letter-spacing: 0.3px;
-  white-space: nowrap;
+  justify-content: space-between;
+  padding: 0 16px;
+  @include mono(12px);
+  color: var(--text-muted);
+  flex-shrink: 0;
+  user-select: none;
+  z-index: 10;
+  transition: background 400ms ease, border-color 400ms ease;
 
   @include mobile {
-    display: none;
+    height: auto;
+    min-height: 42px;
+    padding: 8px 12px;
+    gap: 8px;
+    font-size: 11px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
-}
 
-.pl-hint-key {
-  color: var(--text-muted);
-  font-weight: 600;
-}
+  &__left {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
 
-// Base segment
-.pl-seg {
-  display: inline-flex;
-  align-items: center;
-  padding: 0 11px;
-  position: relative;
-  white-space: nowrap;
-  font-size: 11px;
+  &__right {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
 
-  // ── Right-flowing: arrow overlaps the NEXT segment's left edge ──
-  &--right {
-
-    // No margin — the ::after arrow must sit on top of the next segment
-    &::after {
-      content: '';
-      position: absolute;
-      right: -$ch-w; // extends beyond segment boundary into next segment
-      top: 0;
-      width: $ch-w;
-      height: $pl-h;
-      clip-path: polygon(0 0, 100% 50%, 0 100%);
-      z-index: 2; // above the adjacent segment body
+    @include mobile {
+      gap: 10px;
     }
   }
 
-  // ── Left-flowing: arrow overlaps the PREV segment's right edge ──
-  &--left {
+  &__prompt {
+    color: var(--coral);
+    font-weight: 700;
+    text-shadow: 0 0 8px var(--coral-glow);
+    font-size: 14px;
+    line-height: 1;
+  }
 
-    // No margin — the ::before arrow must sit on top of the previous segment
-    &::before {
-      content: '';
-      position: absolute;
-      left: -$ch-w; // extends beyond segment boundary into previous segment
-      top: 0;
-      width: $ch-w;
-      height: $pl-h;
-      clip-path: polygon(100% 0, 0 50%, 100% 100%);
-      z-index: 2; // above the adjacent segment body
+  &__text {
+    color: var(--text-muted);
+  }
+
+  &__name {
+    color: var(--text-heading);
+    font-weight: 600;
+  }
+
+  &__sep {
+    color: var(--text-dim);
+    opacity: 0.5;
+  }
+
+  &__link {
+    color: var(--text-muted);
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 6px;
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+
+    &:hover {
+      color: var(--cyan);
+      background: rgba(77, 208, 206, 0.08);
+      text-shadow: 0 0 8px rgba(77, 208, 206, 0.4);
     }
   }
-}
 
-// ── Colour variants ──────────────────────────────────────────
-// Each variant must set: background + matching pseudo-element bg + text color
-
-.pl-seg--coral {
-  background: var(--coral);
-  color: #1a0a0b;
-  font-weight: 700;
-  letter-spacing: 0.6px;
-
-  &::after {
-    background: var(--coral);
-  }
-}
-
-// surface3 = dark, cyan text (matches image 1: "main ±0")
-.pl-seg--surface3 {
-  background: var(--surface-3);
-  color: var(--cyan);
-
-  &::after {
-    background: var(--surface-3);
+  &__icon {
+    flex-shrink: 0;
+    transition: transform var(--transition-fast);
   }
 
-  &::before {
-    background: var(--surface-3);
-  }
-}
-
-// surface2 = slightly lighter dark, cyan text (matches image 1: "~/projects")
-.pl-seg--surface2 {
-  background: var(--surface-2);
-  color: var(--cyan);
-
-  &::after {
-    background: var(--surface-2);
+  &__link:hover &__icon {
+    transform: scale(1.15);
   }
 
-  &::before {
-    background: var(--surface-2);
+  &__copy {
+    color: var(--text-dim);
+    font-size: 11px;
   }
-}
 
-// right-side surface2 — muted text for utf-8/lf
-.pl-seg--surface2.pl-seg--left {
-  color: var(--text-muted);
-}
-
-// right-side surface3 — muted text for ●100%
-.pl-seg--surface3.pl-seg--left {
-  color: var(--text-muted);
-}
-
-.pl-seg--cyan {
-  background: var(--cyan);
-  color: #0c0c10;
-  font-weight: 700;
-
-  &::before {
-    background: var(--cyan);
+  &.ai-mode-tinted {
+    background: color-mix(in srgb, var(--surface-4) 90%, #38bdf8 10%);
+    border-top-color: rgba(77, 208, 206, 0.20);
   }
 }
 

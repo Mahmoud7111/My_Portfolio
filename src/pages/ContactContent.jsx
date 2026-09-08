@@ -116,9 +116,9 @@ export default function ContactContent() {
       <div className="compose-panel__chrome">
         <div className="compose-panel__chrome-left">
           <span className="compose-panel__bar">▍</span>
-          <span className="compose-panel__filename">compose.sh</span>
+          <span className="compose-panel__filename">Contact Me</span>
           <span className="compose-panel__sep">—</span>
-          <span className="compose-panel__subtitle">drop a line</span>
+          <span className="compose-panel__subtitle">send a message</span>
         </div>
         <span className="compose-panel__controls">⌃ ⌄ ×</span>
       </div>
@@ -146,9 +146,8 @@ export default function ContactContent() {
             transition: { duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: 0.1 },
           })}
         >
-          <TypingLine text={`mail --compose ${me.email}`} wrapperClassName="opener">
-            <span className="opener__cmd">mail --compose </span>
-            <span className="opener__target">{me.email}</span>
+          <TypingLine noPrompt text="-> Drop me a message" wrapperClassName="opener">
+            <span className="opener__target">Drop me a message</span>
           </TypingLine>
         </Wrap>
 
@@ -188,9 +187,9 @@ export default function ContactContent() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
             >
               <pre className="contact-success__pre">
-{`  ✓ message queued
-  ✓ delivered to inbox
-  ✓ awaiting reply ...`}
+{`  ✓ Message sent!
+  ✓ Delivered to my inbox
+  ✓ I'll get back to you within 24 hours`}
               </pre>
               <div className="contact-success__spam-note">
                 <span className="contact-success__spam-icon">!</span>
@@ -200,7 +199,7 @@ export default function ContactContent() {
                 </p>
               </div>
               <button type="button" className="contact-success__btn" onClick={handleReset}>
-                $ send another
+                Send another message
               </button>
             </motion.div>
           ) : (
@@ -227,7 +226,7 @@ export default function ContactContent() {
                 viewport={{ once: true }}
               >
                 <label className="contact-form__label">
-                  <span className="contact-form__label-prefix">--</span>name
+                  Name
                 </label>
                 <input
                   className="contact-form__input"
@@ -251,7 +250,7 @@ export default function ContactContent() {
                 viewport={{ once: true }}
               >
                 <label className="contact-form__label">
-                  <span className="contact-form__label-prefix">--</span>email
+                  Email
                 </label>
                 <input
                   className="contact-form__input"
@@ -276,7 +275,7 @@ export default function ContactContent() {
                 viewport={{ once: true }}
               >
                 <label className="contact-form__label">
-                  <span className="contact-form__label-prefix">--</span>message
+                  Message
                 </label>
                 <textarea
                   className="contact-form__textarea"
@@ -305,7 +304,7 @@ export default function ContactContent() {
                   className="contact-form__submit"
                   disabled={status === 'sending'}
                 >
-                  {status === 'sending' ? '$ sending ...' : '$ send --message'}
+                  {status === 'sending' ? 'Sending...' : 'Send Message'}
                 </button>
               </motion.div>
 
@@ -326,9 +325,8 @@ export default function ContactContent() {
         <RevealOnScroll delay={0.1}>
           <div className="contact-footer">
             <div className="contact-footer__left">
-              <TypingLine text="ls ./socials" wrapperClassName="contact-footer__prompt">
-                <span className="contact-footer__prompt-cmd">ls </span>
-                <span className="contact-footer__prompt-path">./socials</span>
+              <TypingLine noPrompt text="-> Find me on" wrapperClassName="contact-footer__prompt">
+                <span className="contact-footer__prompt-path">Find me on</span>
               </TypingLine>
               <h3 className="contact-footer__heading">Find me on</h3>
             </div>
@@ -364,7 +362,7 @@ export default function ContactContent() {
           <div className="contact-download">
             <a href={me.resume} download className="contact-download__btn" onClick={onResumeClick}>
               <Download size={15} />
-              $ download resume.pdf
+              Download Resume
             </a>
           </div>
         </RevealOnScroll>

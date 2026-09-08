@@ -41,28 +41,27 @@ export default function ProjectsContent() {
       <AsciiArt art={ART.PROJECTS} color="var(--coral)" glow="var(--coral-glow)" />
 
       {/* ── Shell opener ───────────────────────── */}
-      <TypingLine text='find ./projects -type d -name "*"' wrapperClassName="projects-opener">
-        <span className="projects-opener__cmd">find </span>
-        <span className="projects-opener__arg">./projects -type d -name &quot;*&quot;</span>
+      <TypingLine noPrompt text="-> All my projects" wrapperClassName="projects-opener">
+        <span className="projects-opener__arg">All my projects</span>
       </TypingLine>
-      <span className="projects-opener__comment">// {PROJECTS.length} repositories</span>
+      <span className="projects-opener__comment">{PROJECTS.length} projects</span>
 
       {/* ── ASCII folder + scanning log ────────── */}
       <div className="projects-header">
         <pre className="projects-folder">
 {`┌──────┐
 │      └────────────────┐
-│   ./projects          │
+│   My Projects          │
 │                       │
-│   ▸ ${PROJECTS[0]?.name ?? '...'}/
-│   ▸ ${PROJECTS[1]?.name ?? '...'}/
+│   ▸ ${PROJECTS[0]?.name ?? '...'}
+│   ▸ ${PROJECTS[1]?.name ?? '...'}
 │   ▸ ...
 └───────────────────────┘`}
         </pre>
         <pre className="projects-scan">
-{`> scanning tree ...
-> indexed ${PROJECTS.length} repos in 0.04s
-> filter by tag or grep below`}
+{`-> Explore my work
+-> ${PROJECTS.length} projects available
+-> Filter by category or search below`}
         </pre>
       </div>
 
@@ -71,9 +70,8 @@ export default function ProjectsContent() {
 
       {/* ── Filter chips + grep ────────────────── */}
       <RevealOnScroll>
-      <TypingLine text="grep --tags ./projects" wrapperClassName="projects-opener">
-        <span className="projects-opener__cmd">grep --tags </span>
-        <span className="projects-opener__arg">./projects</span>
+      <TypingLine noPrompt text="-> Filter by technology" wrapperClassName="projects-opener">
+        <span className="projects-opener__arg">Filter by technology</span>
       </TypingLine>
       <div className="projects-toolbar">
         <div className="projects-search">
@@ -83,7 +81,7 @@ export default function ProjectsContent() {
             className="projects-search__input"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="grep ..."
+            placeholder="Search projects..."
           />
         </div>
 
@@ -95,7 +93,7 @@ export default function ProjectsContent() {
           aria-controls="projects-chip-panel"
         >
           <SlidersHorizontal size={13} />
-          <span>filter{hasActiveFilter ? `: --${activeFilter}` : 's'}</span>
+          <span>Filter{hasActiveFilter ? `: ${activeFilter}` : 's'}</span>
           {hasActiveFilter && <span className="projects-filter-toggle__badge" />}
           <ChevronDown size={12} className="projects-filter-toggle__chevron" />
         </button>
@@ -124,7 +122,7 @@ export default function ProjectsContent() {
                       setFiltersOpen(false)
                     }}
                   >
-                    --{tag}
+                    {tag}
                   </button>
                 ))}
               </div>
@@ -135,17 +133,12 @@ export default function ProjectsContent() {
       </RevealOnScroll>
 
       {/* ── Cards ──────────────────────────────── */}
-      <TypingLine text="ls -la ./projects" wrapperClassName="projects-opener">
-        <span className="projects-opener__cmd">ls -la </span>
-        <span className="projects-opener__arg">./projects</span>
-      </TypingLine>
       <CardList filtered={filtered} />
 
       {/* ── Empty state ────────────────────────── */}
       {filtered.length === 0 && (
         <div className="projects-empty">
-          <span className="projects-empty__prompt">$ </span>
-          <span className="projects-empty__text">no matches. try another query.</span>
+          <span className="projects-empty__text">No projects match your search.</span>
         </div>
       )}
 
@@ -159,7 +152,7 @@ export default function ProjectsContent() {
             className="projects-github-btn"
           >
             <GithubIcon size={15} />
-            <span>$ view more on github</span>
+            <span>View more on GitHub</span>
           </a>
         </div>
       </RevealOnScroll>
@@ -237,7 +230,7 @@ function ProjectCard({ project, index }) {
               </>
             ) : (
               <div className="project-row-card__no-preview">
-                <span>[ no preview ]</span>
+                <span>No preview available</span>
               </div>
             )}
             {ext && <span className="project-lang-badge">{ext}</span>}
@@ -246,11 +239,8 @@ function ProjectCard({ project, index }) {
 
         <div className="project-row-card__content">
           <div className="project-path">
-            <span className="project-path-prefix">~/projects/</span>
             <span className="project-path-name">{project.name}</span>
             <span className="project-path-meta">
-              {'{' + project.branch + '} '}
-              <span className="project-path-dot" />
               {project.updated && (
                 <span className="project-path-date">· {project.updated}</span>
               )}
@@ -258,7 +248,6 @@ function ProjectCard({ project, index }) {
           </div>
 
           <p className="project-desc">
-            <span className="project-desc-prefix">&gt;</span>
             {project.desc}
           </p>
 

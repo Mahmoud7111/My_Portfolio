@@ -63,9 +63,8 @@ export default function AchievementsContent() {
       {/* Terminal header */}
       <RevealOnScroll>
         <div className="achv-header">
-          <TypingLine text="cat achievements.log">
-            <span className="hc-cmd">cat </span>
-            <span className="hc-var">achievements.log</span>
+          <TypingLine noPrompt text="-> Your Achievements">
+            <span className="hc-var">Your Achievements</span>
           </TypingLine>
           <AsciiArt art={ART.ACHIEVEMENTS} color="var(--coral)" glow="var(--coral-glow)" />
           <div className="achv-intro">
@@ -81,12 +80,12 @@ export default function AchievementsContent() {
       {/* Progress block */}
       <RevealOnScroll delay={0.1}>
       <div className="achv-progress-block">
-        <TypingLine text="progress --show">
-          <span className="hc-cmd">progress --show</span>
+        <TypingLine noPrompt text="-> Your Progress">
+          <span className="hc-var">Your Progress</span>
         </TypingLine>
         <div className="achv-progress-top">
           <span className="achv-progress-fraction"><span className="achv-fraction-num">{num} / {den}</span> <span className="achv-progress-pct">({pct}%)</span></span>
-          <span className="achv-progress-tag">rm --unlocked  // {num} unlocked</span>
+          <span className="achv-progress-tag">{num} unlocked</span>
         </div>
         <div className="achv-progress-bar">
           <span className="achv-bar-bracket">[</span>
@@ -99,9 +98,8 @@ export default function AchievementsContent() {
 
       {/* Filter pills */}
       <RevealOnScroll delay={0.1}>
-        <TypingLine text="grep --filter achievements.db">
-          <span className="hc-cmd">grep --filter </span>
-          <span className="hc-var">achievements.db</span>
+        <TypingLine noPrompt text="-> Filter by category">
+          <span className="hc-var">Filter by category</span>
         </TypingLine>
       </RevealOnScroll>
       <RevealOnScroll delay={0.15}>
@@ -115,7 +113,7 @@ export default function AchievementsContent() {
               onClick={() => setActiveFilter(f)}
               type="button"
             >
-              --{pillLabel(f)}<span className="achv-filter-count">{pillCount(f)}</span>
+              {pillLabel(f)}<span className="achv-filter-count">{pillCount(f)}</span>
             </button>
           )
         })}
@@ -124,9 +122,8 @@ export default function AchievementsContent() {
 
       {/* Cards grid */}
       <RevealOnScroll delay={0.2}>
-        <TypingLine text="cat achievements.json">
-          <span className="hc-cmd">cat </span>
-          <span className="hc-var">achievements.json</span>
+        <TypingLine noPrompt text="-> All Achievements">
+          <span className="hc-var">All Achievements</span>
         </TypingLine>
       </RevealOnScroll>
       <div className="achievements-grid">
@@ -202,11 +199,9 @@ export default function AchievementsContent() {
       {/* Clear button */}
       <div className="achv-clear">
         <button className="achv-clear-btn" onClick={() => setShowClearConfirm(true)} type="button">
-          <span className="hc-prompt">$</span>
-          <span className="hc-cmd">rm --reset </span>
-          <span className="hc-var">achievements.db</span>
+          Reset All Achievements
         </button>
-        <span className="achv-clear-hint">// clears all achievement data</span>
+        <span className="achv-clear-hint">Clears all unlocked achievement progress</span>
       </div>
 
       <ConfirmDialog
