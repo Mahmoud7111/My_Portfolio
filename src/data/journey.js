@@ -57,7 +57,14 @@ const ALL_JOURNEY = [
     edu.degree,
     edu.institution
   )),
-  buildEntry('2024', 'award', 'TOP 3 MSP Software Hackathon', 'MSP Tech Club'),
+  ...me.milestones.map((ms) => buildEntry(
+    ms.year,
+    ms.type,
+    ms.title,
+    ms.description || ms.org,
+    null,
+    ms.org
+  )),
 ];
 
 export const JOURNEY = ALL_JOURNEY.sort((a, b) => {

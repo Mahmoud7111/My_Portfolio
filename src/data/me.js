@@ -43,7 +43,7 @@ demos that work once.`,
   links: [
     { label: 'GitHub', url: 'https://github.com/Mahmoud7111', icon: 'Github' },
     { label: 'LinkedIn', url: 'https://www.linkedin.com/in/mahmoud7111/', icon: 'Linkedin' },
-    { label: 'Credly', url: 'https://www.credly.com/users/mahmoud-sayed', icon: 'Credly' },
+    // { label: 'Credly', url: 'https://www.credly.com/users/mahmoud-sayed', icon: 'Credly' },
     { label: 'Email', url: 'mailto:mahmoudsyd24@gmail.com', icon: 'Mail' },
   ],
 
@@ -51,7 +51,7 @@ demos that work once.`,
     webDevelopment: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'Mongoose', 'Vite', 'Axios', 'Context API', 'Framer Motion', 'MySQL'],
     languages: ['JavaScript', 'C++', 'Java', 'Python', 'SQL', 'HTML', 'CSS'],
     ai: ['AI Basics', 'Prompt Engineering', 'NLP Basics', 'LLM API Integration'],
-    aiTools: ['Antigravity', 'Claude', 'Multi-Agent Systems', 'Claude Hooks', 'Skills', 'AI Workflow Orchestration'],
+    aiTools: ['Claude', 'Multi-Agent Systems', 'Claude Hooks', 'Skills', 'AI Workflow Orchestration'],
     SoftSkills: ['Problem Solving', 'Teamwork', 'Leadership', 'Communication', 'Time Management', 'Adaptability'],
     additional: ['JavaFX', 'Qt', 'Arduino', 'Git', 'GitHub', 'Jira'],
   },
@@ -79,6 +79,14 @@ demos that work once.`,
   ],
 
   experience: [
+    {
+      role: 'Software Development Co-Head',
+      org: 'MSP Tech Club – Misr International University',
+      period: 'Sep. 2026 – Present',
+      bullets: [
+        'Leadership: Co-lead the club’s software development track, guiding project direction and mentoring members through Git-based collaborative workflows.',
+      ],
+    },
     {
       role: 'Full Stack Web Developer Intern',
       org: 'El Zatuna',
@@ -110,8 +118,18 @@ demos that work once.`,
 
   //* Achievements, awards, certifications, publications, etc.
   milestones: [
-    { title: 'TOP 3 MSP Software Hackathon', org: 'MSP Tech Club', year: '2025', type: 'award' },
-    //{ title: '[PLACEHOLDER]', org: '[PLACEHOLDER]', year: '2024', type: 'certification' },
-    //{ title: '[PLACEHOLDER]', org: '[PLACEHOLDER]', year: '2023', type: 'publication' },
+    {
+      title: 'ECPC Contestant (Team: "Trial and Error")',
+      org: 'ECPC Egyptian Collegiate Programming Contest',
+      year: 'Aug. 2026',
+      type: 'award',
+      description: 'Took part in a one-day competitive programming competition, solving algorithmic problems as part of a three-person team ("Trial and Error"). Practiced problem analysis, time-boxed implementation, and collaborative debugging under contest conditions.',
+    },
+    {
+      title: 'TOP 3 MSP Software Hackathon',
+      org: 'MSP Tech Club',
+      year: '2025',
+      type: 'award',
+    },
   ],
 }
