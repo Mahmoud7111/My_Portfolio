@@ -168,7 +168,8 @@
     margin-top: auto;
     padding-top: 12px;
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
+    width: 100%;
   }
 
   // Off-screen honeypot
@@ -199,11 +200,14 @@
 
   // Primary: Send Message
   &--send {
+    width: 100%;
+    box-sizing: border-box;
     color: #000;
     background: var(--cyan);
     border: 1px solid var(--cyan);
     font-weight: 600;
-    padding: 10px 24px;
+    font-size: 14px;
+    padding: 12px 24px;
     box-shadow: 0 0 16px var(--cyan-glow);
 
     &:hover:not(:disabled) {

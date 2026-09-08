@@ -11,6 +11,7 @@ const JOKES = [
   '"What do you call a programmer from Finland? Nerdic."',
   '"Why do programmers always mix up Halloween and Christmas? Because Oct 31 === Dec 25."',
   '"There are only 10 types of people in the world: those who understand binary, and those who don\'t."',
+  '"What did JavaScript name his son? JSON"',
 ]
 
 export default function TerminalClosedScreen({ onReturn }) {

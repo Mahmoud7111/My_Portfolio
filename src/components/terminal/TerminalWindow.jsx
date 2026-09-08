@@ -59,16 +59,61 @@ const SPRING_SNAP = {
 
 // ── Track live viewport size ─────────────────────────────────
 function useViewport() {
-  const [vp, setVp] = useState({
-    w: window.innerWidth,
-    h: window.innerHeight,
+  const [vp, setVp] = useState(() => {
+    if (typeof window === 'undefined') return { w: 1024, h: 768 }
+    return {
+      w: window.innerWidth,
+      h: window.innerHeight,
+    }
   })
+
+  // Ref to track max height per orientation/width on mobile to avoid keyboard-resize shrink
+  const baseHeightRef = useRef(typeof window !== 'undefined' ? window.innerHeight : 768)
+  const lastWidthRef = useRef(typeof window !== 'undefined' ? window.innerWidth : 1024)
+
   useEffect(() => {
-    const handler = () =>
-      setVp({ w: window.innerWidth, h: window.innerHeight })
+    const handler = () => {
+      const curW = window.innerWidth
+      const curH = window.innerHeight
+      const isMobile = curW < 768
+
+      if (isMobile) {
+        // If width changed significantly, this is an actual orientation change (device rotate)
+        if (Math.abs(curW - lastWidthRef.current) > 20) {
+          lastWidthRef.current = curW
+          baseHeightRef.current = curH
+          setVp({ w: curW, h: curH })
+          return
+        }
+
+        // Width did not change: if height grew, update base height
+        if (curH > baseHeightRef.current) {
+          baseHeightRef.current = curH
+        }
+
+        // Check if an input or textarea is currently focused or height shrank significantly (virtual keyboard opened)
+        const isInputFocused = ['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)
+        const heightShrank = curH < baseHeightRef.current * 0.88
+
+        if (isInputFocused || heightShrank) {
+          // Virtual keyboard opened — keep base height so terminal window doesn't squish!
+          setVp({ w: curW, h: baseHeightRef.current })
+        } else {
+          baseHeightRef.current = curH
+          setVp({ w: curW, h: curH })
+        }
+      } else {
+        // Desktop / tablet: standard resize
+        lastWidthRef.current = curW
+        baseHeightRef.current = curH
+        setVp({ w: curW, h: curH })
+      }
+    }
+
     window.addEventListener('resize', handler, { passive: true })
     return () => window.removeEventListener('resize', handler)
   }, [])
+
   return vp
 }
 

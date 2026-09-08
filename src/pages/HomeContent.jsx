@@ -220,7 +220,7 @@ export default function HomeContent({ chatMode }) {
             <TypingLine noPrompt text="-> Technologies I work with">
               <span className="hc-var">Technologies I work with</span>
             </TypingLine>
-            <div className="hc-feed-marquee">
+            <div className="hc-feed-marquee" style={{ marginTop: 12 }}>
               <div className="hc-feed-marquee__track">
                 {[...allSkills, ...allSkills].map((skill, i) => (
                   <span key={i} className="hc-feed-pill">
