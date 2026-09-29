@@ -1,0 +1,328 @@
+@use 'mixins' as *;
+
+// ============================================================
+// CALLOUT TOOLTIPS — Onboarding Hints (Maximize & AI Chat)
+// Cyberpunk / macOS Terminal Aesthetic with Glowing Beacons
+// ============================================================
+
+// ── Base Tooltip Container ──────────────────────────────────
+.callout-tooltip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  border-radius: 6px;
+  @include mono(11.5px);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  user-select: none;
+  cursor: pointer;
+  white-space: nowrap;
+  box-sizing: border-box;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+
+  &:hover {
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// ── Beacon Pulse for Green Traffic Light Dot ─────────────────
+.traffic-light-beacon-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.traffic-light.maximize.has-beacon {
+  position: relative;
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.3),
+    0 0 10px rgba(40, 200, 64, 0.9);
+  animation: beacon-dot-pulse 1.8s ease-in-out infinite;
+
+  // Expanding outer ring
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid rgba(40, 200, 64, 0.9);
+    animation: beacon-ring-expand 1.8s cubic-bezier(0.1, 0.8, 0.2, 1) infinite;
+    pointer-events: none;
+    box-sizing: border-box;
+  }
+
+  // Second softer ping ring
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(40, 200, 64, 0.4);
+    border-radius: 50%;
+    animation: beacon-glow-fade 1.8s ease-out infinite;
+    pointer-events: none;
+  }
+}
+
+@keyframes beacon-dot-pulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1.2);
+  }
+  50% {
+    transform: scale(1.18);
+    filter: brightness(1.45);
+  }
+}
+
+@keyframes beacon-ring-expand {
+  0% {
+    width: 13px;
+    height: 13px;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 0 4px rgba(40, 200, 64, 0.8);
+  }
+  70% {
+    width: 32px;
+    height: 32px;
+    opacity: 0.35;
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 0 12px 2px rgba(40, 200, 64, 0.4);
+  }
+  100% {
+    width: 40px;
+    height: 40px;
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1);
+    box-shadow: 0 0 16px 4px rgba(40, 200, 64, 0);
+  }
+}
+
+@keyframes beacon-glow-fade {
+  0% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(2.5);
+  }
+}
+
+// ── 🟢 Maximize Callout Tooltip ──────────────────────────────
+.callout-tooltip--maximize {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: -22px;
+  z-index: 220;
+  background: rgba(8, 16, 12, 0.94);
+  border: 1px solid rgba(40, 200, 64, 0.55);
+  color: #e6fced;
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.65),
+    0 0 18px rgba(40, 200, 64, 0.25),
+    0 0 35px rgba(40, 200, 64, 0.1),
+    inset 0 1px 0 rgba(40, 200, 64, 0.2);
+
+  &:hover {
+    border-color: rgba(40, 200, 64, 0.85);
+    box-shadow:
+      0 6px 24px rgba(0, 0, 0, 0.75),
+      0 0 25px rgba(40, 200, 64, 0.4),
+      0 0 45px rgba(40, 200, 64, 0.15),
+      inset 0 1px 0 rgba(40, 200, 64, 0.3);
+  }
+
+  .callout-dot {
+    color: #28c840;
+    font-size: 14px;
+    line-height: 1;
+    text-shadow: 0 0 8px rgba(40, 200, 64, 0.9);
+    animation: dot-flicker 2s ease-in-out infinite;
+  }
+
+  .callout-icon {
+    font-size: 13px;
+    line-height: 1;
+    color: #28c840;
+    margin-left: 2px;
+    text-shadow: 0 0 6px rgba(40, 200, 64, 0.7);
+  }
+
+  // Arrow pointing UP directly toward green dot
+  .callout-arrow {
+    position: absolute;
+    top: -5px;
+    left: 24.5px; // Aligned with the center of the 13px green button
+    width: 8px;
+    height: 8px;
+    background: rgba(8, 16, 12, 0.96);
+    border-top: 1px solid rgba(40, 200, 64, 0.55);
+    border-left: 1px solid rgba(40, 200, 64, 0.55);
+    transform: rotate(45deg);
+    pointer-events: none;
+    box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  &:hover .callout-arrow {
+    border-color: rgba(40, 200, 64, 0.85);
+  }
+}
+
+// ── 💬 AI Chat Callout Tooltip ───────────────────────────────
+.callout-tooltip--chat {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  right: 0;
+  z-index: 220;
+  background: rgba(6, 14, 20, 0.95);
+  border: 1px solid rgba(77, 208, 206, 0.6);
+  color: #e0fbfb;
+  box-shadow:
+    0 4px 22px rgba(0, 0, 0, 0.7),
+    0 0 20px rgba(77, 208, 206, 0.25),
+    0 0 40px rgba(77, 208, 206, 0.12),
+    inset 0 1px 0 rgba(77, 208, 206, 0.22);
+
+  &:hover {
+    border-color: rgba(77, 208, 206, 0.9);
+    box-shadow:
+      0 6px 26px rgba(0, 0, 0, 0.8),
+      0 0 28px rgba(77, 208, 206, 0.45),
+      0 0 50px rgba(77, 208, 206, 0.18),
+      inset 0 1px 0 rgba(77, 208, 206, 0.35);
+  }
+
+  .callout-dot {
+    color: var(--cyan);
+    font-size: 14px;
+    line-height: 1;
+    text-shadow: 0 0 8px rgba(77, 208, 206, 0.9);
+    animation: dot-flicker 2s ease-in-out infinite 0.5s;
+  }
+
+  .callout-glyph {
+    color: var(--cyan);
+    font-size: 12px;
+    line-height: 1;
+    margin-left: 2px;
+    text-shadow: 0 0 8px rgba(77, 208, 206, 0.85);
+  }
+
+  // Arrow pointing DOWN toward the AI Chat FAB button
+  .callout-arrow {
+    position: absolute;
+    bottom: -5px;
+    right: 22px; // Aligned with center of collapsed Chat FAB
+    width: 8px;
+    height: 8px;
+    background: rgba(6, 14, 20, 0.96);
+    border-bottom: 1px solid rgba(77, 208, 206, 0.6);
+    border-right: 1px solid rgba(77, 208, 206, 0.6);
+    transform: rotate(45deg);
+    pointer-events: none;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  &:hover .callout-arrow {
+    border-color: rgba(77, 208, 206, 0.9);
+  }
+}
+
+// ── Close button (×) ─────────────────────────────────────────
+.callout-close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1;
+  padding: 2px 4px;
+  margin-left: 4px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition:
+    color var(--transition-fast),
+    background var(--transition-fast),
+    transform var(--transition-fast);
+
+  &:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.12);
+    transform: scale(1.15);
+  }
+
+  &:active {
+    transform: scale(0.9);
+  }
+}
+
+.callout-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: inherit;
+}
+
+@keyframes dot-flicker {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.65;
+    transform: scale(0.9);
+  }
+}
+
+// ── Mobile Responsive Adjustments ────────────────────────────
+@media (max-width: 480px) {
+  .callout-tooltip {
+    font-size: 10.5px;
+    padding: 6px 10px;
+    gap: 6px;
+  }
+
+  .callout-tooltip--maximize {
+    left: -12px;
+
+    .callout-arrow {
+      left: 18.5px;
+    }
+  }
+
+  .callout-tooltip--chat {
+    right: 0;
+
+    .callout-arrow {
+      right: 18px;
+    }
+  }
+}

@@ -202,6 +202,11 @@ export default function TerminalWindow() {
   const [aiDeactivating, setAiDeactivating] = useState(false) // shows deactivation overlay
   const [aiReady, setAiReady] = useState(false)  // AI panel fully visible
   const [showRipple, setShowRipple] = useState(false)  // send ripple flash
+  const [showMaximizeCallout, setShowMaximizeCallout] = useState(false)
+  const [showChatCallout, setShowChatCallout] = useState(false)
+  const chatCalloutTimerRef = useRef(null)
+  const autoDismissMaxTimerRef = useRef(null)
+  const autoDismissChatTimerRef = useRef(null)
   const bodyRef = useRef(null)
   const prevChatMode = useRef(false)
   const chatPromptRef = useRef(null)
@@ -358,6 +363,112 @@ export default function TerminalWindow() {
     setWindowState((s) => (s === 'maximized' ? 'normal' : 'maximized'))
   }
 
+  const dismissChatCallout = useCallback(() => {
+    setShowChatCallout(false)
+    if (chatCalloutTimerRef.current) {
+      clearTimeout(chatCalloutTimerRef.current)
+      chatCalloutTimerRef.current = null
+    }
+    if (autoDismissChatTimerRef.current) {
+      clearTimeout(autoDismissChatTimerRef.current)
+      autoDismissChatTimerRef.current = null
+    }
+    try {
+      sessionStorage.setItem('portfolio_seen_chat_callout', '1')
+    } catch {}
+  }, [])
+
+  const dismissMaximizeCallout = useCallback(() => {
+    setShowMaximizeCallout(false)
+    if (autoDismissMaxTimerRef.current) {
+      clearTimeout(autoDismissMaxTimerRef.current)
+      autoDismissMaxTimerRef.current = null
+    }
+    try {
+      sessionStorage.setItem('portfolio_seen_maximize_callout', '1')
+    } catch {}
+
+    // Sequence to AI Chat: only after Maximize is closed/dismissed, wait 3s pause
+    try {
+      const alreadySeenChat = sessionStorage.getItem('portfolio_seen_chat_callout')
+      if (!alreadySeenChat && !chatMode) {
+        if (chatCalloutTimerRef.current) clearTimeout(chatCalloutTimerRef.current)
+        chatCalloutTimerRef.current = setTimeout(() => {
+          setShowChatCallout(true)
+          if (autoDismissChatTimerRef.current) clearTimeout(autoDismissChatTimerRef.current)
+          autoDismissChatTimerRef.current = setTimeout(() => {
+            setShowChatCallout(false)
+            try {
+              sessionStorage.setItem('portfolio_seen_chat_callout', '1')
+            } catch {}
+          }, 10000)
+        }, 3000)
+      }
+    } catch {}
+  }, [chatMode])
+
+  // ── 🟢 Sequential Callouts (~4s after boot for Maximize, then AI Chat) ────
+  useEffect(() => {
+    if (windowState !== 'normal' || chatMode) return
+
+    let startTimer = null
+
+    try {
+      const seenMax = sessionStorage.getItem('portfolio_seen_maximize_callout')
+      const seenChat = sessionStorage.getItem('portfolio_seen_chat_callout')
+
+      // Case 1: Maximize hasn't been shown yet and window is not maximized
+      if (!seenMax && windowState !== 'maximized') {
+        startTimer = setTimeout(() => {
+          setShowMaximizeCallout(true)
+          if (autoDismissMaxTimerRef.current) clearTimeout(autoDismissMaxTimerRef.current)
+          autoDismissMaxTimerRef.current = setTimeout(() => {
+            dismissMaximizeCallout()
+          }, 10000)
+        }, 4000)
+      }
+      // Case 2: Maximize already seen (or already maximized), but AI chat hasn't been shown
+      else if (!seenChat) {
+        startTimer = setTimeout(() => {
+          setShowChatCallout(true)
+          if (autoDismissChatTimerRef.current) clearTimeout(autoDismissChatTimerRef.current)
+          autoDismissChatTimerRef.current = setTimeout(() => {
+            dismissChatCallout()
+          }, 10000)
+        }, 4000)
+      }
+    } catch {}
+
+    return () => {
+      if (startTimer) clearTimeout(startTimer)
+      if (autoDismissMaxTimerRef.current) clearTimeout(autoDismissMaxTimerRef.current)
+      if (chatCalloutTimerRef.current) clearTimeout(chatCalloutTimerRef.current)
+      if (autoDismissChatTimerRef.current) clearTimeout(autoDismissChatTimerRef.current)
+    }
+  }, [windowState, chatMode, dismissMaximizeCallout, dismissChatCallout])
+
+  // If window is maximized while maximize callout is showing, dismiss it and trigger sequence
+  useEffect(() => {
+    if (windowState === 'maximized' && showMaximizeCallout) {
+      dismissMaximizeCallout()
+    }
+  }, [windowState, showMaximizeCallout, dismissMaximizeCallout])
+
+  // If chat mode opens at any time, cancel all timers and dismiss both callouts
+  useEffect(() => {
+    if (chatMode) {
+      if (autoDismissMaxTimerRef.current) clearTimeout(autoDismissMaxTimerRef.current)
+      if (chatCalloutTimerRef.current) clearTimeout(chatCalloutTimerRef.current)
+      if (autoDismissChatTimerRef.current) clearTimeout(autoDismissChatTimerRef.current)
+      setShowMaximizeCallout(false)
+      setShowChatCallout(false)
+      try {
+        sessionStorage.setItem('portfolio_seen_maximize_callout', '1')
+        sessionStorage.setItem('portfolio_seen_chat_callout', '1')
+      } catch {}
+    }
+  }, [chatMode])
+
   if (windowState === 'hello') {
     return <HelloWorldScreen onReady={() => setWindowState('normal')} />
   }
@@ -493,11 +604,49 @@ export default function TerminalWindow() {
               aria-label="Minimize terminal"
               onClick={handleMinimize}
             />
-            <button
-              className="traffic-light maximize cursor-interactive"
-              aria-label={windowState === 'maximized' ? 'Restore' : 'Maximize'}
-              onClick={handleMaximize}
-            />
+            <div className="traffic-light-beacon-wrap">
+              <button
+                className={`traffic-light maximize cursor-interactive${showMaximizeCallout ? ' has-beacon' : ''}`}
+                aria-label={windowState === 'maximized' ? 'Restore' : 'Maximize'}
+                onClick={() => {
+                  if (showMaximizeCallout) dismissMaximizeCallout()
+                  handleMaximize()
+                }}
+              />
+              <AnimatePresence>
+                {showMaximizeCallout && (
+                  <motion.div
+                    className="callout-tooltip callout-tooltip--maximize cursor-interactive"
+                    initial={{ opacity: 0, y: -10, scale: 0.94 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -8, scale: 0.94 }}
+                    transition={{ type: 'spring', stiffness: 380, damping: 26 }}
+                    onClick={() => {
+                      dismissMaximizeCallout()
+                      handleMaximize()
+                    }}
+                    role="tooltip"
+                    aria-label="Click here to maximize screen"
+                  >
+                    <span className="callout-arrow callout-arrow--top" aria-hidden="true" />
+                    <span className="callout-dot callout-dot--green" aria-hidden="true">•</span>
+                    <span className="callout-text">
+                      Click here to maximize screen! <span className="callout-icon" aria-hidden="true">⤢</span>
+                    </span>
+                    <button
+                      className="callout-close cursor-interactive"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        dismissMaximizeCallout()
+                      }}
+                      aria-label="Dismiss maximize callout"
+                    >
+                      ×
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
 
           <span className="tmux-session">
@@ -934,7 +1083,11 @@ export default function TerminalWindow() {
         <TerminalFooter chatMode={chatMode} />
 
         {/* Floating action button for AI chat — positioned inside the terminal window */}
-        <ChatFAB chatMode={chatMode} />
+        <ChatFAB
+          chatMode={chatMode}
+          calloutActive={showChatCallout}
+          onDismissCallout={dismissChatCallout}
+        />
       </motion.div>
 
       <AnimatePresence>

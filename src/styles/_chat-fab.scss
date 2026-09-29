@@ -3,15 +3,45 @@
 // Terminal aesthetic: coral glyph, cyan glow, scanline texture
 // ============================================================
 
-.chat-fab {
+// ── Floating wrapper for button + floating callout ──────────
+.chat-fab-wrapper {
   position: absolute;
   bottom: 58px;
   right: 32px;
   z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  pointer-events: none;
 
+  > * {
+    pointer-events: auto;
+  }
+
+  @media (max-width: 768px), (pointer: coarse) {
+    bottom: 50px;
+    right: 20px;
+  }
+}
+
+.chat-fab {
+  position: relative;
   display: flex;
   align-items: center;
-  overflow: hidden;
+  overflow: visible; // allow beacon ring to expand
+
+  // Fallback when rendered without wrapper
+  &:not(.chat-fab-wrapper *) {
+    position: absolute;
+    bottom: 58px;
+    right: 32px;
+    z-index: 100;
+
+    @media (max-width: 768px), (pointer: coarse) {
+      bottom: 50px;
+      right: 20px;
+    }
+  }
 
   // Terminal block aesthetic
   padding: 10px 14px;
@@ -37,6 +67,42 @@
 
   // Idle pulse animation
   animation: fab-idle-pulse 3.5s ease-in-out infinite;
+
+  // ── Cyan Beacon Pulse while callout is showing ──────────────
+  &.has-cyan-beacon {
+    border-color: rgba(77, 208, 206, 0.85);
+    background: rgba(10, 16, 24, 0.96);
+    box-shadow:
+      0 0 0 1px rgba(77, 208, 206, 0.35),
+      0 0 24px rgba(77, 208, 206, 0.4),
+      0 0 50px rgba(77, 208, 206, 0.2),
+      0 4px 24px rgba(0, 0, 0, 0.65);
+    animation: fab-cyan-beacon-pulse 1.8s ease-in-out infinite;
+
+    .chat-fab__symbol {
+      color: var(--cyan);
+      text-shadow:
+        0 0 8px rgba(77, 208, 206, 0.95),
+        0 0 24px rgba(77, 208, 206, 0.55);
+    }
+
+    .chat-fab__corner--tl,
+    .chat-fab__corner--br {
+      border-color: var(--cyan);
+      opacity: 1;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 7px;
+      border: 2px solid rgba(77, 208, 206, 0.85);
+      animation: fab-cyan-beacon-ring 1.8s cubic-bezier(0.1, 0.8, 0.2, 1) infinite;
+      pointer-events: none;
+      box-sizing: border-box;
+    }
+  }
 
   &:hover {
     border-color: rgba(77, 208, 206, 0.8);
@@ -152,11 +218,46 @@
   }
 }
 
+// Cyan beacon pulse when onboarding callout is active
+@keyframes fab-cyan-beacon-pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow:
+      0 0 0 1px rgba(77, 208, 206, 0.35),
+      0 0 20px rgba(77, 208, 206, 0.35),
+      0 4px 24px rgba(0, 0, 0, 0.65);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow:
+      0 0 0 2px rgba(77, 208, 206, 0.6),
+      0 0 32px rgba(77, 208, 206, 0.55),
+      0 0 65px rgba(77, 208, 206, 0.25),
+      0 6px 30px rgba(0, 0, 0, 0.7);
+  }
+}
+
+@keyframes fab-cyan-beacon-ring {
+  0% {
+    opacity: 0.95;
+    transform: scale(0.96);
+    box-shadow: 0 0 4px rgba(77, 208, 206, 0.8);
+  }
+  70% {
+    opacity: 0.3;
+    transform: scale(1.18);
+    box-shadow: 0 0 16px 4px rgba(77, 208, 206, 0.4);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.28);
+    box-shadow: 0 0 24px 8px rgba(77, 208, 206, 0);
+  }
+}
+
 // Mobile & touch devices
 @media (max-width: 768px), (pointer: coarse) {
   .chat-fab {
     cursor: pointer;
-    bottom: 50px;
-    right: 20px;
   }
 }
