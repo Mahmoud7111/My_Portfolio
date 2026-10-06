@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import { ExternalLink, Star } from 'lucide-react'
 import { GithubIcon } from '../components/ui/BrandIcons'
@@ -243,6 +243,122 @@ export default function HomeContent({ chatMode }) {
       </RevealOnScroll>
 
       {/* ══════════════════════════════════════════════════════ */}
+      {/* SERVICES                                               */}
+      {/* ══════════════════════════════════════════════════════ */}
+      <SectionComment label="services" />
+
+      <RevealOnScroll>
+        <div id="hc-services" className="hc-panel" style={{ marginBottom: 40 }}>
+          <div className="hc-panel__chrome">
+            <div className="hc-panel__chrome-left">
+              <span className="hc-panel__bar">▍</span>
+              <span className="hc-panel__filename">Services</span>
+              <span className="hc-panel__sep">—</span>
+              <span className="hc-panel__subtitle">what I offer</span>
+            </div>
+            <span className="hc-panel__controls hc-panel__controls--right" style={{ color: 'var(--coral)', opacity: 0.7 }}>
+              open to hire
+            </span>
+          </div>
+          <div className="hc-panel__body">
+            <TypingLine noPrompt text="-> What I can build for you">
+              <span className="hc-var">What I can build for you</span>
+            </TypingLine>
+
+            {/* Services Cards with Clear Hierarchy */}
+            <div className="hc-services-wrapper">
+              {/* Featured Primary Service: 01 Full-Stack Development */}
+              {me.services[0] && (
+                <motion.div
+                  className="hc-svc-card hc-svc-card--featured"
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <div className="hc-svc-card__header">
+                    <div className="hc-svc-card__meta">
+                      <span className="hc-svc-card__number">{me.services[0].number}</span>
+                      <span className="hc-svc-card__badge">{me.services[0].badge}</span>
+                    </div>
+                    <span className="hc-svc-card__status">
+                      <span className="hc-svc-card__status-dot" />
+                      available
+                    </span>
+                  </div>
+
+                  <div className="hc-svc-card__body">
+                    <h3 className="hc-svc-card__title">{me.services[0].title}</h3>
+                    <p className="hc-svc-card__desc">{me.services[0].desc}</p>
+                  </div>
+
+                  <div className="hc-svc-card__tags">
+                    {me.services[0].tags.map((tag) => (
+                      <span key={tag} className="hc-svc-tag">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Supporting Services Subgrid: 02, 03, 04 */}
+              <div className="hc-svc-subgrid">
+                {me.services.slice(1).map((svc, i) => (
+                  <motion.div
+                    key={svc.id}
+                    className="hc-svc-card"
+                    initial={{ opacity: 0, y: 16 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: (i + 1) * 0.08 }}
+                  >
+                    <div className="hc-svc-card__header">
+                      <span className="hc-svc-card__number">{svc.number}</span>
+                      <span className="hc-svc-card__bracket-arrow" aria-hidden="true">→</span>
+                    </div>
+
+                    <div className="hc-svc-card__body">
+                      <h3 className="hc-svc-card__title">{svc.title}</h3>
+                      <p className="hc-svc-card__desc">{svc.desc}</p>
+                    </div>
+
+                    <div className="hc-svc-card__tags">
+                      {svc.tags.map((tag) => (
+                        <span key={tag} className="hc-svc-tag">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Professional Actionable CTA */}
+              <div className="hc-svc-cta">
+                <div className="hc-svc-cta__info">
+                  <div className="hc-svc-cta__status">
+                    <span className="hc-svc-cta__dot" />
+                    <span>Available for freelance, contracts & advisory</span>
+                  </div>
+                  <p className="hc-svc-cta__sub">
+                    Have an upcoming project or idea? Let&apos;s talk scope, timelines, and technical architecture.
+                  </p>
+                </div>
+                <Link
+                  to="/contact"
+                  className="hc-svc-cta__btn"
+                >
+                  <span>Start a conversation</span>
+                  <span className="hc-svc-cta__btn-arrow" aria-hidden="true">→</span>
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+      </RevealOnScroll>
+
+      {/* ══════════════════════════════════════════════════════ */}
       {/* FEATURED PROJECTS                                      */}
       {/* ══════════════════════════════════════════════════════ */}
       <SectionComment label="featured" />
@@ -418,7 +534,7 @@ export default function HomeContent({ chatMode }) {
                     </a>
                   ))}
               </div>
-              <button onClick={() => navigate('/contact')} className="btn-outline btn-outline--nav" style={{ marginTop: 16 }}>
+              <button onClick={() => navigate('/contact')} className="btn-outline btn-outline--nav" style={{ marginTop: 12 }}>
                 Get in touch →
               </button>
             </div>

@@ -132,4 +132,38 @@ demos that work once.`,
       type: 'award',
     },
   ],
+
+  // ── Services — what you offer to clients ─────────────────────
+  services: [
+    {
+      id: 'fullstack',
+      number: '01',
+      title: 'Full-Stack Development',
+      badge: 'Core Specialty',
+      desc: 'Complete web applications built from database to cloud deployment. Scalable, secure, and ready for production.',
+      tags: ['React.js', 'Node.js', 'Express.js', 'MongoDB', 'REST APIs'],
+      highlights: ['Frontend & Backend', 'Database Architecture', 'Cloud Deployment'],
+    },
+    {
+      id: 'ai-integration',
+      number: '02',
+      title: 'AI & LLM Integration',
+      desc: 'Smart AI features embedded into your product — custom assistants, automated workflows, and intelligent search.',
+      tags: ['LLM APIs', 'OpenAI', 'RAG', 'Automation'],
+    },
+    {
+      id: 'frontend',
+      number: '03',
+      title: 'Frontend Engineering',
+      desc: 'Fast, responsive interfaces with thoughtful UX, clean typography, smooth animations, and zero clutter.',
+      tags: ['React.js', 'TypeScript', 'Tailwind / SCSS', 'Motion'],
+    },
+    {
+      id: 'consulting',
+      number: '04',
+      title: 'Technical Consulting',
+      desc: 'System architecture reviews, tech stack selection, and code quality audits to help you launch with confidence.',
+      tags: ['Architecture', 'Code Audits', 'Performance', 'Best Practices'],
+    },
+  ],
 }

@@ -19,6 +19,7 @@ export const COMMANDS = [
   { id: 'timeline', desc: "- View my career timeline", type: 'output' },
 
   // ── Breadth — the actual work ───────────────────────
+  { id: 'services', desc: "- View what I offer (freelance & contract)", type: 'output' },
   { id: 'projects', desc: "- View my projects gallery", type: 'output' },
   { id: 'my-achievements', desc: "- View my achievements and publications", type: 'output' },
 

@@ -9,6 +9,7 @@ import Courses from './Courses'
 import Languages from './Languages'
 import Links from './Links'
 import Freelance from './Freelance'
+import Services from './Services'
 import Achievements from './Achievements'
 import YourAchievements from './YourAchievements'
 import Help from './Help'
@@ -25,6 +26,7 @@ const REGISTRY = {
   languages: Languages,
   links: Links,
   freelance: Freelance,
+  services: Services,
   'my-achievements': Achievements,
   'your-achievements': YourAchievements,
   help: Help,
