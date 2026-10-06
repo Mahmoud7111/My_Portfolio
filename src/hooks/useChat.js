@@ -62,6 +62,9 @@ Additional Skills: ${JSON.stringify(me.skills.additional)}
 
 Spoken Languages: ${JSON.stringify(me.languages)}
 
+Services:
+${JSON.stringify(me.services)}
+
 Experience:
 ${JSON.stringify(me.experience)}
 
