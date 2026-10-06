@@ -42,6 +42,12 @@ const PATH_MAP = {
   '/achievements': '~/achievements',
 }
 
+const CHAT_SUGGESTIONS = [
+  "What's his most impressive project?",
+  "What services does he offer?",
+  "What is his core tech stack?",
+]
+
 // ── Framer Motion spring presets ─────────────────────────────
 // Used for window expand/restore — smooth but not bouncy
 const SPRING_SMOOTH = {
@@ -287,6 +293,16 @@ export default function TerminalWindow() {
     if (!chatMode) scrolledToChat.current = false
   }, [chatMode])
 
+  // Auto-scroll chat prompt into view as conversation progresses
+  useEffect(() => {
+    if (!chatMode || history.length === 0) return
+    requestAnimationFrame(() => {
+      if (chatPromptRef.current) {
+        chatPromptRef.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+      }
+    })
+  }, [history, chatMode])
+
   // ── Track minimise→restore cycles for easter egg ────────────
   const prevWindowState = useRef(windowState)
   useEffect(() => {
@@ -352,6 +368,18 @@ export default function TerminalWindow() {
     } else {
       submit()
     }
+  }
+
+  const handleSendPrompt = async (promptText) => {
+    if (!chatMode || isLoading) return
+    const value = promptText.trim()
+    if (!value) return
+    triggerRipple()
+    setInput('')
+    pushLine({ type: 'input', value })
+    const reply = await sendMessage(value)
+    const isError = reply === "couldn't reach the AI right now. try again in a bit."
+    pushLine({ type: 'chat-reply', value: reply, isError })
   }
 
   const handleMinimize = () => {
@@ -892,6 +920,36 @@ export default function TerminalWindow() {
                             />
                           </motion.div>
                         ))}
+                        {/* ── Suggestions when chat is opened (no user input yet) ── */}
+                        {!history.some((e) => e.type === 'input') && (
+                          <motion.div
+                            className="chat-suggestions-box"
+                            initial={{ opacity: 0, y: 6 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3, duration: 0.35 }}
+                          >
+                            <div className="chat-suggestions-header">
+                              <span className="chat-suggestions-tag">try:</span>
+                              <span className="chat-suggestions-hint">click any question to ask instantly</span>
+                            </div>
+                            <div className="chat-suggestions-grid">
+                              {CHAT_SUGGESTIONS.map((prompt) => (
+                                <button
+                                  key={prompt}
+                                  type="button"
+                                  className="chat-suggestion-chip"
+                                  onClick={() => handleSendPrompt(prompt)}
+                                  disabled={isLoading}
+                                >
+                                  <span className="chat-suggestion-chip__prompt">&gt;</span>
+                                  <span className="chat-suggestion-chip__text">{prompt}</span>
+                                  <span className="chat-suggestion-chip__action" aria-hidden="true">↵</span>
+                                </button>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+
                         {isLoading && (
                           <p className="chat-thinking" aria-label="AI is thinking">
                             <span className="chat-thinking-dot" style={{ animationDelay: '0ms' }} />
@@ -952,6 +1010,29 @@ export default function TerminalWindow() {
                       animate={{ opacity: aiReady ? 1 : 0, y: aiReady ? 0 : 8 }}
                       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                     >
+                      {/* Compact follow-up pills for remaining suggestions */}
+                      {history.some((e) => e.type === 'input') && (
+                        <div className="chat-prompt-quick-strip" style={{ padding: '6px 14px 2px' }}>
+                          <span className="chat-prompt-quick-label">try:</span>
+                          <div className="chat-prompt-quick-list">
+                            {CHAT_SUGGESTIONS.filter(
+                              (p) => !history.some((h) => h.type === 'input' && h.value.toLowerCase() === p.toLowerCase())
+                            ).map((prompt) => (
+                              <button
+                                key={prompt}
+                                type="button"
+                                className="chat-prompt-quick-pill"
+                                onClick={() => handleSendPrompt(prompt)}
+                                disabled={isLoading}
+                              >
+                                <span>{prompt}</span>
+                                <span className="chat-prompt-quick-arrow" aria-hidden="true">↵</span>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
                       <form onSubmit={handleSubmit} className="ai-prompt-inner">
                         <span className="ai-prompt-symbol">◈ AI&gt;</span>
                         <div style={{ position: 'relative', flex: 1, display: 'flex', alignItems: 'center' }}>
